@@ -1,3 +1,9 @@
 body{
     background-color: steelblue;
 }
+nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
