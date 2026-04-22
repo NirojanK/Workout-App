@@ -42,6 +42,9 @@ nav a:hover {
     justify-content: space-between;
     padding: 80px 10%;
     gap: 60px;
+    border-radius: 15px;
+    border: 2px solid rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
 .hero-text {
@@ -260,6 +263,47 @@ nav a:hover {
     padding: 15px 10%;
     margin-top: 40px;
     border-radius: 0 0 12px 12px;
+}
+.tracker {
+    background: linear-gradient(to right, darkgray, black);
+    color: white;
+    padding: 15px;
+    margin: 20px auto;
+    text-align: center;
+    border-radius: 10px;
+    width: fit-content;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+/* Title */
+.tracker h3 {
+    margin-bottom: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Labels */
+.tracker p {
+    margin: 4px 0;
+    font-size: 14px;
+    opacity: 0.85;
+}
+
+/* Highlight values */
+.tracker span {
+    font-weight: 600;
+    color: #ffffff;
+}
+/*subtle glow effect*/
+.tracker {
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+button {
+    background: linear-gradient(to right, white , silver);
+    margin: 10px 0;
+    padding: 8px 15px;
+    cursor: pointer;
 }
 
 /* MOBILE RESPONSIVE (important) */
