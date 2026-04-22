@@ -5,7 +5,59 @@
     <title>Workout App</title>
     <link rel="stylesheet" href="Index.css">
 </head>
+<script>
+function completeWorkout(day) {
+    const today = new Date().toDateString();
 
+    const lastDate = localStorage.getItem("lastDate");
+    let streak = parseInt(localStorage.getItem("streak")) || 0;
+
+    // Check if already logged today
+    if (lastDate === today) {
+        alert("Workout already logged today!");
+        return;
+    }
+
+    // Check if yesterday
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    if (lastDate === yesterday.toDateString()) {
+        streak += 1;
+    } else {
+        streak = 1;
+    }
+
+    localStorage.setItem("lastWorkout", day);
+    localStorage.setItem("lastDate", today);
+    localStorage.setItem("streak", streak);
+
+    updateTracker();
+}
+
+function updateTracker() {
+    const lastWorkout = localStorage.getItem("lastWorkout") || "None";
+    const streak = localStorage.getItem("streak") || 0;
+
+    document.getElementById("lastWorkout").innerText =
+        "Last Workout: " + lastWorkout;
+
+    document.getElementById("streak").innerText =
+        "Streak: " + streak + " day(s)";
+}
+
+// Run on page load
+updateTracker();
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFSVT2NKSH"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-BFSVT2NKSH');
+</script>
 <body>
 
 <!-- Navbar -->
@@ -28,10 +80,10 @@
         <!-- Social Icons -->
         <div class="hero-links">
             <a href="#">
-                <img src="youtube-icon.png" alt="YouTube">
+                <img src="youtube-icon.PNG" alt="YouTube">
             </a>
             <a href="#">
-                <img src="instagram-icon.png" alt="Instagram">
+                <img src="instagram-icon.PNG" alt="Instagram">
             </a>
         </div>
     </div>
@@ -40,12 +92,17 @@
         <img src="hero-img.JPG" alt="Workout Image">
     </div>
 </section>
-
+<div class="tracker">
+    <h3>Progress Tracker</h3>
+    <p id="lastWorkout">Last Workout: None</p>
+    <p id="streak">Streak: 0 days</p>
+</div>
 <!-- Workout Sections -->
 <div class="container" id = "workouts">
 
     <div class="box">
         <h3>Back Day</h3>
+        <button onClick ="completeWorkout('Back Day')">Mark Complete</button>
         <div class="img-row">
             <img src="back-img.JPG">
             <img src="back-img2.JPG">
@@ -65,6 +122,7 @@
 
     <div class="box">
         <h3>Chest Day</h3>
+        <button onClick ="completeWorkout('Chest Day')">Mark Complete</button>
         <div class="img-row">
             <img src="chest-img.JPG">
             <img src="chest-img2.JPG">
@@ -83,6 +141,7 @@
 
     <div class="box">
         <h3>Leg Day</h3>
+        <button onClick ="completeWorkout('Leg Day')">Mark Complete</button>
         <div class="img-row">
             <img src="leg-img.JPG">
             <img src="leg-img2.JPG">
@@ -121,6 +180,22 @@
             <li>Close-Grip Curls</li>
             <li>Tricep Dips</li>
             <li>Tricep Pulldowns</li>
+        </ul>
+    </div>
+    <div class = "box">
+        <h3>Cardio + core</h3>
+        <button onClick ="completeWorkout('Cardio Day')">Mark Complete</button>
+        <div class ="img-row">
+            <img src="cardio-img.JPG">
+            <img src="cardio-img2.JPG">
+            <img src="cardio-img3.JPG">
+            <img src="cardio-img4.JPG">
+        </div>
+        <ul>
+            <li>12:3:30(12 incline, 3 speed, 30 minutes)</li>
+            <li>Plank</li>
+            <li>Decline Sit-ups</li>
+            <li>Leg-raises</li>
         </ul>
     </div>
 
