@@ -49,6 +49,28 @@ function updateTracker() {
 // Run on page load
 updateTracker();
 </script>
+<script>
+let reviewIndex = 0;
+
+function showReview(index) {
+    const track = document.querySelector('.reviews-track');
+    const total = document.querySelectorAll('.reviews-track .slide').length;
+
+    if (index >= total) reviewIndex = 0;
+    else if (index < 0) reviewIndex = total - 1;
+    else reviewIndex = index;
+
+    track.style.transform = `translateX(-${reviewIndex * 100}%)`;
+}
+
+function nextReview() {
+    showReview(reviewIndex + 1);
+}
+
+function prevReview() {
+    showReview(reviewIndex - 1);
+}
+</script>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-BFSVT2NKSH"></script>
 <script>
@@ -80,10 +102,10 @@ updateTracker();
         <!-- Social Icons -->
         <div class="hero-links">
             <a href="#">
-                <img src="youtube-icon.png" alt="YouTube">
+                <img src="youtube-icon.PNG" alt="YouTube">
             </a>
             <a href="#">
-                <img src="instagram-icon.png" alt="Instagram">
+                <img src="instagram-icon.PNG" alt="Instagram">
             </a>
         </div>
     </div>
@@ -112,7 +134,7 @@ updateTracker();
         </div>
         <ul>
             <li>Deadlifts</li>
-            <li>Pullups</li>
+            <li><u>Pullups</u></li>
             <li>Seated Cable Rows</li>
             <li>Barbell Rows</li>
             <li>Lat Pulldowns</li>
@@ -211,23 +233,31 @@ updateTracker();
 
 </div>
 
-<!-- Reviews -->
-<div class="reviews-section" id="reviews">
-<h2 class="reviews-title">Reviews by clients</h2>
-<div class="reviews">
-    <div class="review-card">
-        <img src="review-img.JPG">
-    </div>
+<section class="reviews-section" id="reviews">
+    <h2 class="reviews-title">Client Reviews</h2>
 
-    <div class="review-card">
-        <img src="review-img2.JPG">
-    </div>
+    <div class="reviews-slider">
 
-    <div class="review-card">
-        <img src="review-img3.JPG">
+        <button class="prev" onclick="prevReview()">❮</button>
+
+        <div class="reviews-track">
+            <div class="review-card slide">
+                <img src="review-img.JPG" alt="Review 1">
+            </div>
+
+            <div class="review-card slide">
+                <img src="review-img2.JPG" alt="Review 2">
+            </div>
+
+            <div class="review-card slide">
+                <img src="review-img3.JPG" alt="Review 3">
+            </div>
+        </div>
+
+        <button class="next" onclick="nextReview()">❯</button>
+
     </div>
-</div>
-</div>
+</section>
 <!-- Contact -->
 <div class="contact-section" id="contact">
     <div class="contact-card">
