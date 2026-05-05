@@ -286,14 +286,21 @@ nav a:hover {
     border-radius: 0 0 12px 12px;
 }
 .tracker {
-    background: linear-gradient(to right, darkgray, black);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+
+    background: linear-gradient(to right, black, #444);
     color: white;
-    padding: 15px;
-    margin: 20px auto;
-    text-align: center;
-    border-radius: 10px;
-    width: fit-content;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    padding: 15px 20px;
+    border-radius: 12px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    z-index: 1000;
+
+    font-family: 'Segoe UI', sans-serif;
+    min-width: 180px;
 }
 /* Title */
 .tracker h3 {
