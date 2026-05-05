@@ -36,14 +36,18 @@ function completeWorkout(day) {
 }
 
 function updateTracker() {
-    const lastWorkout = localStorage.getItem("lastWorkout") || "None";
-    const streak = localStorage.getItem("streak") || 0;
+      const lastWorkout = localStorage.getItem("lastWorkout") || "None";
+    const streak = parseInt(localStorage.getItem("streak")) || 0;
 
     document.getElementById("lastWorkout").innerText =
         "Last Workout: " + lastWorkout;
 
     document.getElementById("streak").innerText =
         "Streak: " + streak + " day(s)";
+
+    // Progress bar (7-day goal)
+    const progress = Math.min((streak / 7) * 100, 100);
+    document.getElementById("progressFill").style.width = progress + "%";
 }
 
 // Run on page load
@@ -118,6 +122,9 @@ function prevReview() {
     <h3>Progress Tracker</h3>
     <p id="lastWorkout">Last Workout: None</p>
     <p id="streak">Streak: 0 days</p>
+    <div class="progress-bar">
+    <div id="progressFill"></div>
+</div>
 </div>
 <div class="container">
 
