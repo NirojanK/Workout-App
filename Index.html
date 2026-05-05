@@ -283,8 +283,8 @@ function nextReview() {
 }
 
 function signUp() {
-    const email = email.value;
-    const password = password.value;
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
     auth.createUserWithEmailAndPassword(email, password)
         .then(() => alert("Account created!"))
