@@ -5,91 +5,30 @@
     <title>Workout App</title>
     <link rel="stylesheet" href="Index.css">
 </head>
-<script>
-function completeWorkout(day) {
-    const today = new Date().toDateString();
 
-    const lastDate = localStorage.getItem("lastDate");
-    let streak = parseInt(localStorage.getItem("streak")) || 0;
-
-    // Check if already logged today
-    if (lastDate === today) {
-        alert("Workout already logged today!");
-        return;
-    }
-
-    // Check if yesterday
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-
-    if (lastDate === yesterday.toDateString()) {
-        streak += 1;
-    } else {
-        streak = 1;
-    }
-
-    localStorage.setItem("lastWorkout", day);
-    localStorage.setItem("lastDate", today);
-    localStorage.setItem("streak", streak);
-
-    updateTracker();
-}
-
-function updateTracker() {
-      const lastWorkout = localStorage.getItem("lastWorkout") || "None";
-    const streak = parseInt(localStorage.getItem("streak")) || 0;
-
-    document.getElementById("lastWorkout").innerText =
-        "Last Workout: " + lastWorkout;
-
-    document.getElementById("streak").innerText =
-        "Streak: " + streak + " day(s)";
-
-    // Progress bar (7-day goal)
-    const progress = Math.min((streak / 7) * 100, 100);
-    document.getElementById("progressFill").style.width = progress + "%";
-}
-
-// Run on page load
-updateTracker();
-</script>
-<script>
-let reviewIndex = 0;
-
-function showReview(index) {
-    const track = document.querySelector('.reviews-track');
-    const total = document.querySelectorAll('.reviews-track .slide').length;
-
-    if (index >= total) reviewIndex = 0;
-    else if (index < 0) reviewIndex = total - 1;
-    else reviewIndex = index;
-
-    track.style.transform = `translateX(-${reviewIndex * 100}%)`;
-}
-
-function nextReview() {
-    showReview(reviewIndex + 1);
-}
-
-function prevReview() {
-    showReview(reviewIndex - 1);
-}
-</script>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-BFSVT2NKSH"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-BFSVT2NKSH');
-</script>
 <body>
+
+<!-- LOGIN PAGE -->
+<div id="loginPage" class="login-box">
+    <h2>Login</h2>
+
+    <input type="email" id="email" placeholder="Email">
+    <input type="password" id="password" placeholder="Password">
+
+    <button onclick="signUp()">Sign Up</button>
+    <button onclick="login()">Login</button>
+
+    <p id="userStatus"></p>
+</div>
+
+<!-- APP CONTENT -->
+<div id="appContent" style="display:none;">
 
 <!-- Navbar -->
 <nav>
-    <a href= "#reviews">Reviews</a>
-    <a href="#contact" >Contact</a>
+    <a href="#reviews">Reviews</a>
+    <a href="#contact">Contact</a>
+    <button onclick="logout()">Logout</button>
 </nav>
 
 <!-- Hero Section -->
@@ -98,7 +37,6 @@ function prevReview() {
         <h1>Consistency and then discipline</h1>
         <p>
             If you just go to the gym you'll summon the strength you need!
-            Do that over and over again and in time you'll be a completely different person.
         </p>
 
         <a href="#workouts" class="cta-btn">Start Workout</a>
@@ -113,56 +51,43 @@ function prevReview() {
             </a>
         </div>
     </div>
-
     <div class="hero-image">
         <img src="hero-img.JPG" alt="Workout Image">
     </div>
 </section>
+
+<!-- Tracker -->
 <div class="tracker">
     <h3>Progress Tracker</h3>
     <p id="lastWorkout">Last Workout: None</p>
     <p id="streak">Streak: 0 days</p>
     <div class="progress-bar">
-    <div id="progressFill"></div>
+        <div id="progressFill"></div>
+    </div>
 </div>
-</div>
-<div class="container">
 
+<!-- Splits + Supplements -->
+<div class="container">
     <div class="box">
         <h2>Workout Splits</h2>
-        <p>------------------------------</p>
         <ul>
-            <li>PPL (Push, Pull, Legs)</li>
+            <li>PPL</li>
             <li>Bro Split</li>
-            <li>My Split (3 days upper body, 1 day lower body, 2 days cardio)</li>
+            <li>Upper/Lower Split</li>
         </ul>
-        <p>
-            Most splits are effective, in my case I currently go for maintenance.
-            Muscle growth is a gradual process.
-        </p>
-        <p>
-            When you reach a plateau, it's time to change something.
-            I've recently thought about trying landmine press.
-        </p>
     </div>
 
     <div class="box">
-        <h2>Supplements and Nutrition</h2>
-        <p>------------------------------</p>
+        <h2>Supplements</h2>
         <ul>
             <li>Whey Protein</li>
             <li>Creatine</li>
         </ul>
-        <p>
-            These are the supplements I take. They help with recovery
-            and support my training routine.
-        </p>
     </div>
-
 </div>
 
 <!-- Workout Sections -->
-<div class="container" id = "workouts">
+<div class="container" id="workouts">
 
     <div class="box">
         <h3>Back Day</h3>
@@ -263,18 +188,9 @@ function prevReview() {
         </ul>
     </div>
 
-    <div class="box">
-        <h3>Motivation</h3>
-        <p>Watch my journey and what kept me consistent:</p>
-        <img src="motivation-img.JPG" class="large-img">
-        <br>
-        <a href="https://www.youtube.com/watch?v=4V-63E01yeo" target="_blank">
-            Watch Video
-        </a>
-    </div>
-
 </div>
 
+<!-- Reviews -->
 <section class="reviews-section" id="reviews">
     <h2 class="reviews-title">Client Reviews</h2>
 
@@ -300,21 +216,99 @@ function prevReview() {
 
     </div>
 </section>
+
 <!-- Contact -->
 <div class="contact-section" id="contact">
     <div class="contact-card">
         <h2>Contact Me</h2>
-        <p>Feel free to reach out if you have questions or want to start your fitness journey.</p>
-
-        <div class="contact-info">
-            <span>📧</span>
-            <a href="mailto:nirokal92@gmail.com">nirokal92@gmail.com</a>
-        </div>
+        <p>Email: nirokal92@gmail.com</p>
     </div>
 </div>
+
 <!-- Footer -->
- <div class="footer">
-    <p>&copy; 2026 Niro Kalaimannan. All rights reserved.</p>
+<div class="footer">
+    <p>&copy; 2026 Workout App</p>
 </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyBzA2YhWeUn2eNpyd0zQoM8s9smjtBrsno",
+  authDomain: "workoutapp-f029c.firebaseapp.com",
+  projectId: "workoutapp-f029c",
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+</script>
+
+<script>
+window.onload = function () {
+    updateTracker();
+};
+
+function updateTracker() {
+    const lastWorkout = localStorage.getItem("lastWorkout") || "None";
+    const streak = parseInt(localStorage.getItem("streak")) || 0;
+
+    document.getElementById("lastWorkout").innerText =
+        "Last Workout: " + lastWorkout;
+
+    document.getElementById("streak").innerText =
+        "Streak: " + streak + " day(s)";
+
+    const progress = Math.min((streak / 7) * 100, 100);
+    document.getElementById("progressFill").style.width = progress + "%";
+}
+
+function completeWorkout(day) {
+    localStorage.setItem("lastWorkout", day);
+    let streak = parseInt(localStorage.getItem("streak")) || 0;
+    streak++;
+    localStorage.setItem("streak", streak);
+    updateTracker();
+}
+function prevReview() {
+    const track = document.querySelector(".reviews-track");
+    track.appendChild(track.firstElementChild);
+}
+function nextReview() {
+    const track = document.querySelector(".reviews-track");
+    track.insertBefore(track.lastElementChild, track.firstElementChild);
+}
+
+function signUp() {
+    const email = email.value;
+    const password = password.value;
+
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => alert("Account created!"))
+        .catch(err => alert(err.message));
+}
+
+function login() {
+    const email = email.value;
+    const password = password.value;
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then(() => alert("Logged in!"))
+        .catch(err => alert(err.message));
+}
+
+function logout() {
+    auth.signOut();
+}
+
+auth.onAuthStateChanged((user) => {
+    loginPage.style.display = user ? "none" : "block";
+    appContent.style.display = user ? "block" : "none";
+});
+</script>
+
 </body>
 </html>
