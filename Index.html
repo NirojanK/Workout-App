@@ -76,6 +76,7 @@
 
     <button onclick="startTimer(60)">Start 60s</button>
     <button onclick="startTimer(90)">Start 90s</button>
+    <button onclick="pauseTimer()">Pause</button>
     <button onclick="resetTimer()">Reset</button>
 </div>
 
@@ -338,6 +339,8 @@ auth.onAuthStateChanged((user) => {
 });
 let timer;
 let timeLeft = 60;
+const audio = new Audio("https://www.soundjay.com/buttons/beep-07.mp3");
+audio.play();
 
 function startTimer(seconds) {
     clearInterval(timer);
@@ -355,6 +358,9 @@ function startTimer(seconds) {
             alert("Rest time over!");
         }
     }, 1000);
+}
+function pauseTimer() {
+    clearInterval(timer);
 }
 
 function resetTimer() {
