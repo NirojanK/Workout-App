@@ -186,6 +186,23 @@ nav a:hover {
     padding: 40px 10%;
     gap: 20px;
 }
+/*Rest-Timer*/
+.timer-box {
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 250px;
+    margin: 20px auto;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+#timerDisplay {
+    font-size: 32px;
+    margin: 10px 0;
+}
+
 /* BOXES */
 .box {
     background: linear-gradient(to right, black, #444);
