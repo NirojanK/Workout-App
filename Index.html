@@ -314,8 +314,16 @@ function logout() {
 }
 
 auth.onAuthStateChanged((user) => {
-    loginPage.style.display = user ? "none" : "block";
-    appContent.style.display = user ? "block" : "none";
+    const loginWrapper = document.querySelector(".login-wrapper");
+    const appContent = document.getElementById("appContent");
+
+    if (user) {
+        loginWrapper.style.display = "none";
+        appContent.style.display = "block";
+    } else {
+        loginWrapper.style.display = "flex"; // keep centered
+        appContent.style.display = "none";
+    }
 });
 </script>
 
