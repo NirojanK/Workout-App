@@ -292,12 +292,19 @@ function signUp() {
 }
 
 function login() {
-    const email = email.value;
-    const password = password.value;
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+
+    const email = emailInput.value;
+    const password = passwordInput.value;
 
     auth.signInWithEmailAndPassword(email, password)
-        .then(() => alert("Logged in!"))
-        .catch(err => alert(err.message));
+        .then((userCredential) => {
+            alert("Logged in!");
+        })
+        .catch((error) => {
+            alert(error.message);
+        });
 }
 
 function logout() {
