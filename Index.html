@@ -336,6 +336,36 @@ auth.onAuthStateChanged((user) => {
         appContent.style.display = "none";
     }
 });
+let timer;
+let timeLeft = 60;
+
+function startTimer(seconds) {
+    clearInterval(timer);
+    timeLeft = seconds;
+
+    updateDisplay();
+
+    timer = setInterval(() => {
+        timeLeft--;
+
+        updateDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Rest time over!");
+        }
+    }, 1000);
+}
+
+function resetTimer() {
+    clearInterval(timer);
+    timeLeft = 60;
+    updateDisplay();
+}
+
+function updateDisplay() {
+    document.getElementById("timerDisplay").innerText = timeLeft + "s";
+}
 </script>
 
 </body>
