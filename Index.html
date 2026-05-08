@@ -257,21 +257,97 @@ const firebaseConfig = {
   authDomain: "workoutapp-f029c.firebaseapp.com",
   projectId: "workoutapp-f029c",
 };
-const db = firebase.firestore();
 
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
+const db = firebase.firestore();
 </script>
 
 <script>
-window.onload = function () {
-    updateTracker();
-};
+// ---------------- AUTH ----------------
 
-function updateTracker() {
-    const lastWorkout = localStorage.getItem("lastWorkout") || "None";
-    const streak = parseInt(localStorage.getItem("streak")) || 0;
+function signUp() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
+    auth.createUserWithEmailAndPassword(email, password)
+        .then(() => alert("Account created!"))
+        .catch(err => alert(err.message));
+}
+
+function login() {
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+
+    auth.signInWithEmailAndPassword(email, password)
+        .then(() => alert("Logged in!"))
+        .catch(err => alert(err.message));
+}
+
+function logout() {
+    auth.signOut();
+}
+
+// ---------------- AUTH STATE ----------------
+
+auth.onAuthStateChanged((user) => {
+    const loginWrapper = document.querySelector(".login-wrapper");
+    const appContent = document.getElementById("appContent");
+
+    if (user) {
+        loginWrapper.style.display = "none";
+        appContent.style.display = "block";
+
+        loadUserData(user.uid);
+
+    } else {
+        loginWrapper.style.display = "flex";
+        appContent.style.display = "none";
+    }
+});
+
+// ---------------- FIRESTORE ----------------
+
+function loadUserData(userId) {
+    const ref = db.collection("users").doc(userId);
+
+    ref.get().then(doc => {
+        if (doc.exists) {
+            const data = doc.data();
+            updateTrackerUI(data.lastWorkout || "None", data.streak || 0);
+        } else {
+            updateTrackerUI("None", 0);
+        }
+    });
+}
+
+function completeWorkout(day) {
+    const user = auth.currentUser;
+    if (!user) return;
+
+    const ref = db.collection("users").doc(user.uid);
+
+    ref.get().then(doc => {
+        let streak = 0;
+
+        if (doc.exists) {
+            streak = doc.data().streak || 0;
+        }
+
+        streak++;
+
+        ref.set({
+            lastWorkout: day,
+            streak: streak
+        });
+
+        updateTrackerUI(day, streak);
+    });
+}
+
+// ---------------- UI ----------------
+
+function updateTrackerUI(lastWorkout, streak) {
     document.getElementById("lastWorkout").innerText =
         "Last Workout: " + lastWorkout;
 
@@ -282,67 +358,22 @@ function updateTracker() {
     document.getElementById("progressFill").style.width = progress + "%";
 }
 
-function completeWorkout(day) {
-    localStorage.setItem("lastWorkout", day);
-    let streak = parseInt(localStorage.getItem("streak")) || 0;
-    streak++;
-    localStorage.setItem("streak", streak);
-    updateTracker();
-}
+// ---------------- REVIEWS ----------------
+
 function prevReview() {
     const track = document.querySelector(".reviews-track");
     track.appendChild(track.firstElementChild);
 }
+
 function nextReview() {
     const track = document.querySelector(".reviews-track");
     track.insertBefore(track.lastElementChild, track.firstElementChild);
 }
 
-function signUp() {
-    const email = email.value;
-    const password = password.value;
+// ---------------- TIMER ----------------
 
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert("Account created!"))
-        .catch(err => alert(err.message));
-}
-
-function login() {
-    const emailInput = document.getElementById("email");
-    const passwordInput = document.getElementById("password");
-
-    const email = emailInput.value;
-    const password = passwordInput.value;
-
-    auth.signInWithEmailAndPassword(email, password)
-        .then((userCredential) => {
-            alert("Logged in!");
-        })
-        .catch((error) => {
-            alert(error.message);
-        });
-}
-
-function logout() {
-    auth.signOut();
-}
-
-auth.onAuthStateChanged((user) => {
-    const loginWrapper = document.querySelector(".login-wrapper");
-    const appContent = document.getElementById("appContent");
-
-    if (user) {
-        loginWrapper.style.display = "none";
-        appContent.style.display = "block";
-    } else {
-        loginWrapper.style.display = "flex"; // keep centered
-        appContent.style.display = "none";
-    }
-});
 let timer;
 let timeLeft = 60;
-const audio = new Audio("https://www.soundjay.com/buttons/beep-07.mp3");
-audio.play();
 
 function startTimer(seconds) {
     clearInterval(timer);
@@ -352,15 +383,16 @@ function startTimer(seconds) {
 
     timer = setInterval(() => {
         timeLeft--;
-
         updateDisplay();
 
         if (timeLeft <= 0) {
             clearInterval(timer);
-            alert("Rest time over!");
+            const audio = new Audio("https://www.soundjay.com/buttons/beep-07.mp3");
+            audio.play();
         }
     }, 1000);
 }
+
 function pauseTimer() {
     clearInterval(timer);
 }
@@ -375,6 +407,5 @@ function updateDisplay() {
     document.getElementById("timerDisplay").innerText = timeLeft + "s";
 }
 </script>
-
 </body>
 </html>
