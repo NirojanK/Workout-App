@@ -202,7 +202,19 @@ nav a:hover {
     font-size: 32px;
     margin: 10px 0;
 }
+/*Achievements*/
+.achievements-box {
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    margin: 20px auto;
+}
 
+.achievements-box li {
+    margin: 5px 0;
+}
 /* BOXES */
 .box {
     background: linear-gradient(to right, black, #444);
