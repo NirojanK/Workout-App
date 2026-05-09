@@ -431,8 +431,11 @@ function loadUserData(userId) {
                 data.xp || 0,
                 data.level || 1
             );
+
+            renderAchievements(data.achievements || []);
         } else {
             updateAuraUI("None", 0, 1);
+            renderAchievements([]);
         }
     });
 }
@@ -448,24 +451,56 @@ function completeWorkout(day) {
 
         let xp = data.xp || 0;
         let level = data.level || 1;
+        let workouts = data.workouts || 0;
+        let achievements = data.achievements || [];
 
+        // Increase values
         xp += 25;
+        workouts++;
 
         if (xp >= 100) {
             level++;
             xp = 0;
         }
 
+        // 🔥 Achievement logic
+        if (workouts === 1) addAchievement(achievements, "First Workout");
+        if (workouts === 5) addAchievement(achievements, "Getting Started");
+        if (workouts === 10) addAchievement(achievements, "Consistent");
+        if (level === 5) addAchievement(achievements, "Aura Rising");
+        if (level === 10) addAchievement(achievements, "Aura Master");
+
         ref.set({
             lastWorkout: day,
-            xp: xp,
-            level: level
+            xp,
+            level,
+            workouts,
+            achievements
         });
 
         updateAuraUI(day, xp, level);
+        renderAchievements(achievements);
     });
 }
 
+//-----------------Helper Function------
+function addAchievement(list, achievement) {
+    if (!list.includes(achievement)) {
+        list.push(achievement);
+        alert("Achievement unlocked: " + achievement);
+    }
+}
+
+function renderAchievements(achievements) {
+    const list = document.getElementById("achievementsList");
+    list.innerHTML = "";
+
+    achievements.forEach(a => {
+        const li = document.createElement("li");
+        li.innerText = "🏆 " + a;
+        list.appendChild(li);
+    });
+}    
 // ---------------- UI ----------------
 
 
