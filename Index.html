@@ -64,6 +64,7 @@
 <!-- Tracker -->
 <div class="tracker">
     <h3>Progress Tracker</h3>
+    <p id="lastWorkout">Last Workout: None</p>
     <p id="aura">Aura Level: 0</p>
     <p id="auraXP">EXP: 0 / 100</p>
     <div class="progress-bar">
@@ -289,15 +290,17 @@
             <img src="team1.jpg" alt="Coach 1">
             <h3>Niro</h3>
             <p>Founder & Fitness Coach</p>
-            <p>Focus: Strength, Discipline, Consistency</p>
+            <p>Niro started his journey in fitness at a very young age, he was bullied for the way he looked for being too thin, having bad teeth and socially awkward. He grew up with 4 brothers and they would often playfight and do challenges.
+            He used that trauma for fuel once he started going to the gym consistently. He made friends at the gym over time and they were inspired by him. He created Aura Farm in 2026 to help others build aura at the gym and change their lives!</p>
         </div>
 
         <div class="team-card">
-            <img src="team2.jpg" alt="Coach 2">
-            <h3>Trainer Name</h3>
-            <p>Nutrition Specialist</p>
-            <p>Focus: Fat Loss & Diet Planning</p>
+            <img src="team2.jpg" alt="Artist">
+            <h3>Rico</h3>
+            <p>Main Artist</p>
+            <p>Rico is a renowned artist also from Toronto with impressive feats like working with Marvel on their popular game Marvel Rivals. He's an extremely talented artist and one of the kindest people ever.</p>
         </div>
+    </div>
 </section>
 <section class="women-section">
     <h2 class="section-title">Women’s Training</h2>
@@ -418,9 +421,14 @@ function loadUserData(userId) {
     ref.get().then(doc => {
         if (doc.exists) {
             const data = doc.data();
-            updateTrackerUI(data.lastWorkout || "None", data.streak || 0);
+
+            updateAuraUI(
+                data.lastWorkout || "None",
+                data.xp || 0,
+                data.level || 1
+            );
         } else {
-            updateTrackerUI("None", 0);
+            updateAuraUI("None", 0, 1);
         }
     });
 }
@@ -432,35 +440,30 @@ function completeWorkout(day) {
     const ref = db.collection("users").doc(user.uid);
 
     ref.get().then(doc => {
-        let streak = 0;
+        let data = doc.exists ? doc.data() : {};
 
-        if (doc.exists) {
-            streak = doc.data().streak || 0;
+        let xp = data.xp || 0;
+        let level = data.level || 1;
+
+        xp += 25;
+
+        if (xp >= 100) {
+            level++;
+            xp = 0;
         }
-
-        streak++;
 
         ref.set({
             lastWorkout: day,
-            streak: streak
+            xp: xp,
+            level: level
         });
 
-        updateTrackerUI(day, streak);
+        updateAuraUI(day, xp, level);
     });
 }
 
 // ---------------- UI ----------------
 
-function updateTrackerUI(lastWorkout, streak) {
-    document.getElementById("lastWorkout").innerText =
-        "Last Workout: " + lastWorkout;
-
-    document.getElementById("streak").innerText =
-        "Streak: " + streak + " day(s)";
-
-    const progress = Math.min((streak / 7) * 100, 100);
-    document.getElementById("progressFill").style.width = progress + "%";
-}
 
 // ---------------- REVIEWS ----------------
 
@@ -509,6 +512,19 @@ function resetTimer() {
 
 function updateDisplay() {
     document.getElementById("timerDisplay").innerText = timeLeft + "s";
+}
+function updateAuraUI(lastWorkout, xp, level) {
+    document.getElementById("lastWorkout").innerText =
+        "Last Workout: " + lastWorkout;
+
+    document.getElementById("aura").innerText =
+        "Aura Level: " + level;
+
+    document.getElementById("auraXP").innerText =
+        "EXP: " + xp + " / 100";
+
+    document.getElementById("progressFill").style.width =
+        (xp / 100) * 100 + "%";
 }
 </script>
 </body>
