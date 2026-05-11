@@ -9,18 +9,19 @@
 <body>
 
 <!-- LOGIN PAGE -->
-<div class = "login-wrapper">
-<div id="loginPage" class="login-box">
-    <h1 style="margin-bottom: 5px;">🏋️ Aura Farm</h1>
-    <p style="font-size: 12px; opacity: 0.7;">Get strong, build Aura</p>
-    <input type="email" id="email" placeholder="Email">
-    <input type="password" id="password" placeholder="Password">
+<div id="loginPage">
+    <div class="login-box">
+        <h1 style="margin-bottom: 5px;">🏋️ Aura Farm</h1>
+        <p style="font-size: 12px; opacity: 0.7;">Get strong, build Aura</p>
 
-    <button onclick="signUp()">Sign Up</button>
-    <button onclick="login()">Login</button>
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
 
-    <p id="userStatus"></p>
-</div>
+        <button onclick="signUp()">Sign Up</button>
+        <button onclick="login()">Login</button>
+
+        <p id="userStatus"></p>
+    </div>
 </div>
 
 <!-- APP CONTENT -->
@@ -35,6 +36,25 @@
     <a href="#women">Women</a>
     <button onclick="logout()">Logout</button>
 </nav>
+ <div class="dashboard">
+    <div class="dashboard-grid">
+
+        <div class="dash-card">
+            <h3>XP</h3>
+            <p id="dashXP">0 / 100</p>
+        </div>
+
+        <div class="dash-card">
+            <h3>Workouts</h3>
+            <p id="dashWorkouts">0</p>
+        </div>
+
+        <div class="dash-card">
+            <h3>Last Workout</h3>
+            <p id="dashLast">None</p>
+        </div>
+</div>
+</div>
 
 <!-- Hero Section -->
 <section class="hero">
@@ -60,18 +80,6 @@
         <img src="hero-img.JPG" alt="Workout Image">
     </div>
 </section>
-
-<!-- Tracker -->
-<div class="tracker">
-    <h3>Progress Tracker</h3>
-    <p id="lastWorkout">Last Workout: None</p>
-    <p id="aura">Aura Level: 0</p>
-    <p id="auraXP">EXP: 0 / 100</p>
-    <div class="progress-bar">
-        <div id="progressFill"></div>
-    </div>
-</div>
-
 <!--Rest Timer-->
 <div class="timer-box">
     <h3>Rest Timer</h3>
@@ -86,7 +94,7 @@
 <!--Achievements-->    
 <div class="achievements-box">
     <h3>Achievements</h3>
-    <ul id="achievementsList"></ul>
+    <div id="achievementsGrid" class="achievements-grid"></div>
 </div>
 <!-- Splits + Supplements -->
 <div class="container">
@@ -102,8 +110,9 @@
     <div class="box">
         <h2>Supplements</h2>
         <ul>
-            <li>Whey Protein</li>
+            <li>Whey protein, vegan protein, casein protein</li>
             <li>Creatine</li>
+            <li>Multivitamins</li>
         </ul>
     </div>
 </div>
@@ -168,12 +177,12 @@
             <img src="back-img5.JPG">
         </div>
         <ul>
-            <li>Deadlifts</li>
-            <li><u>Pullups</u></li>
-            <li>Seated Cable Rows</li>
-            <li>Barbell Rows</li>
-            <li>Lat Pulldowns</li>
-            <li>Reverse cable flys</li>
+            <li>Deadlifts(3 sets of 5-8 reps)</li>
+            <li><u>Pullups(the king of back workouts, 3-4 sets until failure)</u></li>
+            <li>Seated Cable Rows( 3 to 4 sets of 8-12 reps)</li>
+            <li>Barbell Rows (2-4 sets of 5-10 reps)</li>
+            <li>Lat Pulldowns (3 sets of 7-10 reps)</li>
+            <li>Reverse cable flys (3 sets of 8-10 reps)</li>
         </ul>
     </div>
 
@@ -188,11 +197,11 @@
             <img src="chest-img5.JPG">
         </div>
         <ul>
-            <li>Bench Press</li>
-            <li>Push-ups</li>
-            <li>Incline Dumbbell Press</li>
-            <li>Chest Flys</li>
-            <li>Dips</li>
+            <li>Bench Press (3 sets of 8-10 reps)</li>
+            <li>Push-ups (1 or 2 sets until failure)</li>
+            <li>Incline Dumbbell Press (3 sets of 8-10 reps)</li>
+            <li>Chest Flys (3 sets of 10-15 reps)</li>
+            <li>Dips (3 sets of 4-9 reps)</li>
         </ul>
     </div>
 
@@ -207,11 +216,11 @@
             <img src="leg-img5.JPG">
         </div>
         <ul>
-            <li>Squats</li>
-            <li>Lunges</li>
-            <li>Leg Press</li>
-            <li>Hamstring Curls</li>
-            <li>Hip Thrusts</li>
+            <li>Squats(3 sets of 8-12 reps)</li>
+            <li>Lunges(2 laps, create your own track. For e.g. The length of the a free-weight section or fitness studio)</li>
+            <li>Leg Press(3 sets of 7-10 reps)</li>
+            <li>Hamstring Curls(3 sets of 6-10 reps)</li>
+            <li>Hip Thrusts(3 sets of 8-10 reps)</li>
         </ul>
     </div>
 
@@ -230,13 +239,13 @@
         </div>
 
         <ul>
-            <li>EZ-Bar Bicep Curls</li>
-            <li>Chin Ups</li>
-            <li>Machine Curls</li>
-            <li>Tricep Extensions</li>
-            <li>Close-Grip Curls</li>
-            <li>Tricep Dips</li>
-            <li>Tricep Pulldowns</li>
+            <li>EZ-Bar Bicep Curls (3 sets of 5-9 reps)</li>
+            <li>Chin Ups (3-4 sets of 6-10 reps)</li>
+            <li>Machine Curls (3 sets of 8-10 reps)</li>
+            <li>Tricep Extensions (3 sets of 8-10 reps)</li>
+            <li>Close-Grip Curls (3 sets of 8-10 reps)</li>
+            <li>Tricep Dips (3 sets of 8-10 reps)</li>
+            <li>Tricep Pulldowns (3 sets of 8-10 reps)</li>
         </ul>
     </div>
     <div class = "box">
@@ -250,9 +259,9 @@
         </div>
         <ul>
             <li>12:3:30(12 incline, 3 speed, 30 minutes)</li>
-            <li>Plank</li>
-            <li>Decline Sit-ups</li>
-            <li>Leg-raises</li>
+            <li>Plank (1 to 3 minutes)</li>
+            <li>Decline Sit-ups or Cable Crunches(10-20 reps)</li>
+            <li>Leg-raises ( 3 sets of 10 reps)</li>
         </ul>
     </div>
 
@@ -291,17 +300,18 @@
     <div class="team-container">
 
         <div class="team-card">
-            <img src="team1.JPG" alt="Coach 1">
+            <img src="team1.jpg" alt="Coach 1">
             <h3>Niro</h3>
             <p>Founder & Fitness Coach</p>
-            <p>Niro started his journey in fitness at a very young age, he was bullied for the way he looked for being too thin, having bad teeth and socially awkward. He grew up with 4 brothers and they would often playfight and do challenges.
-            He used that trauma for fuel once he started going to the gym consistently. He made friends at the gym over time and they were inspired by him. He created Aura Farm in 2026 to help others build aura at the gym and change their lives!</p>
+            <p style = "color:burlywood">-----------------------</p>
+            <p>Niro has a background in fitness and technology. He started his journey in fitness when he was a kid.</p>
         </div>
 
         <div class="team-card">
             <img src="team2.jpg" alt="Artist">
             <h3>Rico</h3>
             <p>Main Artist</p>
+            <p style = "color:burlywood">-----------------------</p>
             <p>Rico is a renowned artist also from Toronto with impressive feats like working with Marvel on their popular game Marvel Rivals. He's an extremely talented artist and one of the kindest people ever.</p>
         </div>
     </div>
@@ -314,20 +324,19 @@
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
             <ul>
-                <li>Hip Thrusts</li>
-                <li>Squats</li>
-                <li>Romanian Deadlifts</li>
-                <li>Leg Press</li>
+                <li>Hip Thrusts (3 sets of 8-12 reps)</li>
+                <li>Squats (3 sets of 8-12 reps)</li>
+                <li>Romanian Deadlifts (3 sets of 6-10 reps)</li>
+                <li>Leg Press (3 sets of 7-10 reps)</li>
             </ul>
         </div>
 
         <div class="box">
             <h3>Core & Conditioning</h3>
             <ul>
-                <li>Planks</li>
-                <li>Leg Raises</li>
-                <li>Russian Twists</li>
-                <li>Cardio Intervals</li>
+                <li>Planks(30 seconds - 2 minutes)</li>
+                <li>Leg Raises (3 sets of 10-15 reps)</li>
+                <li>Russian Twists (3 sets of 10-15 reps)</li>
             </ul>
         </div>
 
@@ -352,7 +361,7 @@
 
 <!-- Footer -->
 <div class="footer">
-    <p>&copy; 2026 Aura Farm</p>
+    <p>&copy; 2026 Aura Farm. All rights reserved.</p>
 </div>
 
 </div>
@@ -402,18 +411,17 @@ function logout() {
 // ---------------- AUTH STATE ----------------
 
 auth.onAuthStateChanged((user) => {
-    const loginWrapper = document.querySelector(".login-wrapper");
+    const loginPage = document.getElementById("loginPage");
     const appContent = document.getElementById("appContent");
 
     if (user) {
-        loginWrapper.style.display = "none";
+        loginPage.style.display = "none";
         appContent.style.display = "block";
 
         loadUserData(user.uid);
-
     } else {
-        loginWrapper.style.display = "flex";
-        appContent.style.display = "none";
+        loginPage.style.display = "flex";
+        appContent.style.display = "block"; // or "none" if you want full lock
     }
 });
 
@@ -429,12 +437,13 @@ function loadUserData(userId) {
             updateAuraUI(
                 data.lastWorkout || "None",
                 data.xp || 0,
-                data.level || 1
+                data.level || 1,
+                data.workouts || 0
             );
 
             renderAchievements(data.achievements || []);
         } else {
-            updateAuraUI("None", 0, 1);
+            updateAuraUI("None", 0, 1, 0);
             renderAchievements([]);
         }
     });
@@ -478,7 +487,7 @@ function completeWorkout(day) {
             achievements
         });
 
-        updateAuraUI(day, xp, level);
+        updateAuraUI(day, xp, level, workouts);
         renderAchievements(achievements);
     });
 }
@@ -487,20 +496,42 @@ function completeWorkout(day) {
 function addAchievement(list, achievement) {
     if (!list.includes(achievement)) {
         list.push(achievement);
-        alert("Achievement unlocked: " + achievement);
+
+        alert("🏆 Achievement unlocked: " + achievement);
+
+        // small visual delay refresh
+        setTimeout(() => {
+            renderAchievements(list);
+        }, 300);
     }
 }
+function renderAchievements(userAchievements = []) {
+    const grid = document.getElementById("achievementsGrid");
+    grid.innerHTML = "";
 
-function renderAchievements(achievements) {
-    const list = document.getElementById("achievementsList");
-    list.innerHTML = "";
+    const allAchievements = [
+        "First Workout",
+        "Getting Started",
+        "Consistent",
+        "Aura Rising",
+        "Aura Master"
+    ];
 
-    achievements.forEach(a => {
-        const li = document.createElement("li");
-        li.innerText = "🏆 " + a;
-        list.appendChild(li);
+    allAchievements.forEach(name => {
+        const card = document.createElement("div");
+
+        const unlocked = userAchievements.includes(name);
+
+        card.className = "achievement-card " + (unlocked ? "unlocked" : "locked");
+
+        card.innerHTML = `
+            <h4>${unlocked ? "🏆" : "🔒"}</h4>
+            <p>${name}</p>
+        `;
+
+        grid.appendChild(card);
     });
-}    
+}
 // ---------------- UI ----------------
 
 
@@ -552,7 +583,9 @@ function resetTimer() {
 function updateDisplay() {
     document.getElementById("timerDisplay").innerText = timeLeft + "s";
 }
-function updateAuraUI(lastWorkout, xp, level) {
+function updateAuraUI(lastWorkout, xp, level, workouts = 0) {
+
+    // Existing tracker
     document.getElementById("lastWorkout").innerText =
         "Last Workout: " + lastWorkout;
 
@@ -564,6 +597,12 @@ function updateAuraUI(lastWorkout, xp, level) {
 
     document.getElementById("progressFill").style.width =
         (xp / 100) * 100 + "%";
+
+    // 🔥 DASHBOARD
+    document.getElementById("dashLevel").innerText = level;
+    document.getElementById("dashXP").innerText = xp + " / 100";
+    document.getElementById("dashWorkouts").innerText = workouts;
+    document.getElementById("dashLast").innerText = lastWorkout;
 }
 </script>
 </body>
