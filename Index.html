@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Workout App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Farm</title>
     <link rel="stylesheet" href="Index.css">
 </head>
 
@@ -28,7 +29,6 @@
 <div id="appContent" style="display:none;">
 
 <!-- Navbar -->
-<!-- NAVBAR -->
 <nav class="navbar">
     <div class="nav-left">
         <h2 class="logo">Aura Farm</h2>
@@ -104,6 +104,14 @@
         <div class="dash-card">
             <h3>XP</h3>
             <p id="dashXP">0 / 100</p>
+            <div class="progress-bar">
+            <div id="progressFill"></div>
+        </div>
+        </div>
+
+        <div class="dash-card">
+            <h3>Level</h3>
+            <p id="dashLevel">1</p>
         </div>
 
         <div class="dash-card">
@@ -114,6 +122,14 @@
         <div class="dash-card">
             <h3>Last Workout</h3>
             <p id="dashLast">None</p>
+        </div>
+        <div class="dash-card">
+        <h3>Streak</h3>
+        <p id="dashStreak">0 Days 🔥</p>
+        </div>
+        <div class="dash-card">
+        <h3>Best Streak</h3>
+        <p id="dashBestStreak">0</p>
         </div>
 </div>
 </div>
@@ -157,6 +173,11 @@
 <div class="achievements-box">
     <h3>Achievements</h3>
     <div id="achievementsGrid" class="achievements-grid"></div>
+</div>
+<div class="history-box">
+    <h3>Workout History</h3>
+
+    <div id="historyList"></div>
 </div>
 <!-- Splits + Supplements -->
 <div class="container">
@@ -426,7 +447,13 @@
 </div>
 
 </div>
+<div class="image-modal" id="imageModal">
 
+    <span class="close-modal" id="closeModal">&times;</span>
+
+    <img id="modalImage"/>
+
+</div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -499,13 +526,17 @@ function loadUserData(userId) {
                 data.lastWorkout || "None",
                 data.xp || 0,
                 data.level || 1,
-                data.workouts || 0
-            );
+                data.workouts || 0,
+                data.streak || 0,
+                data.bestStreak || 0
+        );
+        renderHistory(data.history || []);
 
             renderAchievements(data.achievements || []);
         } else {
-            updateAuraUI("None", 0, 1, 0);
+            updateAuraUI("None", 0, 1, 0, 0, 0);
             renderAchievements([]);
+            renderHistory([]);
         }
     });
 }
@@ -513,20 +544,63 @@ function loadUserData(userId) {
 function completeWorkout(day) {
     const user = auth.currentUser;
     if (!user) return;
-
     const ref = db.collection("users").doc(user.uid);
 
     ref.get().then(doc => {
+        
         let data = doc.exists ? doc.data() : {};
+
+        let achievements = data.achievements || [];
 
         let xp = data.xp || 0;
         let level = data.level || 1;
         let workouts = data.workouts || 0;
-        let achievements = data.achievements || [];
+        let streak = data.streak || 0;
+        let bestStreak = data.bestStreak || 0;
+        let history = data.history || [];
 
+        const today = new Date().toDateString();
+        const lastWorkoutDate = data.lastWorkoutDate || null;
+
+    if(lastWorkoutDate){
+
+    const lastDate = new Date(lastWorkoutDate);
+    const currentDate = new Date(today);
+
+    const diffTime =
+        currentDate - lastDate;
+
+    const diffDays =
+        diffTime / (1000 * 60 * 60 * 24);
+    
+    if(diffDays === 0){
+        alert("Workout already logged today");
+        return;
+    }
+    else if(diffDays === 1){
+    streak++;
+    }
+    else if(diffDays > 1){
+    streak = 1;
+    }
+}
+    else{
+        streak = 1;
+    }
+
+    if(streak > bestStreak){
+    bestStreak = streak;
+    }
         // Increase values
         xp += 25;
         workouts++;
+        history.unshift({
+    workout: day,
+    date: today,
+    xpEarned: 25
+});
+
+history = history.slice(0, 10);
 
         if (xp >= 100) {
             level++;
@@ -541,14 +615,29 @@ function completeWorkout(day) {
         if (level === 10) addAchievement(achievements, "Aura Master");
 
         ref.set({
-            lastWorkout: day,
-            xp,
-            level,
-            workouts,
-            achievements
-        });
+    lastWorkout: day,
+    lastWorkoutDate: today,
 
-        updateAuraUI(day, xp, level, workouts);
+    xp,
+    level,
+    workouts,
+
+    streak,
+    bestStreak,
+
+    history,
+    achievements
+});
+
+        updateAuraUI(
+    day,
+    xp,
+    level,
+    workouts,
+    streak,
+    bestStreak
+);
+renderHistory(history);
         renderAchievements(achievements);
     });
 }
@@ -593,6 +682,28 @@ function renderAchievements(userAchievements = []) {
         grid.appendChild(card);
     });
 }
+function renderHistory(history = []) {
+
+    const list =
+        document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+    history.forEach(item => {
+
+        const div =
+            document.createElement("div");
+
+        div.className = "history-item";
+
+        div.innerHTML = `
+            <span>🏋️ ${item.workout}</span>
+            <span>${item.date}</span>
+        `;
+
+        list.appendChild(div);
+    });
+}
 // ---------------- UI ----------------
 const profileBtn = document.getElementById("profileBtn");
 const dropdown = document.getElementById("profileDropdown");
@@ -630,22 +741,25 @@ imageUpload.addEventListener("change", () => {
     const file = imageUpload.files[0];
 
     if(file){
+        const reader = new FileReader();
 
-        const imageURL = URL.createObjectURL(file);
+reader.onload = function(e){
 
-        /* SHOW IMAGES */
-        navProfileImage.src = imageURL;
-        dropdownProfileImage.src = imageURL;
+    const imageURL = e.target.result;
 
-        navProfileImage.style.display = "block";
-        dropdownProfileImage.style.display = "block";
+    navProfileImage.src = imageURL;
+    dropdownProfileImage.src = imageURL;
 
-        /* HIDE INITIALS */
-        navFallbackAvatar.style.display = "none";
-        dropdownFallbackAvatar.style.display = "none";
+    navProfileImage.style.display = "block";
+    dropdownProfileImage.style.display = "block";
 
-        /* SAVE TO LOCAL STORAGE */
-        localStorage.setItem("profileImage", imageURL);
+    navFallbackAvatar.style.display = "none";
+    dropdownFallbackAvatar.style.display = "none";
+
+    localStorage.setItem("profileImage", imageURL);
+    };
+
+    reader.readAsDataURL(file);
     }
 });
 
@@ -711,30 +825,67 @@ function resetTimer() {
     updateDisplay();
 }
 
+
+
 function updateDisplay() {
     document.getElementById("timerDisplay").innerText = timeLeft + "s";
 }
-function updateAuraUI(lastWorkout, xp, level, workouts = 0) {
-
-    // Existing tracker
-    document.getElementById("lastWorkout").innerText =
-        "Last Workout: " + lastWorkout;
-
-    document.getElementById("aura").innerText =
-        "Aura Level: " + level;
-
-    document.getElementById("auraXP").innerText =
-        "EXP: " + xp + " / 100";
+function updateAuraUI(
+    lastWorkout,
+    xp,
+    level,
+    workouts = 0,
+    streak = 0,
+    bestStreak = 0
+) {
 
     document.getElementById("progressFill").style.width =
         (xp / 100) * 100 + "%";
 
-    // 🔥 DASHBOARD
     document.getElementById("dashLevel").innerText = level;
     document.getElementById("dashXP").innerText = xp + " / 100";
     document.getElementById("dashWorkouts").innerText = workouts;
     document.getElementById("dashLast").innerText = lastWorkout;
+
+    document.getElementById("dashStreak").innerText =
+        streak + " Days 🔥";
+
+    document.getElementById("dashBestStreak").innerText =
+        bestStreak;
 }
+const modal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
+const closeModal = document.getElementById("closeModal");
+
+/* SELECT ALL WORKOUT IMAGES */
+const workoutImages = document.querySelectorAll(".img-row img");
+
+/* OPEN MODAL */
+workoutImages.forEach(img => {
+
+    img.addEventListener("click", () => {
+
+        modal.classList.add("active");
+
+        modalImage.src = img.src;
+    });
+});
+
+/* CLOSE BUTTON */
+closeModal.addEventListener("click", () => {
+    modal.classList.remove("active");
+});
+
+/* CLICK OUTSIDE IMAGE */
+modal.addEventListener("click", (e) => {
+
+    if(e.target === modal){
+        modal.classList.remove("active");
+    }
+});
 </script>
+<!-- IMAGE MODAL -->
+
+
 </body>
 </html>
