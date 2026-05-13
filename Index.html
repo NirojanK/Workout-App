@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aura Farm</title>
+    <title>Aura Farmer</title>
     <link rel="stylesheet" href="Index.css">
 </head>
 
@@ -31,15 +31,23 @@
 <!-- Navbar -->
 <nav class="navbar">
     <div class="nav-left">
-        <h2 class="logo">Aura Farm</h2>
+        <h2 class="logo">Aura Farmer</h2>
 
         <ul class="nav-links">
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Features</a></li>
-            <li><a href="#">About</a></li>
+            <li><a href="#home">Home</a></li>
+            <li><a href="#features">Features</a></li>
         </ul>
     </div>
     <div class="nav-right">
+    <div class="active-users">
+
+    <span class="online-dot"></span>
+
+    <span id="activeUsersCount">
+        0 Active
+    </span>
+
+    </div>
 
     <div class="profile-container">
 
@@ -75,7 +83,7 @@
 
                 <div>
                     <h4>Niro</h4>
-                    <p>niro@email.com</p>
+                    <p id="profileEmail"></p>
                 </div>
 
             </div>
@@ -88,7 +96,9 @@
             </label>
 
             <a href="#">Profile</a>
-            <a href="#">Settings</a>
+            <a href="#" onclick="openSettings()">
+            Settings
+            </a>
             <a href="#" class="logout">Logout</a>
 
         </div>
@@ -98,6 +108,7 @@
 </div>
     
 </nav>
+<!-- Dashboard -->
  <div class="dashboard">
     <div class="dashboard-grid">
 
@@ -118,10 +129,17 @@
             <h3>Workouts</h3>
             <p id="dashWorkouts">0</p>
         </div>
-
+        <div class="dash-card">
+        <h3>Environment</h3>
+        <p id="dashEnvironment">Gym</p>
+        </div>
         <div class="dash-card">
             <h3>Last Workout</h3>
             <p id="dashLast">None</p>
+        </div>
+        <div class="dash-card">
+        <h3>Goal</h3>
+        <p id="dashGoal">None</p>
         </div>
         <div class="dash-card">
         <h3>Streak</h3>
@@ -131,11 +149,161 @@
         <h3>Best Streak</h3>
         <p id="dashBestStreak">0</p>
         </div>
+        <div class="dash-card">
+        <h3>Rank</h3>
+        <p id="dashRank">Aura Novice</p>
+        <div class="dash-card recommendation-card">
+
+        <h3>Coach Insight</h3>
+
+        <p id="coachInsight">
+        Stay consistent to build your Aura.
+        </p>
+
 </div>
 </div>
+</div>
+</div>
+<!-- PROFILE PAGE -->
+<section class="profile-page" id="profilePage">
+
+    <div class="profile-header">
+
+        <img
+            src=""
+            id="profilePageImage"
+            class="profile-page-image"
+        />
+
+        <div>
+
+            <h2 id="profilePageName">
+                Niro
+            </h2>
+
+            <p id="profilePageRank">
+                Aura Novice
+            </p>
+
+        </div>
+
+    </div>
+
+    <!-- STATS -->
+    <div class="profile-stats">
+
+        <div class="profile-stat">
+            <h3>Level</h3>
+            <p id="profileLevel">1</p>
+        </div>
+
+        <div class="profile-stat">
+            <h3>XP</h3>
+            <p id="profileXP">0</p>
+        </div>
+
+        <div class="profile-stat">
+            <h3>Workouts</h3>
+            <p id="profileWorkouts">0</p>
+        </div>
+
+        <div class="profile-stat">
+            <h3>Streak</h3>
+            <p id="profileStreak">0 🔥</p>
+        </div>
+
+    </div>
+
+    <!-- GOAL -->
+    <div class="profile-goal">
+
+        <h3>Current Goal</h3>
+
+        <p id="profileGoal">
+            Build Muscle
+        </p>
+
+    </div>
+    <!-- WORKOUT ENVIRONMENT -->
+    <div class="settings-group">
+
+    <label>Workout Environment</label>
+
+    <select id="environmentSelect">
+
+        <option>Gym</option>
+        <option>Home</option>
+        <option>Hybrid</option>
+
+    </select>
+
+    </div>
+
+    <!-- ACHIEVEMENTS -->
+    <div class="profile-achievements">
+
+        <h3>Achievements</h3>
+
+        <div id="profileAchievements"></div>
+
+    </div>
+
+</section>
+<!-- AURA PRO -->
+<section class="premium-section">
+
+    <h2 class="premium-title">
+        Unlock Aura Pro
+    </h2>
+
+    <p class="premium-subtitle">
+        Advanced tools for serious progression.
+    </p>
+
+    <div class="premium-grid">
+
+        <div class="premium-card locked">
+            <h3>🤖 AI Coach</h3>
+
+            <p>
+                Personalized workout guidance and recovery suggestions.
+            </p>
+
+            <button onclick="showPremiumModal()">
+                Upgrade
+            </button>
+        </div>
+
+        <div class="premium-card locked">
+            <h3>📊 Advanced Analytics</h3>
+
+            <p>
+                Track progression, consistency, and workout trends.
+            </p>
+
+            <button onclick="showPremiumModal()">
+                Upgrade
+            </button>
+        </div>
+
+        <div class="premium-card locked">
+            <h3>🔥 Custom Programs</h3>
+
+            <p>
+                Personalized routines tailored to your goals.
+            </p>
+
+            <button onclick="showPremiumModal()">
+                Upgrade
+            </button>
+        </div>
+
+    </div>
+
+</section>
 
 <!-- Hero Section -->
-<section class="hero">
+<section class="hero" id = "home">
     <div class="hero-text">
         <h1>It's all about aura here, and we get it with consistency and improvement</h1>
         <p>
@@ -180,7 +348,7 @@
     <div id="historyList"></div>
 </div>
 <!-- Splits + Supplements -->
-<div class="container">
+<div class="container" id ="features">
     <div class="box">
         <h2>Workout Splits</h2>
         <ul>
@@ -348,33 +516,6 @@
     </div>
 
 </div>
-
-<!-- Reviews -->
-<section class="reviews-section" id="reviews">
-    <h2 class="reviews-title">Client Reviews</h2>
-
-    <div class="reviews-slider">
-
-        <button class="prev" onclick="prevReview()">❮</button>
-
-        <div class="reviews-track">
-            <div class="review-card slide">
-                <img src="review-img.JPG" alt="Review 1">
-            </div>
-
-            <div class="review-card slide">
-                <img src="review-img2.JPG" alt="Review 2">
-            </div>
-
-            <div class="review-card slide">
-                <img src="review-img3.JPG" alt="Review 3">
-            </div>
-        </div>
-
-        <button class="next" onclick="nextReview()">❯</button>
-
-    </div>
-</section>
 <!--Meet the team -->
 <section class="team-section">
     <h2 class="section-title">Meet the Team</h2>
@@ -433,25 +574,175 @@
     </div>
 </section>
 
-<!-- Contact -->
-<div class="contact-section" id="contact">
-    <div class="contact-card">
-        <h2>Contact Me</h2>
-        <p>Email: nirokal92@gmail.com</p>
-    </div>
-</div>
 
 <!-- Footer -->
-<div class="footer">
-    <p>&copy; 2026 Aura Farm. All rights reserved.</p>
-</div>
+<footer class="footer">
+
+    <h2>Aura Farmer</h2>
+
+    <p class="footer-tagline">
+        Build discipline. Track progression.
+        Grow your Aura.
+    </p>
+
+    <div class="footer-links">
+
+        <a href="#home">Home</a>
+        <a href="#features">Features</a>
+        <a href="#about">About</a>
+
+    </div>
+
+    <p class="footer-contact">
+        Contact:
+        nirokal92@gmail.com
+    </p>
+
+    <p class="footer-copy">
+        © 2026 Aura Farmer. All rights reserved.
+    </p>
+
+</footer>
+<!-- PREMIUM MODAL -->
+<div class="premium-modal" id="premiumModal">
+
+    <div class="premium-modal-content">
+
+        <span
+            class="close-premium"
+            onclick="closePremiumModal()"
+        >
+            &times;
+        </span>
+
+        <h2>Aura Pro</h2>
+
+        <p>
+            Unlock advanced coaching, analytics,
+            and personalized programs.
+        </p>
+
+        <ul>
+            <li>✔ AI Workout Coach</li>
+            <li>✔ Advanced Analytics</li>
+            <li>✔ Personalized Programs</li>
+            <li>✔ Exclusive Features</li>
+        </ul>
+
+        <button class="premium-btn">
+            Coming Soon
+        </button>
+
+    </div>
 
 </div>
-<div class="image-modal" id="imageModal">
+<!-- GOAL MODAL -->
+<div class="goal-modal" id="goalModal">
 
-    <span class="close-modal" id="closeModal">&times;</span>
+    <div class="goal-content">
 
-    <img id="modalImage"/>
+        <h2>Choose Your Goal</h2>
+
+        <p>
+            Personalize your Aura journey.
+        </p>
+
+        <div class="goal-options">
+
+            <button onclick="selectGoal('Build Muscle')">
+                💪 Build Muscle
+            </button>
+
+            <button onclick="selectGoal('Lose Fat')">
+                🔥 Lose Fat
+            </button>
+
+            <button onclick="selectGoal('Strength')">
+                🏋️ Strength
+            </button>
+
+            <button onclick="selectGoal('Consistency')">
+                📈 Consistency
+            </button>
+
+            <button onclick="selectGoal('Athleticism')">
+                ⚡ Athleticism
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+<!-- ACHIEVEMENT TOAST -->
+<div class="achievement-toast" id="achievementToast">
+
+    <h3>🏆 Achievement Unlocked!</h3>
+
+    <p id="achievementText"></p>
+
+</div>
+<!-- LEVEL UP -->
+<div class="levelup-overlay" id="levelUpOverlay">
+
+    <div class="levelup-box">
+
+        <h1>🎉 LEVEL UP!</h1>
+
+        <p id="levelUpText"></p>
+
+    </div>
+
+</div>
+<!-- SETTINGS MODAL -->
+<div class="settings-modal" id="settingsModal">
+
+    <div class="settings-content">
+
+        <span
+            class="close-settings"
+            onclick="closeSettings()"
+        >
+            &times;
+        </span>
+
+        <h2>Settings</h2>
+
+        <!-- DISPLAY NAME -->
+        <div class="settings-group">
+
+            <label>Display Name</label>
+
+            <input
+                type="text"
+                id="displayNameInput"
+                placeholder="Enter display name"
+            />
+
+        </div>
+
+        <!-- CHANGE GOAL -->
+        <div class="settings-group">
+
+            <label>Fitness Goal</label>
+
+            <select id="goalSelect">
+
+                <option>Build Muscle</option>
+                <option>Lose Fat</option>
+                <option>Strength</option>
+                <option>Consistency</option>
+                <option>Athleticism</option>
+
+            </select>
+
+        </div>
+        <!-- SAVE -->
+        <button onclick="saveSettings()">
+            Save Changes
+        </button>
+
+    </div>
 
 </div>
 <!-- Firebase -->
@@ -503,10 +794,15 @@ auth.onAuthStateChanged((user) => {
     const appContent = document.getElementById("appContent");
 
     if (user) {
+        updateUserPresence(user.uid);
         loginPage.style.display = "none";
         appContent.style.display = "block";
+        document.getElementById(
+        "profileEmail"
+        ).innerText = user.email;
 
         loadUserData(user.uid);
+        checkGoalSetup(user.uid);
     } else {
         loginPage.style.display = "flex";
         appContent.style.display = "block"; // or "none" if you want full lock
@@ -517,7 +813,10 @@ auth.onAuthStateChanged((user) => {
 
 function loadUserData(userId) {
     const ref = db.collection("users").doc(userId);
-
+    document.getElementById(
+    "dashEnvironment"
+    ).innerText =
+    data.environment || "Gym";
     ref.get().then(doc => {
         if (doc.exists) {
             const data = doc.data();
@@ -531,12 +830,37 @@ function loadUserData(userId) {
                 data.bestStreak || 0
         );
         renderHistory(data.history || []);
+        updateProfilePage(data);
 
             renderAchievements(data.achievements || []);
+            document.getElementById("coachInsight").innerText =
+            getCoachInsight(data);
+            document.getElementById("dashGoal").innerText =
+                data.goal || "None";
         } else {
             updateAuraUI("None", 0, 1, 0, 0, 0);
             renderAchievements([]);
             renderHistory([]);
+        }
+    });
+}
+function checkGoalSetup(userId){
+
+    const ref =
+        db.collection("users").doc(userId);
+
+    ref.get().then(doc => {
+
+        if(doc.exists){
+
+            const data = doc.data();
+
+            if(!data.goal){
+
+                document
+                    .getElementById("goalModal")
+                    .classList.add("active");
+            }
         }
     });
 }
@@ -602,7 +926,8 @@ function completeWorkout(day) {
 
 history = history.slice(0, 10);
 
-        if (xp >= 100) {
+        if(xp >= 100) {
+            showLevelUp(getAuraRank(level + 1));
             level++;
             xp = 0;
         }
@@ -639,7 +964,35 @@ history = history.slice(0, 10);
 );
 renderHistory(history);
         renderAchievements(achievements);
+        document.getElementById("coachInsight").innerText =
+        getCoachInsight({
+        workouts,
+        streak,
+        level,
+        lastWorkout: day
     });
+    });
+}
+function selectGoal(goal){
+
+    const user = auth.currentUser;
+
+    if(!user) return;
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    ref.set({
+        goal: goal
+    }, { merge:true });
+
+    document
+        .getElementById("goalModal")
+        .classList.remove("active");
+
+    document
+        .getElementById("dashGoal")
+        .innerText = goal;
 }
 
 //-----------------Helper Function------
@@ -647,13 +1000,50 @@ function addAchievement(list, achievement) {
     if (!list.includes(achievement)) {
         list.push(achievement);
 
-        alert("🏆 Achievement unlocked: " + achievement);
+        showAchievementToast(achievement);
 
         // small visual delay refresh
         setTimeout(() => {
             renderAchievements(list);
         }, 300);
     }
+}
+function showAchievementToast(achievement){
+
+    const toast =
+        document.getElementById("achievementToast");
+
+    const text =
+        document.getElementById("achievementText");
+
+    text.innerText = achievement;
+
+    toast.classList.add("active");
+
+    setTimeout(() => {
+
+        toast.classList.remove("active");
+
+    }, 3000);
+}
+function showLevelUp(rank){
+
+    const overlay =
+        document.getElementById("levelUpOverlay");
+
+    const text =
+        document.getElementById("levelUpText");
+
+    text.innerText =
+        "You reached " + rank;
+
+    overlay.classList.add("active");
+
+    setTimeout(() => {
+
+        overlay.classList.remove("active");
+
+    }, 3000);
 }
 function renderAchievements(userAchievements = []) {
     const grid = document.getElementById("achievementsGrid");
@@ -830,6 +1220,63 @@ function resetTimer() {
 function updateDisplay() {
     document.getElementById("timerDisplay").innerText = timeLeft + "s";
 }
+function getAuraRank(level){
+
+    if(level >= 25){
+        return "👑 Aura Ascended";
+    }
+
+    if(level >= 15){
+        return "⚡ Aura Elite";
+    }
+
+    if(level >= 10){
+        return "🔥 Aura Warrior";
+    }
+
+    if(level >= 5){
+        return "💪 Aura Builder";
+    }
+
+    return "🌱 Aura Novice";
+}
+function getCoachInsight(data){
+
+    const workouts =
+        data.workouts || 0;
+
+    const streak =
+        data.streak || 0;
+
+    const level =
+        data.level || 1;
+
+    const lastWorkout =
+        data.lastWorkout || "None";
+
+    /* BEGINNER */
+    if(workouts < 3){
+        return "🌱 Build momentum with consistency.";
+    }
+
+    /* STREAK */
+    if(streak >= 7){
+        return "🔥 You're on fire. Keep the streak alive.";
+    }
+
+    /* HIGH LEVEL */
+    if(level >= 10){
+        return "⚡ Your Aura is evolving rapidly.";
+    }
+
+    /* LEGS */
+    if(lastWorkout !== "Leg Day"){
+        return "🦵 Don't skip leg day this week.";
+    }
+
+    /* DEFAULT */
+    return "💪 Progress comes from consistency.";
+}
 function updateAuraUI(
     lastWorkout,
     xp,
@@ -839,8 +1286,11 @@ function updateAuraUI(
     bestStreak = 0
 ) {
 
-    document.getElementById("progressFill").style.width =
-        (xp / 100) * 100 + "%";
+    const progressBar =
+    document.getElementById("progressFill");
+
+    progressBar.style.width =
+    (xp / 100) * 100 + "%";
 
     document.getElementById("dashLevel").innerText = level;
     document.getElementById("dashXP").innerText = xp + " / 100";
@@ -852,6 +1302,82 @@ function updateAuraUI(
 
     document.getElementById("dashBestStreak").innerText =
         bestStreak;
+    document.getElementById("dashRank").innerText =
+    getAuraRank(level);
+}
+function updateProfilePage(data){
+
+    /* IMAGE */
+    const savedImage =
+        localStorage.getItem("profileImage");
+
+    if(savedImage){
+
+        document.getElementById(
+            "profilePageImage"
+        ).src = savedImage;
+    }
+
+    /* NAME */
+    document.getElementById(
+    "profilePageName"
+    ).innerText =
+    data.displayName || "Aura User";
+
+    /* RANK */
+    document.getElementById(
+        "profilePageRank"
+    ).innerText =
+        getAuraRank(data.level || 1);
+
+    /* STATS */
+    document.getElementById(
+        "profileLevel"
+    ).innerText =
+        data.level || 1;
+
+    document.getElementById(
+        "profileXP"
+    ).innerText =
+        data.xp || 0;
+
+    document.getElementById(
+        "profileWorkouts"
+    ).innerText =
+        data.workouts || 0;
+
+    document.getElementById(
+        "profileStreak"
+    ).innerText =
+        (data.streak || 0) + " 🔥";
+
+    /* GOAL */
+    document.getElementById(
+        "profileGoal"
+    ).innerText =
+        data.goal || "None";
+
+    /* ACHIEVEMENTS */
+    const achievementsDiv =
+        document.getElementById(
+            "profileAchievements"
+        );
+
+    achievementsDiv.innerHTML = "";
+
+    (data.achievements || [])
+        .forEach(a => {
+
+        const badge =
+            document.createElement("div");
+
+        badge.className =
+            "achievement-badge";
+
+        badge.innerText = "🏆 " + a;
+
+        achievementsDiv.appendChild(badge);
+    });
 }
 const modal = document.getElementById("imageModal");
 const modalImage = document.getElementById("modalImage");
@@ -883,8 +1409,185 @@ modal.addEventListener("click", (e) => {
         modal.classList.remove("active");
     }
 });
+const premiumModal =
+    document.getElementById("premiumModal");
+
+/* OPEN */
+function showPremiumModal(){
+
+    premiumModal.classList.add("active");
+}
+
+/* CLOSE */
+function closePremiumModal(){
+
+    premiumModal.classList.remove("active");
+}
+
+/* CLICK OUTSIDE */
+premiumModal.addEventListener("click", (e) => {
+
+    if(e.target === premiumModal){
+        closePremiumModal();
+    }
+});
+const settingsModal =
+    document.getElementById("settingsModal");
+
+/* OPEN */
+function openSettings(){
+
+    settingsModal.classList.add("active");
+
+    loadSettings();
+}
+
+/* CLOSE */
+function closeSettings(){
+
+    settingsModal.classList.remove("active");
+}
+function loadSettings(){
+
+    const user = auth.currentUser;
+    document.getElementById(
+    "environmentSelect"
+    ).value =
+    data.environment || "Gym";
+
+    if(!user) return;
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    ref.get().then(doc => {
+
+        if(doc.exists){
+
+            const data = doc.data();
+
+            document.getElementById(
+                "displayNameInput"
+            ).value =
+                data.displayName || "";
+
+            document.getElementById(
+                "goalSelect"
+            ).value =
+                data.goal || "Build Muscle";
+        }
+    });
+}
+function saveSettings(){
+
+    const user = auth.currentUser;
+    const environment =
+    document.getElementById(
+        "environmentSelect"
+    ).value;
+    document.getElementById(
+    "dashEnvironment"
+    ).innerText =
+    environment;
+
+    if(!user) return;
+
+    const displayName =
+        document.getElementById(
+            "displayNameInput"
+        ).value;
+
+    const goal =
+        document.getElementById(
+            "goalSelect"
+        ).value;
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    ref.set({
+
+        displayName,
+        goal,
+        environment
+
+    }, { merge:true });
+
+    /* UPDATE UI */
+    document.getElementById(
+        "profileName"
+    ).innerText = displayName;
+
+    document.getElementById(
+        "profilePageName"
+    ).innerText = displayName;
+
+    document.getElementById(
+        "dashGoal"
+    ).innerText = goal;
+
+    document.getElementById(
+        "profileGoal"
+    ).innerText = goal;
+
+    closeSettings();
+
+    alert("✅ Settings updated");
+}
+function updateUserPresence(userId){
+
+    const ref =
+        db.collection("presence").doc(userId);
+
+    setInterval(() => {
+
+        ref.set({
+            lastActive: Date.now()
+        });
+
+    }, 60000);
+
+    /* INITIAL */
+    ref.set({
+        lastActive: Date.now()
+    });
+
+    loadActiveUsers();
+}
+function loadActiveUsers(){
+
+    setInterval(() => {
+
+        const fiveMinutesAgo =
+            Date.now() - (5 * 60 * 1000);
+
+        db.collection("presence")
+            .get()
+            .then(snapshot => {
+
+            let activeCount = 0;
+
+            snapshot.forEach(doc => {
+
+                const data = doc.data();
+
+                if(data.lastActive >= fiveMinutesAgo){
+
+                    activeCount++;
+                }
+            });
+
+            document.getElementById(
+                "activeUsersCount"
+            ).innerText =
+                activeCount + " Active";
+
+        });
+
+    }, 30000);
+}
 </script>
-<!-- IMAGE MODAL -->
+
 
 
 </body>
