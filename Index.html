@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png" />
     <title>Aura Farmer</title>
     <link rel="stylesheet" href="Index.css">
 </head>
@@ -12,11 +13,12 @@
 <!-- LOGIN PAGE -->
 <div id="loginPage">
     <div class="login-box">
-        <h1 style="margin-bottom: 5px;">🏋️ Aura Farm</h1>
+        <img src="favicon.png" alt="Aura Farm" class="logo-image" style="width: 100px; height: 100px; margin-right: 10px;">
         <p style="font-size: 12px; opacity: 0.7;">Get strong, build Aura</p>
 
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
+        <input type="text" id="signupName" placeholder="Display Name" required>
+        <input type="email" id="email" placeholder="Email" required>
+        <input type="password" id="password" placeholder="Password" required>
 
         <button onclick="signUp()">Sign Up</button>
         <button onclick="login()">Login</button>
@@ -36,6 +38,7 @@
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#features">Features</a></li>
+            <li><a href="#premium" class="premium-nav-btn" style = "color:chartreuse">Aura Pro</a></li>
         </ul>
     </div>
     <div class="nav-right">
@@ -60,9 +63,9 @@
                 id="navProfileImage"
             />
 
-            <div class="avatar" id="navFallbackAvatar">NK</div>
+            <div class="avatar" id="navFallbackAvatar"></div>
 
-            <span class="profile-name">Niro</span>
+            <span class="profile-name"></span>
 
         </button>
 
@@ -78,11 +81,11 @@
                 />
 
                 <div class="dropdown-avatar" id="dropdownFallbackAvatar">
-                    NK
+                
                 </div>
 
                 <div>
-                    <h4>Niro</h4>
+                    <h4></h4>
                     <p id="profileEmail"></p>
                 </div>
 
@@ -99,7 +102,9 @@
             <a href="#" onclick="openSettings()">
             Settings
             </a>
-            <a href="#" class="logout">Logout</a>
+            <a href="#" class="logout" onclick="logout()">
+            Logout
+            </a>
 
         </div>
 
@@ -152,6 +157,8 @@
         <div class="dash-card">
         <h3>Rank</h3>
         <p id="dashRank">Aura Novice</p>
+        </div>
+
         <div class="dash-card recommendation-card">
 
         <h3>Coach Insight</h3>
@@ -160,6 +167,7 @@
         Stay consistent to build your Aura.
         </p>
 
+        </div>
 </div>
 </div>
 </div>
@@ -249,59 +257,6 @@
     </div>
 
 </section>
-<!-- AURA PRO -->
-<section class="premium-section">
-
-    <h2 class="premium-title">
-        Unlock Aura Pro
-    </h2>
-
-    <p class="premium-subtitle">
-        Advanced tools for serious progression.
-    </p>
-
-    <div class="premium-grid">
-
-        <div class="premium-card locked">
-            <h3>🤖 AI Coach</h3>
-
-            <p>
-                Personalized workout guidance and recovery suggestions.
-            </p>
-
-            <button onclick="showPremiumModal()">
-                Upgrade
-            </button>
-        </div>
-
-        <div class="premium-card locked">
-            <h3>📊 Advanced Analytics</h3>
-
-            <p>
-                Track progression, consistency, and workout trends.
-            </p>
-
-            <button onclick="showPremiumModal()">
-                Upgrade
-            </button>
-        </div>
-
-        <div class="premium-card locked">
-            <h3>🔥 Custom Programs</h3>
-
-            <p>
-                Personalized routines tailored to your goals.
-            </p>
-
-            <button onclick="showPremiumModal()">
-                Upgrade
-            </button>
-        </div>
-
-    </div>
-
-</section>
-
 <!-- Hero Section -->
 <section class="hero" id = "home">
     <div class="hero-text">
@@ -314,16 +269,16 @@
 
         <!-- Social Icons -->
         <div class="hero-links">
-            <a href="#">
+            <a href="https://www.youtube.com/@nirokal">
                 <img src="youtube-icon.png" alt="YouTube">
             </a>
-            <a href="#">
+            <a href="https://www.instagram.com/fitnesswithniro/">
                 <img src="instagram-icon.png" alt="Instagram">
             </a>
         </div>
     </div>
     <div class="hero-image">
-        <img src="hero-img.JPG" alt="Workout Image">
+        <img src="favicon.png" alt="logo">
     </div>
 </section>
 <!--Rest Timer-->
@@ -346,26 +301,6 @@
     <h3>Workout History</h3>
 
     <div id="historyList"></div>
-</div>
-<!-- Splits + Supplements -->
-<div class="container" id ="features">
-    <div class="box">
-        <h2>Workout Splits</h2>
-        <ul>
-            <li>PPL ( Push, Pull, Legs )</li>
-            <li>Bro Split(1 muscle group a day, 5 times a week)</li>
-            <li>Upper/Lower Split(2-3x a week reccommended)</li>
-        </ul>
-    </div>
-
-    <div class="box">
-        <h2>Supplements</h2>
-        <ul>
-            <li>Whey protein, vegan protein, casein protein</li>
-            <li>Creatine</li>
-            <li>Multivitamins</li>
-        </ul>
-    </div>
 </div>
 <!--Splits guide-->
 <section class="split-guide">
@@ -418,23 +353,35 @@
 <div class="container" id="workouts">
 
     <div class="box">
-        <h3>Back Day</h3>
-        <button onClick ="completeWorkout('Back Day')">Mark Complete</button>
-        <div class="img-row">
-            <img src="back-img.JPG">
-            <img src="back-img2.JPG">
-            <img src="back-img3.JPG">
-            <img src="back-img4.JPG">
-            <img src="back-img5.JPG">
-        </div>
-        <ul>
-            <li>Deadlifts(3 sets of 5-8 reps)</li>
-            <li><u>Pullups(the king of back workouts, 3-4 sets until failure)</u></li>
-            <li>Seated Cable Rows( 3 to 4 sets of 8-12 reps)</li>
-            <li>Barbell Rows (2-4 sets of 5-10 reps)</li>
-            <li>Lat Pulldowns (3 sets of 7-10 reps)</li>
-            <li>Reverse cable flys (3 sets of 8-10 reps)</li>
-        </ul>
+
+    <h3>Back Day</h3>
+
+    <div class="workout-tags">
+        <span>Strength</span>
+        <span>Gym</span>
+        <span>45 Min</span>
+    </div>
+
+    <button onclick="completeWorkout('Back Day')">
+        Mark Complete
+    </button>
+
+    <div class="img-row">
+        <img src="back-img.JPG">
+        <img src="back-img2.JPG">
+        <img src="back-img3.JPG">
+        <img src="back-img4.JPG">
+        <img src="back-img5.JPG">
+    </div>
+
+    <ul class="exercise-list">
+        <li><strong>Pullups</strong><span>Until failure</span></li>
+        <li><strong>Seated Cable Rows</strong><span>8-12 reps</span></li>
+        <li><strong>Barbell Rows</strong><span>5-10 reps</span></li>
+        <li><strong>Lat Pulldowns</strong><span>7-10 reps</span></li>
+        <li><strong>Reverse Cable Flys</strong><span>8-10 reps</span></li>
+    </ul>
+
     </div>
 
     <div class="box">
@@ -447,12 +394,12 @@
             <img src="chest-img4.JPG">
             <img src="chest-img5.JPG">
         </div>
-        <ul>
-            <li>Bench Press (3 sets of 8-10 reps)</li>
-            <li>Push-ups (1 or 2 sets until failure)</li>
-            <li>Incline Dumbbell Press (3 sets of 8-10 reps)</li>
-            <li>Chest Flys (3 sets of 10-15 reps)</li>
-            <li>Dips (3 sets of 4-9 reps)</li>
+        <ul class="exercise-list">
+            <li><strong>Bench Press</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Push-ups</strong><span> (1 or 2 sets until failure)</span></li>
+            <li><strong>Incline Dumbbell Press</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Chest Flys</strong><span> (3 sets of 10-15 reps)</span></li>
+            <li><strong>Dips</strong><span> (3 sets of 4-9 reps)</span></li>
         </ul>
     </div>
 
@@ -466,12 +413,14 @@
             <img src="leg-img4.JPG">
             <img src="leg-img5.JPG">
         </div>
-        <ul>
-            <li>Squats(3 sets of 8-12 reps)</li>
-            <li>Lunges(2 laps, create your own track. For e.g. The length of the a free-weight section or fitness studio)</li>
-            <li>Leg Press(3 sets of 7-10 reps)</li>
-            <li>Hamstring Curls(3 sets of 6-10 reps)</li>
-            <li>Hip Thrusts(3 sets of 8-10 reps)</li>
+        <ul class="exercise-list">
+            <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
+            <li><strong>Lunges</strong><span> (2 laps)</span></li>
+            <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
+            <li><strong>Hamstring Curls</strong><span> (3 sets of 6-10 reps)</span></li>
+            <li><strong>Hip Thrusts</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Hip Adductions</strong><span> (3 sets of 15 reps)</span></li>
+            <li><strong>Hip Abductions</strong><span> (3 sets of 15 reps)</span></li>
         </ul>
     </div>
 
@@ -489,14 +438,14 @@
             <img src="arm-img7.JPG">
         </div>
 
-        <ul>
-            <li>EZ-Bar Bicep Curls (3 sets of 5-9 reps)</li>
-            <li>Chin Ups (3-4 sets of 6-10 reps)</li>
-            <li>Machine Curls (3 sets of 8-10 reps)</li>
-            <li>Tricep Extensions (3 sets of 8-10 reps)</li>
-            <li>Close-Grip Curls (3 sets of 8-10 reps)</li>
-            <li>Tricep Dips (3 sets of 8-10 reps)</li>
-            <li>Tricep Pulldowns (3 sets of 8-10 reps)</li>
+        <ul class="exercise-list">
+            <li><strong>EZ-Bar Bicep Curls</strong><span> (3 sets of 5-9 reps)</span></li>
+            <li><strong>Chin Ups</strong><span> (3-4 sets of 6-10 reps)</span></li>
+            <li><strong>Machine Curls</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Tricep Extensions</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Close-Grip Curls</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Tricep Dips</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-10 reps)</span></li>
         </ul>
     </div>
     <div class = "box">
@@ -507,12 +456,18 @@
             <img src="cardio-img2.JPG">
             <img src="cardio-img3.JPG">
         </div>
-        <ul>
-            <li>12:3:30(12 incline, 3 speed, 30 minutes)</li>
-            <li>Plank (1 to 3 minutes)</li>
-            <li>Decline Sit-ups or Cable Crunches(10-20 reps)</li>
-            <li>Leg-raises ( 3 sets of 10 reps)</li>
+        <ul class="exercise-list">
+            <li><strong>12:3:30</strong><span> (12 incline, 3 speed, 30 minutes)</span></li>
+            <li><strong>Plank</strong><span> (1 to 3 minutes)</span></li>
+            <li><strong>Decline Sit-ups or Cable Crunches</strong><span> (10-20 reps)</span></li>
+            <li><strong>Leg-raises</strong><span> (3 sets of 10 reps)</span></li>
+            <li><strong>Box steps</strong><span> (1-2 minutes)</span></li>
         </ul>
+    </div>
+    <div class = "box">
+        <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
+        <h5>Great for active recovery, flexibility, and consistency.</h5>
+        <button onClick ="completeWorkout('Class Day')">Mark Complete</button>
     </div>
 
 </div>
@@ -546,29 +501,31 @@
 
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
-            <ul>
-                <li>Hip Thrusts (3 sets of 8-12 reps)</li>
-                <li>Squats (3 sets of 8-12 reps)</li>
-                <li>Romanian Deadlifts (3 sets of 6-10 reps)</li>
-                <li>Leg Press (3 sets of 7-10 reps)</li>
+            <ul class="exercise-list">
+                <li><strong>Hip Thrusts</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Romanian Deadlifts</strong><span> (3 sets of 6-10 reps)</span></li>
+                <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
             </ul>
         </div>
 
         <div class="box">
             <h3>Core & Conditioning</h3>
-            <ul>
-                <li>Planks(30 seconds - 2 minutes)</li>
-                <li>Leg Raises (3 sets of 10-15 reps)</li>
-                <li>Russian Twists (3 sets of 10-15 reps)</li>
+            <ul class="exercise-list">
+                <li><strong>Planks</strong><span> (30 seconds - 2 minutes)</span></li>
+                <li><strong>Leg Raises</strong><span> (3 sets of 10-15 reps)</span></li>
+                <li><strong>Russian Twists</strong><span> (3 sets of 10-15 reps)</span></li>
             </ul>
         </div>
 
         <div class="box">
-            <h3>Key Focus</h3>
-            <p>
-                Training should focus on strength, confidence,
-                and long-term consistency — not just weight loss.
-            </p>
+            <h3>Back and Triceps</h3>
+            <ul class="exercise-list">
+                <li><strong>Lat Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Dumbbell rows or machine rows</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Tricep Dips</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
+                <li><strong>Seated Cable Rows</strong><span> (3 sets of 8-12 reps)</span></li>
         </div>
 
     </div>
@@ -589,8 +546,6 @@
 
         <a href="#home">Home</a>
         <a href="#features">Features</a>
-        <a href="#about">About</a>
-
     </div>
 
     <p class="footer-contact">
@@ -603,39 +558,6 @@
     </p>
 
 </footer>
-<!-- PREMIUM MODAL -->
-<div class="premium-modal" id="premiumModal">
-
-    <div class="premium-modal-content">
-
-        <span
-            class="close-premium"
-            onclick="closePremiumModal()"
-        >
-            &times;
-        </span>
-
-        <h2>Aura Pro</h2>
-
-        <p>
-            Unlock advanced coaching, analytics,
-            and personalized programs.
-        </p>
-
-        <ul>
-            <li>✔ AI Workout Coach</li>
-            <li>✔ Advanced Analytics</li>
-            <li>✔ Personalized Programs</li>
-            <li>✔ Exclusive Features</li>
-        </ul>
-
-        <button class="premium-btn">
-            Coming Soon
-        </button>
-
-    </div>
-
-</div>
 <!-- GOAL MODAL -->
 <div class="goal-modal" id="goalModal">
 
@@ -745,6 +667,16 @@
     </div>
 
 </div>
+<!-- IMAGE MODAL -->
+<div class="image-modal" id="imageModal">
+
+    <span class="close-modal" id="closeModal">
+        &times;
+    </span>
+
+    <img id="modalImage" />
+
+</div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -766,11 +698,28 @@ const db = firebase.firestore();
 // ---------------- AUTH ----------------
 
 function signUp() {
+
+    const displayName = document.getElementById("signupName").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
 
     auth.createUserWithEmailAndPassword(email, password)
-        .then(() => alert("Account created!"))
+
+        .then(async (userCredential) => {
+
+            const user = userCredential.user;
+
+            // Save user info to Firestore
+            await db.collection("users").doc(user.uid).set({
+                displayName: displayName,
+                email: email,
+                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+            });
+
+            alert("Account created!");
+
+        })
+
         .catch(err => alert(err.message));
 }
 
@@ -813,13 +762,34 @@ auth.onAuthStateChanged((user) => {
 
 function loadUserData(userId) {
     const ref = db.collection("users").doc(userId);
-    document.getElementById(
-    "dashEnvironment"
-    ).innerText =
-    data.environment || "Gym";
+    
     ref.get().then(doc => {
         if (doc.exists) {
             const data = doc.data();
+            document.querySelector(
+            ".profile-name"
+            ).innerText =
+            data.displayName || "Aura User";
+
+            const initials = (data.displayName || "A")
+            .split(" ")
+            .map(word => word[0])
+            .join("")
+            .toUpperCase();
+
+            document.getElementById(
+            "navFallbackAvatar"
+            ).innerText = initials;
+
+            document.getElementById(
+            "dropdownFallbackAvatar"
+            ).innerText = initials;
+
+
+            document.getElementById(
+            "dashEnvironment"
+            ).innerText =
+            data.environment || "Gym";
 
             updateAuraUI(
                 data.lastWorkout || "None",
@@ -952,7 +922,8 @@ history = history.slice(0, 10);
 
     history,
     achievements
-});
+
+}, { merge: true });
 
         updateAuraUI(
     day,
@@ -1409,28 +1380,6 @@ modal.addEventListener("click", (e) => {
         modal.classList.remove("active");
     }
 });
-const premiumModal =
-    document.getElementById("premiumModal");
-
-/* OPEN */
-function showPremiumModal(){
-
-    premiumModal.classList.add("active");
-}
-
-/* CLOSE */
-function closePremiumModal(){
-
-    premiumModal.classList.remove("active");
-}
-
-/* CLICK OUTSIDE */
-premiumModal.addEventListener("click", (e) => {
-
-    if(e.target === premiumModal){
-        closePremiumModal();
-    }
-});
 const settingsModal =
     document.getElementById("settingsModal");
 
@@ -1450,10 +1399,7 @@ function closeSettings(){
 function loadSettings(){
 
     const user = auth.currentUser;
-    document.getElementById(
-    "environmentSelect"
-    ).value =
-    data.environment || "Gym";
+    
 
     if(!user) return;
 
@@ -1514,8 +1460,8 @@ function saveSettings(){
     }, { merge:true });
 
     /* UPDATE UI */
-    document.getElementById(
-        "profileName"
+    document.querySelector(
+    ".profile-name"
     ).innerText = displayName;
 
     document.getElementById(
@@ -1570,6 +1516,10 @@ function loadActiveUsers(){
             snapshot.forEach(doc => {
 
                 const data = doc.data();
+                document.getElementById(
+                "environmentSelect"
+                ).value =
+                data.environment || "Gym";
 
                 if(data.lastActive >= fiveMinutesAgo){
 
