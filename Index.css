@@ -121,7 +121,8 @@ body {
 
 .nav-links a:hover{
     opacity:0.7;
-    background: lightgreen;
+    background: smokeywhite;
+    text-decoration: lightgreen underline;
 }
 
 /* RIGHT SIDE */
@@ -184,6 +185,9 @@ body {
     }
 }
 /* PROFILE */
+.profile-page{
+    border: 2px solid black;
+}
 .profile-container{
     position:relative;
 }
@@ -512,17 +516,24 @@ body {
 
     text-align:center;
 }
+.profile-stat h3{
+    font-size:1.2rem;
+    opacity:0.75;
+    margin-bottom:10px;
+}
 
 /* GOAL */
 .profile-goal{
-    margin-bottom:35px;
-
     background:
         rgba(255,255,255,0.08);
 
     padding:25px;
 
     border-radius:20px;
+}
+.profile-goal h3{
+    margin-bottom:10px;
+    font-size:1.4rem;
 }
 
 /* ACHIEVEMENTS */
@@ -533,6 +544,10 @@ body {
     padding:25px;
 
     border-radius:20px;
+}
+.profile-achievements h3{
+    margin-bottom:20px;
+    font-size:1.4rem;
 }
 
 /* MOBILE */
@@ -696,9 +711,10 @@ body {
 /*Rest-Timer*/
 .timer-box {
     background: linear-gradient(to right, black, #444);
-    color: white;
+    color: burlywood;
     padding: 20px;
     border-radius: 12px;
+    border: inset 3px burlywood;
     width: 250px;
     margin: 20px auto;
     text-align: center;
@@ -712,7 +728,7 @@ body {
 /*Achievements*/
 .achievements-box {
     background: linear-gradient(to right, black, #444);
-    color: white;
+    color: burlywood;
     padding: 20px;
     border-radius: 12px;
     width: 300px;
@@ -739,7 +755,7 @@ body {
     border-radius: 12px;
     text-align: center;
     background: linear-gradient(to right, black, #444);
-    color: white;
+    color: burlywood;
     transition: 0.3s;
 }
 
@@ -853,13 +869,6 @@ body {
 ========================= */
 
 .recommendation-card{
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.18),
-            rgba(255,255,255,0.08)
-        );
-
     border:
         1px solid rgba(255,255,255,0.15);
 }
@@ -1092,6 +1101,48 @@ body {
         transform:scale(1);
         opacity:1;
     }
+}
+/* EXERCISE LIST */
+.exercise-list{
+    margin-top:20px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:14px;
+}
+
+.exercise-list li{
+    list-style:none;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:0.25s ease;
+}
+
+.exercise-list li:hover{
+    transform:translateX(4px);
+}
+
+.exercise-list strong{
+    font-weight:600;
+}
+
+.exercise-list span{
+    opacity:0.75;
+
+    font-size:0.9rem;
 }
 
 /* LIST */
@@ -1382,69 +1433,6 @@ button:hover {
 button:active {
     transform: scale(0.95);
 }
-/* =========================
-   PREMIUM SECTION
-========================= */
-
-.premium-section{
-    padding:70px 8%;
-
-    text-align:center;
-}
-
-.premium-title{
-    font-size:2.5rem;
-
-    margin-bottom:10px;
-}
-
-.premium-subtitle{
-    opacity:0.75;
-
-    margin-bottom:40px;
-}
-
-/* GRID */
-.premium-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(auto-fit, minmax(280px, 1fr));
-
-    gap:25px;
-}
-
-/* CARDS */
-.premium-card{
-    background:
-        linear-gradient(
-            145deg,
-            rgba(255,255,255,0.12),
-            rgba(255,255,255,0.05)
-        );
-
-    backdrop-filter:blur(12px);
-
-    border-radius:24px;
-
-    padding:35px 25px;
-
-    border:
-        1px solid rgba(255,255,255,0.1);
-
-    transition:0.3s ease;
-
-    position:relative;
-
-    overflow:hidden;
-}
-
-.premium-card:hover{
-    transform:translateY(-8px);
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,0.15);
-}
 
 /* LOCK EFFECT */
 .locked::before{
@@ -1466,91 +1454,6 @@ button:active {
     font-size:0.75rem;
 
     font-weight:bold;
-}
-
-/* PREMIUM MODAL */
-.premium-modal{
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,0.7);
-
-    display:none;
-
-    justify-content:center;
-    align-items:center;
-
-    z-index:6000;
-
-    backdrop-filter:blur(5px);
-}
-
-.premium-modal.active{
-    display:flex;
-}
-
-/* CONTENT */
-.premium-modal-content{
-    background:white;
-
-    color:#111;
-
-    width:min(90%, 420px);
-
-    border-radius:24px;
-
-    padding:35px;
-
-    position:relative;
-
-    animation:premiumPop 0.25s ease;
-}
-
-.premium-modal-content h2{
-    margin-bottom:15px;
-}
-
-.premium-modal-content ul{
-    margin:20px 0;
-
-    padding-left:20px;
-
-    text-align:left;
-}
-
-.premium-modal-content li{
-    margin-bottom:10px;
-}
-
-/* CLOSE */
-.close-premium{
-    position:absolute;
-
-    top:15px;
-    right:20px;
-
-    font-size:2rem;
-
-    cursor:pointer;
-}
-
-/* BUTTON */
-.premium-btn{
-    width:100%;
-}
-
-/* ANIMATION */
-@keyframes premiumPop{
-    from{
-        transform:scale(0.9);
-        opacity:0;
-    }
-
-    to{
-        transform:scale(1);
-        opacity:1;
-    }
 }
 /* =========================
    GOAL MODAL
