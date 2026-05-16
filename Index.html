@@ -7,29 +7,22 @@
     <title>Aura Farmer</title>
     <link rel="stylesheet" href="Index.css">
 </head>
-
 <body>
-
 <!-- LOGIN PAGE -->
 <div id="loginPage">
     <div class="login-box">
         <img src="favicon.png" alt="Aura Farm" class="logo-image" style="width: 100px; height: 100px; margin-right: 10px;">
         <p style="font-size: 12px; opacity: 0.7;">Get strong, build Aura</p>
-
         <input type="text" id="signupName" placeholder="Display Name" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
-
         <button onclick="signUp()">Sign Up</button>
         <button onclick="login()">Login</button>
-
         <p id="userStatus"></p>
     </div>
 </div>
-
 <!-- APP CONTENT -->
-<div id="appContent" style="display:none;">
-
+<div id="appContent">
 <!-- Navbar -->
 <nav class="navbar">
     <div class="nav-left">
@@ -43,56 +36,37 @@
     </div>
     <div class="nav-right">
     <div class="active-users">
-
     <span class="online-dot"></span>
-
     <span id="activeUsersCount">
         0 Active
     </span>
-
-    </div>
-
     <div class="profile-container">
-
         <button class="profile-btn" id="profileBtn">
-
             <img
                 src=""
                 alt="Profile"
                 class="profile-image"
                 id="navProfileImage"
             />
-
             <div class="avatar" id="navFallbackAvatar"></div>
-
             <span class="profile-name"></span>
-
         </button>
-
         <div class="profile-dropdown" id="profileDropdown">
-
             <div class="dropdown-header">
-
                 <img
                     src=""
                     alt="Profile"
                     class="dropdown-profile-image"
                     id="dropdownProfileImage"
                 />
-
                 <div class="dropdown-avatar" id="dropdownFallbackAvatar">
-                
                 </div>
-
                 <div>
                     <h4></h4>
                     <p id="profileEmail"></p>
                 </div>
-
             </div>
-
             <div class="dropdown-divider"></div>
-
             <label class="upload-btn">
                 Upload Photo
                 <input type="file" id="imageUpload" hidden accept="image/*">
@@ -105,98 +79,16 @@
             <a href="#" class="logout" onclick="logout()">
             Logout
             </a>
-
         </div>
-
     </div>
-
-</div>
-    
+</div>    
 </nav>
-<!-- Dashboard -->
- <div class="dashboard">
-    <div class="dashboard-grid">
-        <div class="dash-card">
-        <h3>Environment</h3>
-        <p id="dashEnvironment">Gym</p>
-        </div>
-        <div class="dash-card">
-        <h3>Goal</h3>
-        <p id="dashGoal">None</p>
-        </div>
-        <div class="dash-card">
-        <h3>Streak</h3>
-        <p id="dashStreak">0 Days 🔥</p>
-        </div>
-        <div class="dash-card">
-        <h3>Best Streak</h3>
-        <p id="dashBestStreak">0</p>
-        </div>
-</div>
-</div>
-</div>
-<!-- PROFILE PAGE -->
-<section class="profile-page" id="profilePage">
-
-    <div class="profile-header">
-
-        <img
-            src=""
-            id="profilePageImage"
-            class="profile-page-image"
-        />
-
-        <div>
-
-            <h2 id="profilePageName">
-                Niro
-            </h2>
-
-            <div class="profile-meta">
-
-            <p id="profilePageRank">
-                Aura Novice
-            </p>
-        <div class="profile-progress">
-
-        <div
-        class="profile-progress-fill"
-        id="profileProgressFill"
-        ></div>
-         <span
-        class="profile-progress-text"
-        id="profileProgressText"
-    >
-        0 / 100 XP
-    </span>
-
-    </div>
-</div>
-
-        </div>
-
-    </div>
-
-    <!-- STATS -->
-    <div class="profile-stats">
-
-        <div class="profile-stat">
-            <h3>Level</h3>
-            <p id="profileLevel">1</p>
-        </div>
-
-        <div class="profile-stat">
-            <h3>Workouts</h3>
-            <p id="profileWorkouts">0</p>
-        </div>
-    </div>
-</section>
 <!-- Hero Section -->
 <section class="hero" id = "home">
     <div class="hero-text">
-        <h1>It's all about aura here, and we get it with consistency and improvement</h1>
+        <h1>Build your aura by working out!</h1>
         <p>
-            You can build aura by working out!
+            Tap the button below to get started, and then when your done tap "Mark Complete".
         </p>
 
         <a href="#workouts" lass="cta-btn" onclick="startWorkout()">
@@ -217,12 +109,74 @@
         <img src="favicon.png" alt="logo">
     </div>
 </section>
+<!-- PROFILE PAGE -->
+<section class="profile-page" id="profilePage">
+    <div class="profile-header">
+        <img
+            src=""
+            id="profilePageImage"
+            class="profile-page-image"
+        />
+        <div>
+            <h2 id="profilePageName">
+                Niro
+            </h2>
+            <div class="profile-meta">
+            <p id="profilePageRank">
+                Aura Novice
+            </p>
+        <div class="profile-progress">
+        <div
+        class="profile-progress-fill"
+        id="profileProgressFill"
+        ></div>
+         <span
+        class="profile-progress-text"
+        id="profileProgressText"
+    >
+        0 / 100 XP
+    </span>
+    </div>
+</div>
+        </div>
+    </div>
+    <!-- STATS -->
+    <div class="profile-stats">
+        <div class="profile-stat">
+            <h3>Level</h3>
+            <p id="profileLevel">1</p>
+        </div>
+        <div class="profile-stat">
+            <h3>Workouts</h3>
+            <p id="profileWorkouts">0</p>
+        </div>
+    </div>
+    <!-- Dashboard -->
+ <div class="dashboard">
+    <div class="dashboard-grid">
+        <div class="dash-card">
+        <h3>Environment</h3>
+        <p id="dashEnvironment">Gym</p>
+        </div>
+        <div class="dash-card">
+        <h3>Goal</h3>
+        <p id="dashGoal">None</p>
+        </div>
+        <div class="dash-card">
+        <h3>Streak</h3>
+        <p id="dashStreak">0 Days 🔥</p>
+        </div>
+        <div class="dash-card">
+        <h3>Best Streak</h3>
+        <p id="dashBestStreak">0</p>
+</div>
+</div>
+</div>
+</section>
 <!--Rest Timer-->
 <div class="timer-box">
     <h3>Rest Timer</h3>
-
     <p id="timerDisplay">60s</p>
-
     <button onclick="startTimer(60)">Start 60s</button>
     <button onclick="startTimer(90)">Start 90s</button>
     <button onclick="pauseTimer()">Pause</button>
@@ -235,15 +189,19 @@
 </div>
 <div class="history-box">
     <h3>Workout History</h3>
-
     <div id="historyList"></div>
 </div>
 <!--Splits guide-->
 <section class="split-guide">
+    <div class="aura-particles">
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    <span></span><span></span><span></span><span></span><span></span>
+    </div>
     <h2 class="section-title">Training Split Guide</h2>
-
     <div class="container">
-
         <div class="box">
             <h3>PPL (Push Pull Legs)</h3>
             <p>
@@ -256,7 +214,6 @@
                 <li>Legs: Quads, Hamstrings, Glutes</li>
             </ul>
         </div>
-
         <div class="box">
             <h3>Bro Split</h3>
             <p>
@@ -281,28 +238,21 @@
                 <li>Lower Body: Legs, Glutes</li>
             </ul>
         </div>
-
     </div>
 </section>
-
 <!-- Workout Sections -->
 <div class="container" id="workouts">
-
     <div class="box">
-
     <h3>Back Day</h3>
-
     <button onclick="completeWorkout('Back Day')">
         Mark Complete
     </button>
-
     <div class="img-row">
         <img src="back-img2.JPG">
         <img src="back-img3.JPG">
         <img src="back-img4.JPG">
         <img src="back-img5.JPG">
     </div>
-
     <ul class="exercise-list">
         <li><strong>Pullups</strong><span>Until failure</span></li>
         <li><strong>Seated Cable Rows</strong><span>8-12 reps</span></li>
@@ -310,9 +260,7 @@
         <li><strong>Lat Pulldowns</strong><span>7-10 reps</span></li>
         <li><strong>Reverse Cable Flys</strong><span>8-10 reps</span></li>
     </ul>
-
     </div>
-
     <div class="box">
         <h3>Chest Day</h3>
         <button onClick ="completeWorkout('Chest Day')">Mark Complete</button>
@@ -330,7 +278,6 @@
             <li><strong>Dips</strong><span> (3 sets of 4-9 reps)</span></li>
         </ul>
     </div>
-
     <div class="box">
         <h3>Leg Day</h3>
         <button onClick ="completeWorkout('Leg Day')">Mark Complete</button>
@@ -351,11 +298,9 @@
             <li><strong>Hip Abductions</strong><span> (3 sets of 15 reps)</span></li>
         </ul>
     </div>
-
     <div class="box">
         <h3>Arm Exercises</h3>
         <p>Mix these into your chest or back workouts at the end.</p>
-
         <div class="img-row">
             <img src="arm-img.JPG">
             <img src="arm-img2.JPG">
@@ -365,7 +310,6 @@
             <img src="arm-img6.JPG">
             <img src="arm-img7.JPG">
         </div>
-
         <ul class="exercise-list">
             <li><strong>EZ-Bar Bicep Curls</strong><span> (3 sets of 5-9 reps)</span></li>
             <li><strong>Chin Ups</strong><span> (3-4 sets of 6-10 reps)</span></li>
@@ -397,14 +341,11 @@
         <h5>Great for active recovery, flexibility, and consistency.</h5>
         <button onClick ="completeWorkout('Class Day')">Mark Complete</button>
     </div>
-
 </div>
 <!--Meet the team -->
 <section class="team-section" id="team">
     <h2 class="section-title">Meet the Team</h2>
-
     <div class="team-container">
-
         <div class="team-card">
             <img src="team1.jpg" alt="Coach 1">
             <h3>Niro</h3>
@@ -412,7 +353,6 @@
             <p style = "color:burlywood">-----------------------</p>
             <p>Niro has a background in fitness and technology. He started his journey in fitness when he was a kid.</p>
         </div>
-
         <div class="team-card">
             <img src="team2.jpg" alt="Artist">
             <h3>Rico</h3>
@@ -424,9 +364,7 @@
 </section>
 <section class="women-section">
     <h2 class="section-title">Women’s Training</h2>
-
     <div class="container">
-
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
             <button onclick="completeWorkout('Back Day')">
@@ -439,7 +377,6 @@
                 <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
             </ul>
         </div>
-
         <div class="box">
             <h3>Core & Conditioning</h3>
             <button onclick="completeWorkout('Back Day')">
@@ -451,7 +388,6 @@
                 <li><strong>Russian Twists</strong><span> (3 sets of 10-15 reps)</span></li>
             </ul>
         </div>
-
         <div class="box">
             <h3>Back and Triceps</h3>
             <button onclick="completeWorkout('Back Day')">
@@ -464,200 +400,143 @@
                 <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Seated Cable Rows</strong><span> (3 sets of 8-12 reps)</span></li>
         </div>
-
     </div>
 </section>
-
-
 <!-- Footer -->
 <footer class="footer">
-
     <h2>Aura Farmer</h2>
-
     <p class="footer-tagline">
         Build discipline. Track progression.
         Grow your Aura.
     </p>
-
     <div class="footer-links">
-
         <a href="#home">Home</a>
     </div>
-
     <p class="footer-contact">
         Contact:
         nirokal92@gmail.com
     </p>
-
     <p class="footer-copy">
         © 2026 Aura Farmer. All rights reserved.
     </p>
-
 </footer>
 <!-- GOAL MODAL -->
 <div class="goal-modal" id="goalModal">
-
     <div class="goal-content">
-
         <h2>Choose Your Goal</h2>
-
         <p>
             Personalize your Aura journey.
         </p>
-
         <div class="goal-options">
-
             <button onclick="selectGoal('Build Muscle')">
                 💪 Build Muscle
             </button>
-
             <button onclick="selectGoal('Lose Fat')">
                 🔥 Lose Fat
             </button>
-
             <button onclick="selectGoal('Strength')">
                 🏋️ Strength
             </button>
-
             <button onclick="selectGoal('Consistency')">
                 📈 Consistency
             </button>
-
             <button onclick="selectGoal('Athleticism')">
                 ⚡ Athleticism
             </button>
-
         </div>
-
     </div>
-
 </div>
 <!-- ACHIEVEMENT TOAST -->
 <div class="achievement-toast" id="achievementToast">
-
     <h3>🏆 Achievement Unlocked!</h3>
-
     <p id="achievementText"></p>
-
 </div>
 <!-- LEVEL UP -->
 <div class="levelup-overlay" id="levelUpOverlay">
-
     <div class="levelup-box">
-
         <h1>🎉 LEVEL UP!</h1>
-
         <p id="levelUpText"></p>
-
     </div>
-
 </div>
 <!-- SETTINGS MODAL -->
 <div class="settings-modal" id="settingsModal">
-
     <div class="settings-content">
-
         <span
             class="close-settings"
             onclick="closeSettings()"
         >
             &times;
         </span>
-
         <h2>Settings</h2>
-
         <!-- DISPLAY NAME -->
         <div class="settings-group">
-
             <label>Display Name</label>
-
             <input
                 type="text"
                 id="displayNameInput"
                 placeholder="Enter display name"
             />
-
         </div>
-
         <!-- CHANGE GOAL -->
         <div class="settings-group">
-
             <label>Fitness Goal</label>
-
             <select id="goalSelect">
-
                 <option>Build Muscle</option>
                 <option>Lose Fat</option>
                 <option>Strength</option>
                 <option>Consistency</option>
                 <option>Athleticism</option>
-
             </select>
-
         </div>
         <!-- SAVE -->
         <button onclick="saveSettings()">
             Save Changes
         </button>
-
     </div>
-
 </div>
 <!-- IMAGE MODAL -->
 <div class="image-modal" id="imageModal">
-
     <span class="close-modal" id="closeModal">
         &times;
     </span>
-
     <img id="modalImage" />
-
 </div>
 <div class="workout-session" id="workoutSession">
-
     <h4>⏱ Workout Active</h4>
-
     <p id="workoutSessionTime">
         00:00
     </p>
-
 </div>
 <!-- Aura Pro Modal -->
 <div id="proModal" class="pro-modal">
     <div class="pro-modal-content">
         <button class="close-modal" id="closeProModal">×</button>
-
         <h1>Aura Pro</h1>
         <p class="pro-subtitle">Unlock premium features and level up your fitness journey.</p>
-
         <div class="pro-features">
             <div class="pro-feature-card">
                 <h3>Advanced Analytics</h3>
                 <p>Track progress with detailed workout insights.</p>
             </div>
-
             <div class="pro-feature-card">
                 <h3>Custom Workout Plans</h3>
                 <p>Create and save personalized routines.</p>
             </div>
-
             <div class="pro-feature-card">
                 <h3>Exclusive Themes</h3>
                 <p>Unlock premium app customization options.</p>
             </div>
-
             <div class="pro-feature-card">
                 <h3>Future Features</h3>
                 <p>Get early access to upcoming Aura updates.</p>
             </div>
         </div>
-
         <div class="pro-price">
             <span>$4.99/month</span>
         </div>
-
         <button class="upgrade-btn">Upgrade to Pro</button>
     </div>
+</div>
 </div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
@@ -675,55 +554,42 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
-
 <script>
 // ---------------- AUTH ----------------
-
 function signUp() {
-
     const displayName = document.getElementById("signupName").value;
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
     auth.createUserWithEmailAndPassword(email, password)
-
         .then(async (userCredential) => {
-
             const user = userCredential.user;
-
             // Save user info to Firestore
             await db.collection("users").doc(user.uid).set({
                 displayName: displayName,
                 email: email,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-
             alert("Account created!");
-
         })
-
         .catch(err => alert(err.message));
 }
-
 function login() {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
-
     auth.signInWithEmailAndPassword(email, password)
         .then(() => alert("Logged in!"))
         .catch(err => alert(err.message));
 }
-
 function logout() {
+    document.getElementById(
+        "appContent"
+    ).style.display = "none";
     auth.signOut();
 }
-
 // ---------------- AUTH STATE ----------------
-
 auth.onAuthStateChanged((user) => {
     const loginPage = document.getElementById("loginPage");
     const appContent = document.getElementById("appContent");
-
     if (user) {
         updateUserPresence(user.uid);
         loginPage.style.display = "none";
@@ -734,17 +600,17 @@ auth.onAuthStateChanged((user) => {
 
         loadUserData(user.uid);
         checkGoalSetup(user.uid);
-    } else {
-        loginPage.style.display = "flex";
-        appContent.style.display = "block"; // or "none" if you want full lock
     }
+    else {
+    loginPage.style.display = "flex";
+    /* HIDE ENTIRE APP */
+    appContent.style.display = "none";
+}
 });
 
 // ---------------- FIRESTORE ----------------
-
 function loadUserData(userId) {
     const ref = db.collection("users").doc(userId);
-    
     ref.get().then(doc => {
         if (doc.exists) {
             const data = doc.data();
@@ -752,27 +618,21 @@ function loadUserData(userId) {
             ".profile-name"
             ).innerText =
             data.displayName || "Aura User";
-
             const initials = (data.displayName || "A")
             .split(" ")
             .map(word => word[0])
             .join("")
             .toUpperCase();
-
             document.getElementById(
             "navFallbackAvatar"
             ).innerText = initials;
-
             document.getElementById(
             "dropdownFallbackAvatar"
             ).innerText = initials;
-
-
             document.getElementById(
             "dashEnvironment"
             ).innerText =
             data.environment || "Gym";
-
             updateAuraUI(
                 data.lastWorkout || "None",
                 data.xp || 0,
@@ -783,7 +643,6 @@ function loadUserData(userId) {
         );
         renderHistory(data.history || []);
         updateProfilePage(data);
-
             renderAchievements(data.achievements || []);
             document.getElementById("dashGoal").innerText =
                 data.goal || "None";
@@ -1385,19 +1244,14 @@ function openSettings(){
 
     loadSettings();
 }
-
 /* CLOSE */
 function closeSettings(){
     settingsModal.classList.remove("active");
 
 }
 function loadSettings(){
-
     const user = auth.currentUser;
-    
-
     if(!user) return;
-
     const ref =
         db.collection("users").doc(user.uid);
 
@@ -1510,17 +1364,14 @@ function loadActiveUsers(){
 const proModal = document.getElementById("proModal");
 const closeProModal = document.getElementById("closeProModal");
 const auraProBtn = document.getElementById("auraProBtn");
-
 /* OPEN MODAL */
 auraProBtn.addEventListener("click", () => {
     proModal.classList.add("active");
 });
-
 /* CLOSE BUTTON */
 closeProModal.addEventListener("click", () => {
     proModal.classList.remove("active");
 });
-
 /* CLICK OUTSIDE */
 window.addEventListener("click", (e) => {
     if (e.target === proModal) {
