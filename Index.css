@@ -69,6 +69,9 @@ html {
 .login-box button:active {
     transform: scale(0.95);
 }
+#appContent{
+    display:none;
+}
 /* BODY */
 body {
     margin: 0;
@@ -159,20 +162,13 @@ body {
     display:flex;
     align-items:center;
 
-    gap:10px;
-
-    background:
-        rgba(255,255,255,0.08);
-
-    padding:10px 16px;
-
-    border-radius:999px;
+    gap:14px;
 
     margin-right:20px;
 
     font-size:0.95rem;
 
-    backdrop-filter:blur(8px);
+    color:burlywood;
 }
 
 /* DOT */
@@ -260,14 +256,23 @@ body {
 }
 /* UPLOAD BUTTON */
 .upload-btn{
+    display:block;
+
+    width:100%;
+
     background:rgba(255,255,255,0.08);
-    padding:10px;
+
+    padding:12px 14px;
+
     border-radius:10px;
 
-    text-align:center;
+    text-align:left;
+
     cursor:pointer;
 
     transition:0.25s;
+
+    margin-bottom:6px;
 }
 
 .upload-btn:hover{
@@ -296,32 +301,46 @@ body {
 
 /* DROPDOWN */
 .profile-dropdown{
+
     position:absolute;
-    top:65px;
+
+    top:70px;
     right:0;
 
     width:260px;
 
-    background:rgba(17,24,39,0.95);
+    background:#1b1b1b;
 
-    backdrop-filter:blur(12px);
-
-    border-radius:16px;
+    border-radius:18px;
 
     padding:18px;
 
-    display:none;
-    flex-direction:column;
-    gap:10px;
+    border:1px solid rgba(255,255,255,0.08);
 
-    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.35);
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+        translateY(10px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        visibility 0.25s;
 
     z-index:1000;
 }
 
 /* SHOW DROPDOWN */
 .profile-dropdown.active{
-    display:flex;
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        translateY(0);
 }
 
 /* HEADER */
@@ -351,13 +370,21 @@ body {
 
 /* LINKS */
 .profile-dropdown a{
+  display:block;
+
+    width:100%;
+
     text-decoration:none;
+
     color:white;
 
-    padding:10px;
+    padding:12px 14px;
+
     border-radius:10px;
 
     transition:0.25s;
+
+    margin-top:6px;
 }
 
 .profile-dropdown a:hover{
@@ -511,6 +538,7 @@ body {
     border-radius: 999px;
     overflow: hidden;
     margin-top: 10px;
+    border: 2px solid black;
 }
 .profile-progress-text{
     position: absolute;
@@ -757,6 +785,7 @@ body {
     border-radius: 12px;
     text-align: center;
     box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    
 }
 
 .dash-card h3 {
@@ -775,7 +804,8 @@ body {
     justify-content: space-between;
     align-items: center;
 
-    max-width: 1100px;
+    max-width: 1600px;
+    width: 100%;
     margin: 40px auto;
 
     padding: 60px 40px; /* 🔥 fixed */
@@ -1432,12 +1462,245 @@ body {
     text-align: center;
     padding: 60px 20px;
 }
+/* TRAINING SPLIT SECTION */
+.split-guide{
+    position: relative;
 
-.section-title {
-    font-size: 28px;
-    margin-bottom: 30px;
+    padding: 80px 20px;
+
+    overflow: hidden;
 }
 
+/* AURA BUBBLES */
+/* TRAINING SPLIT SECTION */
+.split-guide{
+    position: relative;
+
+    padding: 100px 20px;
+
+    overflow: hidden;
+}
+
+/* FLOATING PARTICLE FIELD */
+/* PARTICLE CONTAINER */
+.aura-particles{
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+/* PARTICLES */
+.aura-particles span{
+    position:absolute;
+
+    bottom:-40px;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:#bdf6ff;
+
+    box-shadow:
+        0 0 10px rgba(0, 47, 255, 0.9);
+
+    animation:
+        floatParticle linear infinite;
+}
+
+/* MIX COLORS */
+/* BLUE PARTICLES */
+.aura-particles span:nth-child(3n){
+    background:#6ee7ff;
+
+    box-shadow:
+        0 0 12px rgba(110,231,255,0.95),
+        0 0 24px rgba(110,231,255,0.6);
+}
+
+/* WHITE PARTICLES */
+.aura-particles span:nth-child(4n){
+    background:#ffffff;
+
+    box-shadow:
+        0 0 10px rgba(255,255,255,1),
+        0 0 20px rgba(255,255,255,0.7);
+}
+
+/* RANDOM POSITIONS */
+.aura-particles span:nth-child(1){ left:5%; animation-duration:7s; animation-delay:0s; }
+.aura-particles span:nth-child(2){ left:12%; animation-duration:9s; animation-delay:1s; }
+.aura-particles span:nth-child(3){ left:18%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(4){ left:26%; animation-duration:10s; animation-delay:0.5s; }
+.aura-particles span:nth-child(5){ left:34%; animation-duration:7s; animation-delay:1.2s; }
+.aura-particles span:nth-child(6){ left:42%; animation-duration:9s; animation-delay:2.5s; }
+.aura-particles span:nth-child(7){ left:50%; animation-duration:8s; animation-delay:0s; }
+.aura-particles span:nth-child(8){ left:58%; animation-duration:10s; animation-delay:1.5s; }
+.aura-particles span:nth-child(9){ left:66%; animation-duration:7s; animation-delay:2s; }
+.aura-particles span:nth-child(10){ left:74%; animation-duration:9s; animation-delay:0.5s; }
+.aura-particles span:nth-child(11){ left:82%; animation-duration:8s; animation-delay:1s; }
+.aura-particles span:nth-child(12){ left:90%; animation-duration:10s; animation-delay:2s; }
+.aura-particles span:nth-child(13){ left:15%; animation-duration:11s; animation-delay:1s; }
+.aura-particles span:nth-child(14){ left:30%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(15){ left:45%; animation-duration:9s; animation-delay:0s; }
+.aura-particles span:nth-child(16){ left:60%; animation-duration:7s; animation-delay:1.5s; }
+.aura-particles span:nth-child(17){ left:75%; animation-duration:10s; animation-delay:0.2s; }
+.aura-particles span:nth-child(18){ left:88%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(19){ left:22%; animation-duration:9s; animation-delay:1s; }
+.aura-particles span:nth-child(20){ left:55%; animation-duration:11s; animation-delay:0.5s; }
+
+/* FLOATING MOTION */
+@keyframes floatParticle{
+
+    0%{
+        transform:
+            translate(0, 0)
+            scale(0.4);
+
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    25%{
+        transform:
+            translate(30px, -140px)
+            scale(0.7);
+    }
+
+    50%{
+        transform:
+            translate(-20px, -320px)
+            scale(1);
+    }
+
+    75%{
+        transform:
+            translate(40px, -520px)
+            scale(1.2);
+    }
+
+    100%{
+        transform:
+            translate(-10px, -760px)
+            scale(1.5);
+
+        opacity:0;
+    }
+}
+/* DIFFERENT DRIFT DIRECTIONS */
+.aura-particles span:nth-child(odd){
+    animation-timing-function:ease-in-out;
+}
+
+.aura-particles span:nth-child(even){
+    animation-timing-function:cubic-bezier(.4,0,.2,1);
+}
+
+/* SOME BIGGER PARTICLES */
+.aura-particles span:nth-child(5n){
+    width:10px;
+    height:10px;
+
+    filter:blur(1px);
+}
+
+/* SOME TINY PARTICLES */
+.aura-particles span:nth-child(3n){
+    width:4px;
+    height:4px;
+}
+/* SECTION HEADERS */
+.section-title{
+    position: relative;
+     z-index: 5;
+
+    width: fit-content;
+
+    margin: 0 auto 50px auto;
+
+    padding: 18px 38px;
+
+    font-size: 2.4rem;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    color: #111;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.22),
+            rgba(255,255,255,0.08)
+        );
+
+    backdrop-filter: blur(10px);
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    overflow: hidden;
+}
+
+/* TOP GLOW LINE */
+.section-title::before{
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 70%;
+
+    height: 3px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            #c19a6b,
+            transparent
+        );
+}
+
+/* SOFT LIGHT EFFECT */
+.section-title::after{
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent 20%,
+            rgba(255,255,255,0.15) 50%,
+            transparent 80%
+        );
+
+    opacity: 0.7;
+
+    pointer-events: none;
+}
 .team-container {
     display: flex;
     justify-content: center;
