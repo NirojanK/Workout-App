@@ -37,8 +37,8 @@
 
         <ul class="nav-links">
             <li><a href="#home">Home</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#premium" class="premium-nav-btn" style = "color:chartreuse">Aura Pro</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><button id="auraProBtn">Aura Pro</button></li>
         </ul>
     </div>
     <div class="nav-right">
@@ -116,31 +116,9 @@
 <!-- Dashboard -->
  <div class="dashboard">
     <div class="dashboard-grid">
-
-        <div class="dash-card">
-            <h3>XP</h3>
-            <p id="dashXP">0 / 100</p>
-            <div class="progress-bar">
-            <div id="progressFill"></div>
-        </div>
-        </div>
-
-        <div class="dash-card">
-            <h3>Level</h3>
-            <p id="dashLevel">1</p>
-        </div>
-
-        <div class="dash-card">
-            <h3>Workouts</h3>
-            <p id="dashWorkouts">0</p>
-        </div>
         <div class="dash-card">
         <h3>Environment</h3>
         <p id="dashEnvironment">Gym</p>
-        </div>
-        <div class="dash-card">
-            <h3>Last Workout</h3>
-            <p id="dashLast">None</p>
         </div>
         <div class="dash-card">
         <h3>Goal</h3>
@@ -154,21 +132,6 @@
         <h3>Best Streak</h3>
         <p id="dashBestStreak">0</p>
         </div>
-        <div class="dash-card">
-        <h3>Rank</h3>
-        <p id="dashRank">Aura Novice</p>
-        </div>
-
-        <div class="dash-card recommendation-card">
-
-        <h3>Coach Insight</h3>
-
-        <p id="coachInsight">
-        Stay consistent to build your Aura.
-        </p>
-
-        </div>
-</div>
 </div>
 </div>
 </div>
@@ -189,9 +152,26 @@
                 Niro
             </h2>
 
+            <div class="profile-meta">
+
             <p id="profilePageRank">
                 Aura Novice
             </p>
+        <div class="profile-progress">
+
+        <div
+        class="profile-progress-fill"
+        id="profileProgressFill"
+        ></div>
+         <span
+        class="profile-progress-text"
+        id="profileProgressText"
+    >
+        0 / 100 XP
+    </span>
+
+    </div>
+</div>
 
         </div>
 
@@ -206,56 +186,10 @@
         </div>
 
         <div class="profile-stat">
-            <h3>XP</h3>
-            <p id="profileXP">0</p>
-        </div>
-
-        <div class="profile-stat">
             <h3>Workouts</h3>
             <p id="profileWorkouts">0</p>
         </div>
-
-        <div class="profile-stat">
-            <h3>Streak</h3>
-            <p id="profileStreak">0 🔥</p>
-        </div>
-
     </div>
-
-    <!-- GOAL -->
-    <div class="profile-goal">
-
-        <h3>Current Goal</h3>
-
-        <p id="profileGoal">
-            Build Muscle
-        </p>
-
-    </div>
-    <!-- WORKOUT ENVIRONMENT -->
-    <div class="settings-group">
-
-    <label>Workout Environment</label>
-
-    <select id="environmentSelect">
-
-        <option>Gym</option>
-        <option>Home</option>
-        <option>Hybrid</option>
-
-    </select>
-
-    </div>
-
-    <!-- ACHIEVEMENTS -->
-    <div class="profile-achievements">
-
-        <h3>Achievements</h3>
-
-        <div id="profileAchievements"></div>
-
-    </div>
-
 </section>
 <!-- Hero Section -->
 <section class="hero" id = "home">
@@ -265,7 +199,9 @@
             You can build aura by working out!
         </p>
 
-        <a href="#workouts" class="cta-btn">Start Workout</a>
+        <a href="#workouts" lass="cta-btn" onclick="startWorkout()">
+        <button id = "cta-btn">Start Workout</button>
+        </a>
 
         <!-- Social Icons -->
         <div class="hero-links">
@@ -356,18 +292,11 @@
 
     <h3>Back Day</h3>
 
-    <div class="workout-tags">
-        <span>Strength</span>
-        <span>Gym</span>
-        <span>45 Min</span>
-    </div>
-
     <button onclick="completeWorkout('Back Day')">
         Mark Complete
     </button>
 
     <div class="img-row">
-        <img src="back-img.JPG">
         <img src="back-img2.JPG">
         <img src="back-img3.JPG">
         <img src="back-img4.JPG">
@@ -388,7 +317,6 @@
         <h3>Chest Day</h3>
         <button onClick ="completeWorkout('Chest Day')">Mark Complete</button>
         <div class="img-row">
-            <img src="chest-img.JPG">
             <img src="chest-img2.JPG">
             <img src="chest-img3.JPG">
             <img src="chest-img4.JPG">
@@ -472,7 +400,7 @@
 
 </div>
 <!--Meet the team -->
-<section class="team-section">
+<section class="team-section" id="team">
     <h2 class="section-title">Meet the Team</h2>
 
     <div class="team-container">
@@ -501,6 +429,9 @@
 
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
+            <button onclick="completeWorkout('Back Day')">
+            Mark Complete
+            </button>
             <ul class="exercise-list">
                 <li><strong>Hip Thrusts</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -511,6 +442,9 @@
 
         <div class="box">
             <h3>Core & Conditioning</h3>
+            <button onclick="completeWorkout('Back Day')">
+            Mark Complete
+            </button>
             <ul class="exercise-list">
                 <li><strong>Planks</strong><span> (30 seconds - 2 minutes)</span></li>
                 <li><strong>Leg Raises</strong><span> (3 sets of 10-15 reps)</span></li>
@@ -520,6 +454,9 @@
 
         <div class="box">
             <h3>Back and Triceps</h3>
+            <button onclick="completeWorkout('Back Day')">
+            Mark Complete
+            </button>
             <ul class="exercise-list">
                 <li><strong>Lat Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Dumbbell rows or machine rows</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -545,7 +482,6 @@
     <div class="footer-links">
 
         <a href="#home">Home</a>
-        <a href="#features">Features</a>
     </div>
 
     <p class="footer-contact">
@@ -677,6 +613,52 @@
     <img id="modalImage" />
 
 </div>
+<div class="workout-session" id="workoutSession">
+
+    <h4>⏱ Workout Active</h4>
+
+    <p id="workoutSessionTime">
+        00:00
+    </p>
+
+</div>
+<!-- Aura Pro Modal -->
+<div id="proModal" class="pro-modal">
+    <div class="pro-modal-content">
+        <button class="close-modal" id="closeProModal">×</button>
+
+        <h1>Aura Pro</h1>
+        <p class="pro-subtitle">Unlock premium features and level up your fitness journey.</p>
+
+        <div class="pro-features">
+            <div class="pro-feature-card">
+                <h3>Advanced Analytics</h3>
+                <p>Track progress with detailed workout insights.</p>
+            </div>
+
+            <div class="pro-feature-card">
+                <h3>Custom Workout Plans</h3>
+                <p>Create and save personalized routines.</p>
+            </div>
+
+            <div class="pro-feature-card">
+                <h3>Exclusive Themes</h3>
+                <p>Unlock premium app customization options.</p>
+            </div>
+
+            <div class="pro-feature-card">
+                <h3>Future Features</h3>
+                <p>Get early access to upcoming Aura updates.</p>
+            </div>
+        </div>
+
+        <div class="pro-price">
+            <span>$4.99/month</span>
+        </div>
+
+        <button class="upgrade-btn">Upgrade to Pro</button>
+    </div>
+</div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -803,8 +785,6 @@ function loadUserData(userId) {
         updateProfilePage(data);
 
             renderAchievements(data.achievements || []);
-            document.getElementById("coachInsight").innerText =
-            getCoachInsight(data);
             document.getElementById("dashGoal").innerText =
                 data.goal || "None";
         } else {
@@ -834,10 +814,66 @@ function checkGoalSetup(userId){
         }
     });
 }
+let workoutTimer;
+let workoutSeconds = 0;
+let workoutActive = false;
 
+function startWorkout(){
+
+    if(workoutActive) return;
+
+    workoutActive = true;
+
+    document.getElementById(
+        "workoutSession"
+    ).style.display = "block";
+
+    workoutSeconds = 0;
+
+    updateWorkoutTimer();
+
+    workoutTimer = setInterval(() => {
+
+        workoutSeconds++;
+
+        updateWorkoutTimer();
+
+    }, 1000);
+}
+
+function updateWorkoutTimer(){
+
+    const minutes =
+        Math.floor(workoutSeconds / 60);
+
+    const seconds =
+        workoutSeconds % 60;
+
+    document.getElementById(
+        "workoutSessionTime"
+    ).innerText =
+
+        String(minutes).padStart(2, "0")
+        + ":" +
+        String(seconds).padStart(2, "0");
+}
+
+function stopWorkout(){
+
+    clearInterval(workoutTimer);
+
+    workoutActive = false;
+
+    document.getElementById(
+        "workoutSession"
+    ).style.display = "none";
+
+    return Math.floor(workoutSeconds / 60);
+}
 function completeWorkout(day) {
     const user = auth.currentUser;
     if (!user) return;
+    const duration = stopWorkout();
     const ref = db.collection("users").doc(user.uid);
 
     ref.get().then(doc => {
@@ -891,6 +927,7 @@ function completeWorkout(day) {
         history.unshift({
     workout: day,
     date: today,
+    duration: duration,
     xpEarned: 25
 });
 
@@ -1058,7 +1095,9 @@ function renderHistory(history = []) {
         div.className = "history-item";
 
         div.innerHTML = `
-            <span>🏋️ ${item.workout}</span>
+            <span>🏋️ ${item.workout}
+                (${item.duration || 0} min)
+            </span>
             <span>${item.date}</span>
         `;
 
@@ -1257,27 +1296,14 @@ function updateAuraUI(
     bestStreak = 0
 ) {
 
-    const progressBar =
-    document.getElementById("progressFill");
-
-    progressBar.style.width =
-    (xp / 100) * 100 + "%";
-
-    document.getElementById("dashLevel").innerText = level;
-    document.getElementById("dashXP").innerText = xp + " / 100";
-    document.getElementById("dashWorkouts").innerText = workouts;
-    document.getElementById("dashLast").innerText = lastWorkout;
-
     document.getElementById("dashStreak").innerText =
         streak + " Days 🔥";
 
     document.getElementById("dashBestStreak").innerText =
         bestStreak;
-    document.getElementById("dashRank").innerText =
-    getAuraRank(level);
 }
 function updateProfilePage(data){
-
+    
     /* IMAGE */
     const savedImage =
         localStorage.getItem("profileImage");
@@ -1300,55 +1326,24 @@ function updateProfilePage(data){
         "profilePageRank"
     ).innerText =
         getAuraRank(data.level || 1);
+    document.getElementById(
+    "profileProgressFill"
+    ).style.width =
+    ((data.xp || 0) / 100) * 100 + "%";
 
+    document.getElementById(
+    "profileProgressText"
+    ).innerText =
+    (data.xp || 0) + " / 100 XP";   
     /* STATS */
     document.getElementById(
         "profileLevel"
     ).innerText =
         data.level || 1;
-
-    document.getElementById(
-        "profileXP"
-    ).innerText =
-        data.xp || 0;
-
     document.getElementById(
         "profileWorkouts"
     ).innerText =
         data.workouts || 0;
-
-    document.getElementById(
-        "profileStreak"
-    ).innerText =
-        (data.streak || 0) + " 🔥";
-
-    /* GOAL */
-    document.getElementById(
-        "profileGoal"
-    ).innerText =
-        data.goal || "None";
-
-    /* ACHIEVEMENTS */
-    const achievementsDiv =
-        document.getElementById(
-            "profileAchievements"
-        );
-
-    achievementsDiv.innerHTML = "";
-
-    (data.achievements || [])
-        .forEach(a => {
-
-        const badge =
-            document.createElement("div");
-
-        badge.className =
-            "achievement-badge";
-
-        badge.innerText = "🏆 " + a;
-
-        achievementsDiv.appendChild(badge);
-    });
 }
 const modal = document.getElementById("imageModal");
 const modalImage = document.getElementById("modalImage");
@@ -1393,8 +1388,8 @@ function openSettings(){
 
 /* CLOSE */
 function closeSettings(){
-
     settingsModal.classList.remove("active");
+
 }
 function loadSettings(){
 
@@ -1427,15 +1422,6 @@ function loadSettings(){
 function saveSettings(){
 
     const user = auth.currentUser;
-    const environment =
-    document.getElementById(
-        "environmentSelect"
-    ).value;
-    document.getElementById(
-    "dashEnvironment"
-    ).innerText =
-    environment;
-
     if(!user) return;
 
     const displayName =
@@ -1455,8 +1441,6 @@ function saveSettings(){
 
         displayName,
         goal,
-        environment
-
     }, { merge:true });
 
     /* UPDATE UI */
@@ -1470,10 +1454,6 @@ function saveSettings(){
 
     document.getElementById(
         "dashGoal"
-    ).innerText = goal;
-
-    document.getElementById(
-        "profileGoal"
     ).innerText = goal;
 
     closeSettings();
@@ -1491,7 +1471,7 @@ function updateUserPresence(userId){
             lastActive: Date.now()
         });
 
-    }, 60000);
+    }, 15000);
 
     /* INITIAL */
     ref.set({
@@ -1502,43 +1482,51 @@ function updateUserPresence(userId){
 }
 function loadActiveUsers(){
 
-    setInterval(() => {
+    const fiveMinutes = 5 * 60 * 1000;
 
-        const fiveMinutesAgo =
-            Date.now() - (5 * 60 * 1000);
+    db.collection("presence")
+    .onSnapshot((snapshot) => {
 
-        db.collection("presence")
-            .get()
-            .then(snapshot => {
+        let activeCount = 0;
 
-            let activeCount = 0;
+        snapshot.forEach(doc => {
 
-            snapshot.forEach(doc => {
+            const data = doc.data();
 
-                const data = doc.data();
-                document.getElementById(
-                "environmentSelect"
-                ).value =
-                data.environment || "Gym";
-
-                if(data.lastActive >= fiveMinutesAgo){
-
-                    activeCount++;
-                }
-            });
-
-            document.getElementById(
-                "activeUsersCount"
-            ).innerText =
-                activeCount + " Active";
-
+            if(
+                data.lastActive &&
+                Date.now() - data.lastActive < fiveMinutes
+            ){
+                activeCount++;
+            }
         });
 
-    }, 30000);
+        document.getElementById(
+            "activeUsersCount"
+        ).innerText =
+            activeCount + " Active";
+    });
 }
+const proModal = document.getElementById("proModal");
+const closeProModal = document.getElementById("closeProModal");
+const auraProBtn = document.getElementById("auraProBtn");
+
+/* OPEN MODAL */
+auraProBtn.addEventListener("click", () => {
+    proModal.classList.add("active");
+});
+
+/* CLOSE BUTTON */
+closeProModal.addEventListener("click", () => {
+    proModal.classList.remove("active");
+});
+
+/* CLICK OUTSIDE */
+window.addEventListener("click", (e) => {
+    if (e.target === proModal) {
+        proModal.classList.remove("active");
+    }
+});
 </script>
-
-
-
 </body>
 </html>
