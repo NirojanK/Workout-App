@@ -688,9 +688,13 @@ let workoutTimer;
 let workoutSeconds = 0;
 let workoutActive = false;
 
+const MIN_WORKOUT_SECONDS = 20 * 60;
+
 function startWorkout(){
 
-    if(workoutActive) return;
+    if(workoutActive){
+        return;
+    }
 
     workoutActive = true;
 
@@ -709,6 +713,12 @@ function startWorkout(){
         updateWorkoutTimer();
 
     }, 1000);
+
+    /* OPTIONAL */
+    localStorage.setItem(
+        "workoutStartTime",
+        Date.now()
+    );
 }
 
 function updateWorkoutTimer(){
@@ -743,7 +753,27 @@ function stopWorkout(){
 function completeWorkout(day) {
     const user = auth.currentUser;
     if (!user) return;
-    const duration = stopWorkout();
+    if(!workoutActive){
+
+    alert("Start a workout first.");
+
+    return;
+}
+
+if(workoutSeconds < MIN_WORKOUT_SECONDS){
+
+    const remainingMinutes =
+        Math.ceil(
+            (MIN_WORKOUT_SECONDS - workoutSeconds) / 60
+        );
+
+    alert(
+        `Workout must be at least 20 minutes.\n\n${remainingMinutes} minute(s) remaining.`
+    );
+
+    return;
+}
+    
     const ref = db.collection("users").doc(user.uid);
 
     ref.get().then(doc => {
@@ -762,7 +792,9 @@ function completeWorkout(day) {
         const today = new Date().toDateString();
         const lastWorkoutDate = data.lastWorkoutDate || null;
 
-    if(lastWorkoutDate){
+let xpEarned = 25;
+
+if(lastWorkoutDate){
 
     const lastDate = new Date(lastWorkoutDate);
     const currentDate = new Date(today);
@@ -772,33 +804,46 @@ function completeWorkout(day) {
 
     const diffDays =
         diffTime / (1000 * 60 * 60 * 24);
-    
+
+    /* SAME DAY WORKOUT */
     if(diffDays === 0){
-        alert("Workout already logged today");
-        return;
-    }
-    else if(diffDays === 1){
-    streak++;
-    }
-    else if(diffDays > 1){
-    streak = 1;
-    }
-}
-    else{
-        streak = 1;
+
+        xpEarned = 5;
     }
 
+    /* NEXT DAY */
+    else if(diffDays === 1){
+
+        streak++;
+    }
+
+    /* LOST STREAK */
+    else if(diffDays > 1){
+
+        streak = 1;
+    }
+}
+else{
+
+    streak = 1;
+}    
+    if(streak === 0){
+    streak = 1;
+    }
     if(streak > bestStreak){
     bestStreak = streak;
     }
+    
+    const duration = stopWorkout();
+
         // Increase values
-        xp += 25;
+        xp += xpEarned;
         workouts++;
         history.unshift({
     workout: day,
     date: today,
     duration: duration,
-    xpEarned: 25
+    xpEarned: xpEarned
 });
 
 history = history.slice(0, 10);
