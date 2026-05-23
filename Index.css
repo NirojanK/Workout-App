@@ -10,6 +10,48 @@ html, body{
 html {
     scroll-behavior: smooth;
 }
+.auth-btn-img {
+    width: 110px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.auth-btn-img:hover {
+    transform: scale(1.05);
+}
+
+.workout-btn-img {
+    width: 140px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.workout-btn-img:hover {
+    transform: scale(1.05);
+}
+
+.start-btn-img {
+    width: 180px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.start-btn-img:hover {
+    transform: scale(1.05);
+}
+.auth-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+.history-item img {
+    vertical-align: middle;
+}
 /*Login*/
 #loginPage{
     height: 100vh;
