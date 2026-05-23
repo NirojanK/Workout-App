@@ -24,8 +24,10 @@
         <input type="text" id="signupName" placeholder="Display Name" required>
         <input type="email" id="email" placeholder="Email" required>
         <input type="password" id="password" placeholder="Password" required>
-        <button onclick="signUp()">Sign Up</button>
-        <button onclick="login()">Login</button>
+        <div class ="auth-buttons">
+            <img src="signup.png" alt="Sign Up" onclick="signUp()" class = "auth-btn-img">
+            <img src="login.png" alt="Login" onclick="login()" class = "auth-btn-img">
+        </div>
         <p id="userStatus"></p>
     </div>
 </div>
@@ -99,8 +101,8 @@
             Tap the button below to get started, and then when your done tap "Mark Complete".
         </p>
 
-        <a href="#workouts" lass="cta-btn" onclick="startWorkout()">
-        <button id = "cta-btn">Start Workout</button>
+        <a href="#workouts" onclick="startWorkout()">
+        <img src="start.png" id = "cta-btn" style = "width:180px; height:auto; margin-right:8px;">
         </a>
 
         <!-- Social Icons -->
@@ -252,14 +254,12 @@
 <div class="container" id="workouts">
     <div class="box">
     <h3>Back Day</h3>
-    <button onclick="completeWorkout('Back Day')">
-        Mark Complete
-    </button>
+    <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
     <div class="img-row">
-        <img src="back-img2.JPG">
-        <img src="back-img3.JPG">
-        <img src="back-img4.JPG">
-        <img src="back-img5.JPG">
+        <img src="back-img2.jpg">
+        <img src="back-img3.jpg">
+        <img src="back-img4.jpg">
+        <img src="back-img5.jpg">
     </div>
     <ul class="exercise-list">
         <li><strong>Pullups</strong><span>Until failure</span></li>
@@ -271,12 +271,12 @@
     </div>
     <div class="box">
         <h3>Chest Day</h3>
-        <button onClick ="completeWorkout('Chest Day')">Mark Complete</button>
+        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Chest Day')" class = "workout-btn-img">
         <div class="img-row">
-            <img src="chest-img2.JPG">
-            <img src="chest-img3.JPG">
-            <img src="chest-img4.JPG">
-            <img src="chest-img5.JPG">
+            <img src="chest-img2.jpg">
+            <img src="chest-img3.jpg">
+            <img src="chest-img4.jpg">
+            <img src="chest-img5.jpg">
         </div>
         <ul class="exercise-list">
             <li><strong>Bench Press</strong><span> (3 sets of 8-10 reps)</span></li>
@@ -288,13 +288,13 @@
     </div>
     <div class="box">
         <h3>Leg Day</h3>
-        <button onClick ="completeWorkout('Leg Day')">Mark Complete</button>
+        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Leg Day')" class = "workout-btn-img">
         <div class="img-row">
-            <img src="leg-img.JPG">
-            <img src="leg-img2.JPG">
-            <img src="leg-img3.JPG">
-            <img src="leg-img4.JPG">
-            <img src="leg-img5.JPG">
+            <img src="leg-img.jpg">
+            <img src="leg-img2.jpg">
+            <img src="leg-img3.jpg">
+            <img src="leg-img4.jpg">
+            <img src="leg-img5.jpg">
         </div>
         <ul class="exercise-list">
             <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -310,12 +310,12 @@
         <h3>Arm Exercises</h3>
         <p>Mix these into your chest or back workouts at the end.</p>
         <div class="img-row">
-            <img src="arm-img.JPG">
-            <img src="arm-img2.JPG">
-            <img src="arm-img4.JPG">
-            <img src="arm-img5.JPG">
-            <img src="arm-img6.JPG">
-            <img src="arm-img7.JPG">
+            <img src="arm-img.jpg">
+            <img src="arm-img2.jpg">
+            <img src="arm-img4.jpg">
+            <img src="arm-img5.jpg">
+            <img src="arm-img6.jpg">
+            <img src="arm-img7.jpg">
         </div>
         <ul class="exercise-list">
             <li><strong>EZ-Bar Bicep Curls</strong><span> (3 sets of 5-9 reps)</span></li>
@@ -340,11 +340,11 @@
     </div>
     <div class = "box">
         <h3>Cardio + core</h3>
-        <button onClick ="completeWorkout('Cardio Day')">Mark Complete</button>
+        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Cardio Day')" class = "workout-btn-img">
         <div class ="img-row">
-            <img src="cardio-img.JPG">
-            <img src="cardio-img2.JPG">
-            <img src="cardio-img3.JPG">
+            <img src="cardio-img.jpg">
+            <img src="cardio-img2.jpg">
+            <img src="cardio-img3.jpg">
         </div>
         <ul class="exercise-list">
             <li><strong>12:3:30</strong><span> (12 incline, 3 speed, 30 minutes)</span></li>
@@ -357,7 +357,7 @@
     <div class = "box">
         <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
         <h5>Great for active recovery, flexibility, and consistency.</h5>
-        <button onClick ="completeWorkout('Class Day')">Mark Complete</button>
+        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Class Day')" class = "workout-btn-img">
     </div>
 </div>
 <!--Meet the team -->
@@ -385,9 +385,7 @@
     <div class="container">
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
-            <button onclick="completeWorkout('Back Day')">
-            Mark Complete
-            </button>
+            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Hip Thrusts</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -397,9 +395,7 @@
         </div>
         <div class="box">
             <h3>Core & Conditioning</h3>
-            <button onclick="completeWorkout('Back Day')">
-            Mark Complete
-            </button>
+            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Planks</strong><span> (30 seconds - 2 minutes)</span></li>
                 <li><strong>Leg Raises</strong><span> (3 sets of 10-15 reps)</span></li>
@@ -408,15 +404,14 @@
         </div>
         <div class="box">
             <h3>Back and Triceps</h3>
-            <button onclick="completeWorkout('Back Day')">
-            Mark Complete
-            </button>
+            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Lat Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Dumbbell rows or machine rows</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Tricep Dips</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Seated Cable Rows</strong><span> (3 sets of 8-12 reps)</span></li>
+            </ul>
         </div>
     </div>
 </section>
@@ -466,7 +461,7 @@
 </div>
 <!-- ACHIEVEMENT TOAST -->
 <div class="achievement-toast" id="achievementToast">
-    <h3>🏆 Achievement Unlocked!</h3>
+    <h3>🏆Achievement Unlocked!</h3>
     <p id="achievementText"></p>
 </div>
 <!-- LEVEL UP -->
@@ -995,7 +990,7 @@ function renderAchievements(userAchievements = []) {
         card.className = "achievement-card " + (unlocked ? "unlocked" : "locked");
 
         card.innerHTML = `
-            <h4>${unlocked ? "🏆" : "🔒"}</h4>
+            <h4>${unlocked ? "<img src='auratrophy.png' alt='Trophy' style='width:48px; height:48px;'>" : "🔒"}</h4>
             <p>${name}</p>
         `;
 
@@ -1017,7 +1012,7 @@ function renderHistory(history = []) {
         div.className = "history-item";
 
         div.innerHTML = `
-            <span>🏋️ ${item.workout}
+            <span><img src ="liftsymbol.png" alt="${item.workout}" style="width:28px; height:28px; margin-right:8px;"> ${item.workout}
                 (${item.duration || 0} min)
             </span>
             <span>${item.date}</span>
