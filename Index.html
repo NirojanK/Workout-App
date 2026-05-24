@@ -253,8 +253,7 @@
 <!-- Workout Sections -->
 <div class="container" id="workouts">
     <div class="box">
-    <h3>Back Day</h3>
-    <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
+    <h3>Back</h3>
     <div class="img-row">
         <img src="back-img2.jpg">
         <img src="back-img3.jpg">
@@ -262,7 +261,27 @@
         <img src="back-img5.jpg">
     </div>
     <ul class="exercise-list">
-        <li><strong>Pullups</strong><span>Until failure</span></li>
+        <li class="exercise-item">
+    <div class="exercise-card">
+        <!-- LEFT SIDE -->
+        <div class="exercise-info">
+            <h4>Pullups</h4>
+            <p>until failure</p>
+        </div>
+        <!-- RIGHT SIDE -->
+        <div class="exercise-log">
+            <div class="input-group">
+                <label>Reps</label>
+                <input
+                    type="number"
+                    placeholder="Enter reps"
+                    class="reps-input"
+                >
+            </div>
+            <button onclick="saveExerciseLog('Pullups', this)">
+                💾 Save
+            </button>
+    </div>
         <li><strong>Seated Cable Rows</strong><span>8-12 reps</span></li>
         <li><strong>Barbell Rows</strong><span>5-10 reps</span></li>
         <li><strong>Lat Pulldowns</strong><span>7-10 reps</span></li>
@@ -270,8 +289,7 @@
     </ul>
     </div>
     <div class="box">
-        <h3>Chest Day</h3>
-        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Chest Day')" class = "workout-btn-img">
+        <h3>Chest</h3>
         <div class="img-row">
             <img src="chest-img2.jpg">
             <img src="chest-img3.jpg">
@@ -279,7 +297,55 @@
             <img src="chest-img5.jpg">
         </div>
         <ul class="exercise-list">
-            <li><strong>Bench Press</strong><span> (3 sets of 8-10 reps)</span></li>
+            <li class="exercise-item">
+
+    <div class="exercise-card">
+
+        <!-- LEFT SIDE -->
+        <div class="exercise-info">
+
+            <h4>Bench Press</h4>
+
+            <p>(3 sets of 8–10 reps)</p>
+
+        </div>
+
+        <!-- RIGHT SIDE -->
+        <div class="exercise-log">
+
+            <div class="input-group">
+
+                <label>Weight (lbs)</label>
+
+                <input
+                    type="number"
+                    placeholder="Enter weight"
+                    class="weight-input"
+                >
+
+            </div>
+
+            <div class="input-group">
+
+                <label>Reps</label>
+
+                <input
+                    type="number"
+                    placeholder="Enter reps"
+                    class="reps-input"
+                >
+
+            </div>
+
+            <button onclick="saveExerciseLog('Bench Press', this)">
+                💾 Save
+            </button>
+
+        </div>
+
+    </div>
+
+</li>
             <li><strong>Push-ups</strong><span> (1 or 2 sets until failure)</span></li>
             <li><strong>Incline Dumbbell Press</strong><span> (3 sets of 8-10 reps)</span></li>
             <li><strong>Chest Flys</strong><span> (3 sets of 10-15 reps)</span></li>
@@ -287,8 +353,7 @@
         </ul>
     </div>
     <div class="box">
-        <h3>Leg Day</h3>
-        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Leg Day')" class = "workout-btn-img">
+        <h3>Legs</h3>
         <div class="img-row">
             <img src="leg-img.jpg">
             <img src="leg-img2.jpg">
@@ -297,7 +362,33 @@
             <img src="leg-img5.jpg">
         </div>
         <ul class="exercise-list">
-            <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
+            <div class="exercise-card">
+        <!-- LEFT SIDE -->
+        <div class="exercise-info">
+            <h4>Squats</h4>
+            <p>(3-4 sets of 8–10 reps)</p>
+        </div>
+        <!-- RIGHT SIDE -->
+        <div class="exercise-log">
+            <div class="input-group">
+                <label>Weight (lbs)</label>
+                <input
+                    type="number"
+                    placeholder="Enter weight"
+                    class="weight-input"
+                >
+                <label>Reps</label>
+                <input
+                    type="number"
+                    placeholder="Enter reps"
+                    class="reps-input"
+                >
+            </div>
+            <button onclick="saveExerciseLog('Squats', this)">
+                💾 Save
+            </button>
+        </div>
+    </div>
             <li><strong>Lunges</strong><span> (2 laps)</span></li>
             <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
             <li><strong>Hamstring Curls</strong><span> (3 sets of 6-10 reps)</span></li>
@@ -340,7 +431,6 @@
     </div>
     <div class = "box">
         <h3>Cardio + core</h3>
-        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Cardio Day')" class = "workout-btn-img">
         <div class ="img-row">
             <img src="cardio-img.jpg">
             <img src="cardio-img2.jpg">
@@ -357,7 +447,6 @@
     <div class = "box">
         <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
         <h5>Great for active recovery, flexibility, and consistency.</h5>
-        <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Class Day')" class = "workout-btn-img">
     </div>
 </div>
 <!--Meet the team -->
@@ -385,7 +474,6 @@
     <div class="container">
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
-            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Hip Thrusts</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -395,7 +483,6 @@
         </div>
         <div class="box">
             <h3>Core & Conditioning</h3>
-            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Planks</strong><span> (30 seconds - 2 minutes)</span></li>
                 <li><strong>Leg Raises</strong><span> (3 sets of 10-15 reps)</span></li>
@@ -404,7 +491,6 @@
         </div>
         <div class="box">
             <h3>Back and Triceps</h3>
-            <img src="complete.png" alt="Mark Complete" onclick="completeWorkout('Back Day')" class = "workout-btn-img">
             <ul class="exercise-list">
                 <li><strong>Lat Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Dumbbell rows or machine rows</strong><span> (3 sets of 8-12 reps)</span></li>
@@ -415,6 +501,15 @@
         </div>
     </div>
 </section>
+<div class="global-workout-complete">
+
+    <img
+        src="complete.png"
+        class="global-complete-btn"
+        onclick="openWorkoutModal()"
+    >
+
+</div>
 <!-- Footer -->
 <footer class="footer">
     <h2>Aura Farmer</h2>
@@ -458,6 +553,42 @@
             </button>
         </div>
     </div>
+</div>
+<!-- WORKOUT COMPLETE MODAL -->
+<div class="workout-modal" id="workoutModal">
+
+    <div class="workout-modal-content">
+
+        <h2>Complete Workout</h2>
+
+        <p>What workout did you finish?</p>
+
+        <div class="workout-options">
+
+            <button onclick="finishWorkout('Chest Day')">
+                Chest Day
+            </button>
+
+            <button onclick="finishWorkout('Back Day')">
+                Back Day
+            </button>
+
+            <button onclick="finishWorkout('Leg Day')">
+                Leg Day
+            </button>
+
+            <button onclick="finishWorkout('Cardio Day')">
+                Cardio
+            </button>
+
+            <button onclick="finishWorkout('Arm Day')">
+                Arms
+            </button>
+
+        </div>
+
+    </div>
+
 </div>
 <!-- ACHIEVEMENT TOAST -->
 <div class="achievement-toast" id="achievementToast">
@@ -723,6 +854,7 @@ function startWorkout(){
     );
 }
 
+
 function updateWorkoutTimer(){
 
     const minutes =
@@ -761,7 +893,6 @@ function completeWorkout(day) {
 
     return;
 }
-
 if(workoutSeconds < MIN_WORKOUT_SECONDS){
 
     const remainingMinutes =
@@ -897,6 +1028,83 @@ renderHistory(history);
         lastWorkout: day
     });
     });
+}
+async function saveExerciseLog(exerciseName, button){
+
+    const user = auth.currentUser;
+
+    if(!user) return;
+
+    const container =
+        button.parentElement;
+
+    const weight =
+        container.querySelector(".weight-input").value;
+
+    const reps =
+        container.querySelector(".reps-input").value;
+
+    if(!weight || !reps){
+
+        alert("Enter weight and reps.");
+
+        return;
+    }
+
+    const log = {
+        exercise: exerciseName,
+        weight: Number(weight),
+        reps: Number(reps),
+        date: new Date().toDateString()
+    };
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    await ref.set({
+
+        exerciseLogs:
+            firebase.firestore.FieldValue.arrayUnion(log)
+
+    }, { merge:true });
+
+    button.innerText = "Saved ✓";
+
+    button.classList.add("saved");
+
+    setTimeout(() => {
+
+    button.innerText = "Save";
+
+    button.classList.remove("saved");
+
+    }, 1500);
+
+    setTimeout(() => {
+
+        button.innerText = "Save";
+
+    }, 1500);
+}
+function openWorkoutModal(){
+
+    document
+        .getElementById("workoutModal")
+        .classList.add("active");
+}
+
+function closeWorkoutModal(){
+
+    document
+        .getElementById("workoutModal")
+        .classList.remove("active");
+}
+
+function finishWorkout(day){
+
+    closeWorkoutModal();
+
+    completeWorkout(day);
 }
 function selectGoal(goal){
 
