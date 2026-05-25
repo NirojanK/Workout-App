@@ -1375,8 +1375,10 @@ body {
 .exercise-info{
 
     min-width:180px;
-
-    padding-right:10px;
+    padding: 10px;
+    border : 2px solid black;
+    border-radius: 20px;
+    font-size: 25px;
 }
 
 .exercise-info h4{
@@ -1408,7 +1410,7 @@ body {
 
     gap:16px;
 
-    min-width:260px;
+    min-width:0;
 }
 
 /* LABELS */
@@ -2685,7 +2687,7 @@ button:active {
 
     /* WORKOUT BOXES */
     .box{
-        padding:22px;
+        padding: 18px;
     }
 
     /* IMAGES */
@@ -2742,16 +2744,22 @@ button:active {
         align-items:flex-start;
 
         gap:20px;
+
+        width: 100%;
+
+        overflow:hidden;
     }
 
     .exercise-log{
 
         width:100%;
+        min-width:0;
     }
 
     .exercise-log button{
 
         width:100%;
+        min-width:0;
     }
 
     .workout-btn-img{
@@ -2759,5 +2767,43 @@ button:active {
         width:100%;
         max-width:300px;
         
+    }
+}
+@media (max-width:768px){
+
+    .exercise-card{
+
+        padding:24px;
+    }
+
+    .exercise-log{
+
+        gap:22px;
+    }
+
+    .input-group{
+
+        gap:10px;
+    }
+
+    .input-group label{
+
+        margin-bottom:4px;
+
+        font-size:1rem;
+    }
+
+    .exercise-log input{
+
+        padding:16px;
+
+        border-radius:18px;
+    }
+
+    .exercise-log button{
+
+        margin-top:8px;
+
+        width:100%;
     }
 }
