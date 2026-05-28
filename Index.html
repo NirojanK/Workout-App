@@ -179,6 +179,17 @@
         <div class="dash-card">
         <h3>Best Streak</h3>
         <p id="dashBestStreak">0</p>
+        </div>
+        <div class="dash-card pro-card locked" id="analyticsCard">
+        <div class="pro-badge">
+            PRO
+        </div>
+
+        <h3>Advanced Analytics</h3>
+
+    <p class="locked-text">
+        Upgrade to unlock
+    </p>
 </div>
 </div>
 </div>
@@ -681,7 +692,12 @@
         <div class="pro-price">
             <span>$4.99/month</span>
         </div>
-        <button class="upgrade-btn">Upgrade to Pro</button>
+        <button
+        class="upgrade-btn"
+        onclick="activatePro()"
+        >
+        Upgrade to Pro
+        </button>
     </div>
 </div>
 </div>
@@ -702,6 +718,7 @@ const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
 <script>
+let currentUserData = null;
 // ---------------- AUTH ----------------
 function signUp() {
     const displayName = document.getElementById("signupName").value;
@@ -714,6 +731,10 @@ function signUp() {
             await db.collection("users").doc(user.uid).set({
                 displayName: displayName,
                 email: email,
+
+                isPro: false,
+                subscriptionStatus: "free",
+
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             alert("Account created!");
@@ -761,6 +782,7 @@ function loadUserData(userId) {
     ref.get().then(doc => {
         if (doc.exists) {
             const data = doc.data();
+            currentUserData = data;
             document.querySelector(
             ".profile-name"
             ).innerText =
@@ -790,6 +812,7 @@ function loadUserData(userId) {
         );
         renderHistory(data.history || []);
         updateProfilePage(data);
+        applyProStatus();
             renderAchievements(data.achievements || []);
             document.getElementById("dashGoal").innerText =
                 data.goal || "None";
@@ -856,7 +879,40 @@ function startWorkout(){
         Date.now()
     );
 }
+function applyProStatus(){
 
+    const upgradeBtn =
+    document.querySelector(".upgrade-btn");
+
+    if(currentUserData?.isPro){
+
+    upgradeBtn.innerText = "Aura Pro Active ⚡";
+
+    upgradeBtn.disabled = true;
+    }   
+
+    const analyticsCard =
+        document.getElementById("analyticsCard");
+
+    if(!analyticsCard) return;
+
+    if(currentUserData?.isPro){
+
+        analyticsCard.classList.remove("locked");
+
+        analyticsCard.innerHTML = `
+            <div class="pro-badge">
+                PRO
+            </div>
+
+            <h3>Advanced Analytics</h3>
+
+            <p>
+                Workout consistency: 92%
+            </p>
+        `;
+    }
+}
 
 function updateWorkoutTimer(){
 
@@ -1041,13 +1097,16 @@ async function saveExerciseLog(exerciseName, button){
     const container =
         button.parentElement;
 
+    const weightInput =
+    container.querySelector(".weight-input");
+
     const weight =
-        container.querySelector(".weight-input").value;
+    weightInput ? weightInput.value : "";
 
     const reps =
         container.querySelector(".reps-input").value;
 
-    if(!weight || !reps){
+    if(!reps){
 
         alert("Enter weight and reps.");
 
@@ -1056,7 +1115,7 @@ async function saveExerciseLog(exerciseName, button){
 
     const log = {
         exercise: exerciseName,
-        weight: Number(weight),
+        weight: weight ? Number(weight) : null,
         reps: Number(reps),
         date: new Date().toDateString()
     };
@@ -1082,12 +1141,29 @@ async function saveExerciseLog(exerciseName, button){
     button.classList.remove("saved");
 
     }, 1500);
+}
+async function activatePro(){
 
-    setTimeout(() => {
+    const user = auth.currentUser;
 
-        button.innerText = "Save";
+    if(!user) return;
 
-    }, 1500);
+    await db.collection("users")
+    .doc(user.uid)
+    .update({
+        isPro: true,
+        subscriptionStatus: "active"
+    });
+
+    currentUserData = {
+    ...currentUserData,
+    isPro: true
+    };
+
+    applyProStatus();
+    proModal.classList.remove("active");
+
+    alert("Aura Pro Activated ⚡");
 }
 function openWorkoutModal(){
 
