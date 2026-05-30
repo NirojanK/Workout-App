@@ -11,7 +11,8 @@ html {
     scroll-behavior: smooth;
 }
 .auth-btn-img {
-    width: 110px;
+    width: 45%;
+    max-width: 200px;
     height: auto;
     cursor: pointer;
     transition: transform 0.2s ease;
@@ -79,7 +80,8 @@ html {
     background: linear-gradient(to bottom, #d2b48c, #f5f5dc);
 }
 .login-box {
-    width: 320px;
+    width:90%;
+    max-width: 400px;
     padding: 30px;
     position: relative;
     z-index: 5;
@@ -901,6 +903,10 @@ body {
 /* MOBILE */
 @media (max-width:768px){
 
+    .login-box {
+        width: 92%;
+        padding: 24px;
+    }
     .profile-page{
         padding:25px;
     }
@@ -916,6 +922,7 @@ body {
         height:100px;
     }
 }
+
 /*Dashboard*/
 .dashboard {
     padding: 40px 20px;
@@ -2592,6 +2599,89 @@ button:active {
 
     transform:scale(1.03);
 }
+/* =========================
+   AURA PRO
+========================= */
+
+.pro-card{
+    position:relative;
+
+    overflow:hidden;
+
+    border:1px solid rgba(0,255,255,0.2);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20,20,20,0.95),
+            rgba(35,35,35,0.95)
+        );
+}
+
+.pro-card::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.08),
+            transparent
+        );
+
+    transform:translateX(-100%);
+
+    animation:proShine 4s linear infinite;
+}
+
+@keyframes proShine{
+
+    100%{
+        transform:translateX(100%);
+    }
+}
+
+.pro-badge{
+    position:absolute;
+
+    top:12px;
+    right:12px;
+
+    background:
+        linear-gradient(
+            to right,
+            #00ffff,
+            #7c3aed
+        );
+
+    color:white;
+
+    font-size:0.75rem;
+
+    font-weight:700;
+
+    padding:5px 10px;
+
+    border-radius:999px;
+
+    letter-spacing:1px;
+}
+
+.locked{
+    opacity:0.7;
+
+    filter:blur(0.2px);
+}
+
+.locked-text{
+    opacity:0.8;
+
+    font-size:0.95rem;
+}
+
 
 @media (max-width: 600px) {
     .pro-features {
@@ -2602,6 +2692,7 @@ button:active {
         padding: 24px;
     }
 }
+
 
 
 /* MOBILE RESPONSIVE (important) */
