@@ -1,2 +1,2 @@
-# Workout-App
-Reference for my workouts and for people who are looking to get back into the gym
+# Aura Farmer
+Gamified progression work out system for people who enjoy working out or are trying to get back into it
