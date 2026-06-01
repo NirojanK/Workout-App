@@ -4,3 +4,4 @@ Gamified progression work out system for people who enjoy working out or are try
 Stuff that needs to get added:
 
 #Nutrition plans for user-based goal
+#workouts based on user's goals
