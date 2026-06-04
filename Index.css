@@ -1290,6 +1290,76 @@ body {
 .history-item:hover{
     transform:translateX(4px);
 }
+.workout-group{
+    display:none;
+}
+/* WORKOUT SELECTOR MODAL */
+.workout-selector-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.workout-selector-modal.active{
+
+    display:flex;
+}
+
+.workout-selector-content{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:28px;
+
+    width:min(90%, 500px);
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.workout-selector-content button{
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    font-weight:700;
+}
+#workouts{
+    display:none;
+}
+#exerciseSection{
+    display:none;
+}
+#womenSection{
+    display:none;
+}
 /* MODERN WORKOUT CARDS */
 .box::before{
     content:"";
@@ -2402,7 +2472,7 @@ button:active {
     max-height:85vh;
     overflow-y:auto;
 
-    background:white;
+    background: burlywood;
 
     padding:40px;
 
