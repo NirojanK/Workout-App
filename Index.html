@@ -105,7 +105,7 @@
             Tap the button below to get started, and then when your done tap "Mark Complete".
         </p>
 
-        <a href="#workouts" onclick="startWorkout()">
+        <a href="#workouts" onclick="openWorkoutSelector()">
         <img src="start.png" id = "cta-btn" style = "width:180px; height:auto; margin-right:8px;">
         </a>
 
@@ -277,9 +277,18 @@
     </div>
 </section>
 <!-- Workout Sections -->
+ <section id="exerciseSection">
  <h2 class="section-title">Exercises</h2>
+ <button
+    id="changeWorkoutBtn"
+    onclick="openWorkoutSelector()"
+    style="display:none;"
+ >
+    Change Workout
+</button>
+ </section>
 <div class="container" id="workouts">
-    <div class="box">
+    <div class="box workout-group pull-workout">
     <h3>Back</h3>
     <div class="img-row">
         <img src="back-img2.jpg">
@@ -315,7 +324,7 @@
         <li><strong>Reverse Cable Flys</strong><span>8-10 reps</span></li>
     </ul>
     </div>
-    <div class="box">
+        <div class="box workout-group push-workout">
         <h3>Chest</h3>
         <div class="img-row">
             <img src="chest-img2.jpg">
@@ -378,8 +387,8 @@
             <li><strong>Chest Flys</strong><span> (3 sets of 10-15 reps)</span></li>
             <li><strong>Dips</strong><span> (3 sets of 4-9 reps)</span></li>
         </ul>
-    </div>
-    <div class="box">
+        </div>
+        <div class="box workout-group legs-workout">
         <h3>Legs</h3>
         <div class="img-row">
             <img src="leg-img.jpg">
@@ -423,8 +432,8 @@
             <li><strong>Hip Adductions</strong><span> (3 sets of 15 reps)</span></li>
             <li><strong>Hip Abductions</strong><span> (3 sets of 15 reps)</span></li>
         </ul>
-    </div>
-    <div class="box">
+        </div>
+        <div class="box workout-group pull-workout">
         <h3>Arm Exercises</h3>
         <p>Mix these into your chest or back workouts at the end.</p>
         <div class="img-row">
@@ -444,8 +453,8 @@
             <li><strong>Tricep Dips</strong><span> (3 sets of 8-10 reps)</span></li>
             <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-10 reps)</span></li>
         </ul>
-    </div>
-    <div class = "box">
+        </div>
+        <div class="box workout-group push-workout">
         <h3>Shoulder Exercises</h3>
         <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
         <ul class="exercise-list">
@@ -457,7 +466,7 @@
             <li><strong>Face Pulls</strong><span> (3 sets of 10-15 reps)</span></li>
         </ul>
     </div>
-    <div class = "box">
+        <div class="box workout-group cardio-workout">
         <h3>Cardio + core</h3>
         <div class ="img-row">
             <img src="cardio-img.jpg">
@@ -472,9 +481,10 @@
             <li><strong>Box steps</strong><span> (1-2 minutes)</span></li>
         </ul>
     </div>
-    <div class = "box">
+    <div class="box workout-group cardio-workout">
         <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
         <h5>Great for active recovery, flexibility, and consistency.</h5>
+    </div>
     </div>
 </div>
 <!--Meet the team 
@@ -498,8 +508,10 @@
     </div>
 </section>
 -->
-<section class="women-section">
+<section class="women-section"id="womenSection">
+    
     <h2 class="section-title">Women’s Training</h2>
+    <div class="workout-group women-workout">
     <div class="container">
         <div class="box">
             <h3>Glutes & Legs Focus</h3>
@@ -528,6 +540,7 @@
                 <li><strong>Seated Cable Rows</strong><span> (3 sets of 8-12 reps)</span></li>
             </ul>
         </div>
+    </div>
     </div>
 </section>
 <div class="global-workout-complete">
@@ -631,6 +644,38 @@
         </div>
 
     </div>
+</div>
+<div class="workout-selector-modal"
+     id="workoutSelectorModal">
+
+    <div class="workout-selector-content">
+
+        <h2>
+            What are you training today?
+        </h2>
+
+        <button onclick="selectWorkout('push')">
+            💪 Push
+        </button>
+
+        <button onclick="selectWorkout('pull')">
+            🦍 Pull
+        </button>
+
+        <button onclick="selectWorkout('legs')">
+            🦵 Legs
+        </button>
+
+        <button onclick="selectWorkout('cardio')">
+            ❤️ Cardio
+        </button>
+
+        <button onclick="selectWorkout('women')">
+            🌸 Women's Training
+        </button>
+
+    </div>
+
 </div>
 <!-- WORKOUT COMPLETE MODAL -->
 <div class="workout-modal" id="workoutModal">
@@ -1009,7 +1054,54 @@ function updateWorkoutTimer(){
         + ":" +
         String(seconds).padStart(2, "0");
 }
+function openWorkoutSelector(){
 
+    document
+        .getElementById("workoutSelectorModal")
+        .classList.add("active");
+}
+
+function selectWorkout(type){
+
+    document
+        .getElementById("workoutSelectorModal")
+        .classList.remove("active");
+
+    document
+        .querySelectorAll(".workout-group")
+        .forEach(group => {
+            group.style.display = "none";
+        });
+
+    document.getElementById(
+        "womenSection"
+    ).style.display = "none";
+
+    if(type === "women"){
+
+        document.getElementById(
+            "womenSection"
+        ).style.display = "block";
+
+    } else {
+
+        document
+            .querySelectorAll("." + type + "-workout")
+            .forEach(group => {
+                group.style.display = "block";
+            });
+    }
+
+    document.getElementById(
+        "exerciseSection"
+    ).style.display = "block";
+
+    document.getElementById(
+        "workouts"
+    ).style.display = "flex";
+
+    startWorkout();
+}
 function stopWorkout(){
 
     clearInterval(workoutTimer);
