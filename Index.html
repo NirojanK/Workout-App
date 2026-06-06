@@ -45,6 +45,11 @@
             Team
             </a>
             </li>
+            <li>
+            <a href="#" onclick ="openSplitModal()">
+            Splits
+            </a>
+            </li>
             <li><button id="auraProBtn">Aura Pro</button></li>
         </ul>
     </div>
@@ -225,7 +230,7 @@
         View Full History →
     </button>
 </div>
-<!--Splits guide-->
+<!--Splits guide
 <section class="split-guide">
     <div class="aura-particles">
     <span></span><span></span><span></span><span></span><span></span>
@@ -276,6 +281,7 @@
         </div>
     </div>
 </section>
+-->
 <!-- Workout Sections -->
  <section id="exerciseSection">
  <h2 class="section-title">Exercises</h2>
@@ -645,6 +651,42 @@
 
     </div>
 </div>
+<!-- SPLIT MODAL -->
+<div class="split-modal" id="splitModal">
+
+    <div class="split-modal-content">
+
+        <span
+            class="close-split"
+            onclick="closeSplitModal()"
+        >
+            &times;
+        </span>
+
+        <h2>Training Split Guide</h2>
+
+        <div class="container">
+
+            <div class="box">
+                <h3>PPL (Push Pull Legs)</h3>
+                ...
+            </div>
+
+            <div class="box">
+                <h3>Bro Split</h3>
+                ...
+            </div>
+
+            <div class="box">
+                <h3>Upper / Lower</h3>
+                ...
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
 <div class="workout-selector-modal"
      id="workoutSelectorModal">
 
@@ -773,6 +815,9 @@
     <p id="workoutSessionTime">
         00:00
     </p>
+     <button onclick="cancelWorkout()">
+        Cancel Workout
+    </button>
 </div>
 <!-- Aura Pro Modal -->
 <div id="proModal" class="pro-modal">
@@ -957,7 +1002,7 @@ function checkGoalSetup(userId){
 let workoutTimer;
 let workoutSeconds = 0;
 let workoutActive = false;
-
+let workoutStartTime = null;
 const MIN_WORKOUT_SECONDS = 20 * 60;
 
 function startWorkout(){
@@ -968,27 +1013,28 @@ function startWorkout(){
 
     workoutActive = true;
 
+    workoutStartTime = Date.now();
+
+    localStorage.setItem(
+        "workoutStartTime",
+        workoutStartTime
+    );
+
     document.getElementById(
         "workoutSession"
     ).style.display = "block";
-
-    workoutSeconds = 0;
 
     updateWorkoutTimer();
 
     workoutTimer = setInterval(() => {
 
-        workoutSeconds++;
+        workoutSeconds = Math.floor(
+            (Date.now() - workoutStartTime) / 1000
+        );
 
         updateWorkoutTimer();
 
     }, 1000);
-
-    /* OPTIONAL */
-    localStorage.setItem(
-        "workoutStartTime",
-        Date.now()
-    );
 }
 function openTeamModal(){
 
@@ -1001,6 +1047,19 @@ function closeTeamModal(){
 
     document
         .getElementById("teamModal")
+        .classList.remove("active");
+}
+function openSplitModal(){
+
+    document
+        .getElementById("splitModal")
+        .classList.add("active");
+}
+
+function closeSplitModal(){
+
+    document
+        .getElementById("splitModal")
         .classList.remove("active");
 }
 function applyProStatus(){
@@ -1108,11 +1167,43 @@ function stopWorkout(){
 
     workoutActive = false;
 
+    workoutStartTime = null;
+
+    localStorage.removeItem(
+        "workoutStartTime"
+    );
+
     document.getElementById(
         "workoutSession"
     ).style.display = "none";
 
     return Math.floor(workoutSeconds / 60);
+}
+function cancelWorkout(){
+
+    if(!confirm(
+        "Cancel this workout session?"
+    )){
+        return;
+    }
+
+    clearInterval(workoutTimer);
+
+    workoutActive = false;
+
+    workoutSeconds = 0;
+
+    workoutStartTime = null;
+
+    localStorage.removeItem(
+        "workoutStartTime"
+    );
+
+    document.getElementById(
+        "workoutSession"
+    ).style.display = "none";
+
+    updateWorkoutTimer();
 }
 function completeWorkout(day) {
     const user = auth.currentUser;
@@ -1609,23 +1700,41 @@ function nextReview() {
 
 let timer;
 let timeLeft = 60;
+let timerEndTime = null;
 
 function startTimer(seconds) {
+
     clearInterval(timer);
-    timeLeft = seconds;
+
+    timerEndTime =
+        Date.now() + (seconds * 1000);
 
     updateDisplay();
 
     timer = setInterval(() => {
-        timeLeft--;
+
+        timeLeft = Math.max(
+            0,
+            Math.ceil(
+                (timerEndTime - Date.now()) / 1000
+            )
+        );
+
         updateDisplay();
 
-        if (timeLeft <= 0) {
+        if(timeLeft <= 0){
+
             clearInterval(timer);
-            const audio = new Audio("https://www.soundjay.com/buttons/beep-07.mp3");
+
+            const audio =
+                new Audio(
+                    "https://www.soundjay.com/buttons/beep-07.mp3"
+                );
+
             audio.play();
         }
-    }, 1000);
+
+    }, 250);
 }
 
 function pauseTimer() {
@@ -1939,6 +2048,47 @@ window.addEventListener("click", (e) => {
     if (e.target === proModal) {
         proModal.classList.remove("active");
     }
+});
+window.addEventListener("load", () => {
+
+    const savedStartTime =
+        localStorage.getItem("workoutStartTime");
+
+    if(!savedStartTime) return;
+
+    const elapsedSeconds =
+        Math.floor(
+            (Date.now() - Number(savedStartTime)) / 1000
+        );
+
+    // Ignore anything older than 4 hours
+    if(elapsedSeconds > 14400){
+
+        localStorage.removeItem(
+            "workoutStartTime"
+        );
+
+        return;
+    }
+
+    workoutStartTime =
+        Number(savedStartTime);
+
+    workoutActive = true;
+
+    document.getElementById(
+        "workoutSession"
+    ).style.display = "block";
+
+    workoutTimer = setInterval(() => {
+
+        workoutSeconds = Math.floor(
+            (Date.now() - workoutStartTime) / 1000
+        );
+
+        updateWorkoutTimer();
+
+    }, 1000);
 });
 </script>
 </body>
