@@ -90,8 +90,6 @@
                 Upload Photo
                 <input type="file" id="imageUpload" hidden accept="image/*">
             </label>
-
-            <a href="#">Profile</a>
             <a href="#" onclick="openSettings()">
             Settings
             </a>
@@ -324,6 +322,8 @@
                 💾 Save
             </button>
     </div>
+    </div>
+    </li>
         <li><strong>Seated Cable Rows</strong><span>8-12 reps</span></li>
         <li><strong>Barbell Rows</strong><span>5-10 reps</span></li>
         <li><strong>Lat Pulldowns</strong><span>7-10 reps</span></li>
@@ -404,6 +404,7 @@
             <img src="leg-img5.jpg">
         </div>
         <ul class="exercise-list">
+            <li class="exercise-item">
             <div class="exercise-card">
         <!-- LEFT SIDE -->
         <div class="exercise-info">
@@ -431,6 +432,7 @@
             </button>
         </div>
     </div>
+    </li>
             <li><strong>Lunges</strong><span> (2 laps)</span></li>
             <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
             <li><strong>Hamstring Curls</strong><span> (3 sets of 6-10 reps)</span></li>
@@ -492,7 +494,6 @@
         <h5>Great for active recovery, flexibility, and consistency.</h5>
     </div>
     </div>
-</div>
 <!--Meet the team 
 <section class="team-section" id="team">
     <h2 class="section-title">Meet the Team</h2>
@@ -939,6 +940,9 @@ function loadUserData(userId) {
         if (doc.exists) {
             const data = doc.data();
             currentUserData = data;
+            updateFavoriteUI(
+            data.favorites || []
+            );
             document.querySelector(
             ".profile-name"
             ).innerText =
@@ -1122,6 +1126,11 @@ function openWorkoutSelector(){
 
 function selectWorkout(type){
 
+    localStorage.setItem(
+    "selectedWorkout",
+    type
+    );
+
     document
         .getElementById("workoutSelectorModal")
         .classList.remove("active");
@@ -1177,6 +1186,10 @@ function stopWorkout(){
         "workoutSession"
     ).style.display = "none";
 
+    localStorage.removeItem(
+    "selectedWorkout"
+    );
+
     return Math.floor(workoutSeconds / 60);
 }
 function cancelWorkout(){
@@ -1203,7 +1216,63 @@ function cancelWorkout(){
         "workoutSession"
     ).style.display = "none";
 
+    localStorage.removeItem(
+    "selectedWorkout"
+    );
+
     updateWorkoutTimer();
+}
+function addFavoriteButtons(){
+
+    document
+        .querySelectorAll(".exercise-list li")
+        .forEach(item => {
+
+            const exerciseName =
+                item.querySelector("strong")?.innerText ||
+                item.querySelector("h5")?.innerText;
+
+            if(!exerciseName) return;
+
+            const star =
+                document.createElement("button");
+
+            star.innerText = "☆";
+
+            star.className =
+                "favorite-btn";
+
+            star.dataset.exercise =
+                exerciseName;
+
+            star.onclick = () =>
+                toggleFavorite(exerciseName);
+
+            item.appendChild(star);
+        });
+}
+function updateFavoriteUI(favorites = []){
+
+    document
+        .querySelectorAll(".favorite-btn")
+        .forEach(btn => {
+
+            const exercise =
+                btn.dataset.exercise;
+
+            if(favorites.includes(exercise)){
+
+                btn.innerText = "⭐";
+
+                btn.classList.add("favorited");
+
+            } else {
+
+                btn.innerText = "☆";
+
+                btn.classList.remove("favorited");
+            }
+        });
 }
 function completeWorkout(day) {
     const user = auth.currentUser;
@@ -1403,6 +1472,39 @@ async function saveExerciseLog(exerciseName, button){
     button.classList.remove("saved");
 
     }, 1500);
+}
+async function toggleFavorite(exerciseName){
+
+    const user = auth.currentUser;
+
+    if(!user) return;
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    const doc = await ref.get();
+
+    const data = doc.data() || {};
+
+    let favorites = data.favorites || [];
+
+    if(favorites.includes(exerciseName)){
+
+        favorites =
+            favorites.filter(
+                item => item !== exerciseName
+            );
+
+    } else {
+
+        favorites.push(exerciseName);
+    }
+
+    await ref.set({
+        favorites
+    }, { merge:true });
+
+    updateFavoriteUI(favorites);
 }
 async function activatePro(){
 
@@ -2050,6 +2152,47 @@ window.addEventListener("click", (e) => {
     }
 });
 window.addEventListener("load", () => {
+
+    addFavoriteButtons();
+
+    const savedWorkout =
+    localStorage.getItem(
+        "selectedWorkout"
+    );
+
+if(savedWorkout){
+
+    document
+        .querySelectorAll(".workout-group")
+        .forEach(group => {
+            group.style.display = "none";
+        });
+
+    if(savedWorkout === "women"){
+
+        document.getElementById(
+            "womenSection"
+        ).style.display = "block";
+
+    } else {
+
+        document
+            .querySelectorAll(
+                "." + savedWorkout + "-workout"
+            )
+            .forEach(group => {
+                group.style.display = "block";
+            });
+    }
+
+    document.getElementById(
+        "exerciseSection"
+    ).style.display = "block";
+
+    document.getElementById(
+        "workouts"
+    ).style.display = "flex";
+    }
 
     const savedStartTime =
         localStorage.getItem("workoutStartTime");
