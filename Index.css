@@ -318,6 +318,55 @@ body {
     display:flex;
     align-items:center;
 }
+/* SPLIT GUIDE MODAL */
+
+.split-modal{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,0.75);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.split-modal.active{
+    display:flex;
+}
+
+.split-modal-content{
+
+    width:min(95%, 900px);
+
+    max-height:85vh;
+    overflow-y:auto;
+
+    background: burlywood;
+
+    padding:40px;
+
+    border-radius:24px;
+
+    position:relative;
+}
+
+.close-split{
+
+    position:absolute;
+
+    top:15px;
+    right:20px;
+
+    font-size:2rem;
+
+    cursor:pointer;
+}
 #auraProBtn{
     background:none;
 
@@ -1505,6 +1554,21 @@ body {
     gap:16px;
 
     min-width:0;
+}
+.favorite-btn{
+    margin-left:10px;
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.2);
+}
+
+.favorite-btn.favorited{
+    color:gold;
 }
 
 /* LABELS */
@@ -2958,6 +3022,29 @@ button:active {
         width:220px;
     }
 
+}
+@media (max-width: 768px){
+
+    .exercise-list li{
+
+        display:flex;
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:8px;
+    }
+
+    .favorite-btn{
+
+        align-self:flex-end;
+    }
+
+    .exercise-list span{
+
+        font-size:14px;
+        opacity:0.8;
+    }
 }
 @media (max-width:768px){
 
