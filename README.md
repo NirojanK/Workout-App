@@ -10,3 +10,4 @@ Stuff that needs to get added:
 #make instagram and youtube account for aura farmer
 #add normal-to-hard difficulty for each workout, color coded (green to red)
 #add one rep max function
+#add new workouts to each muscle group
