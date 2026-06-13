@@ -667,20 +667,64 @@
         <h2>Training Split Guide</h2>
 
         <div class="container">
-
             <div class="box">
-                <h3>PPL (Push Pull Legs)</h3>
-                ...
+    <h3>Beginner Full Body</h3>
+
+    <p>
+        Perfect for new lifters.
+        Train 2-3 times per week.
+    </p>
+
+    <ul>
+        <li>Squats</li>
+        <li>Bench Press</li>
+        <li>Rows</li>
+        <li>Planks</li>
+    </ul>
+
+    <p>
+        Focus on learning technique and consistency.
+    </p>
+</div>
+            <div class="box">
+                 <h3>PPL (Push Pull Legs)</h3>
+
+         <p>
+        Great for intermediate and advanced lifters.
+        Train 5-6 days per week.
+        </p>
+
+    <ul>
+        <li><strong>Push:</strong> Chest, Shoulders, Triceps</li>
+        <li><strong>Pull:</strong> Back, Biceps</li>
+        <li><strong>Legs:</strong> Quads, Hamstrings, Glutes, Calves</li>
+    </ul>
+
+    <p>
+        Example:
+        Push → Pull → Legs → Rest → Repeat
+    </p>
             </div>
 
             <div class="box">
-                <h3>Bro Split</h3>
-                ...
-            </div>
+                 <h3>Bro Split</h3>
 
-            <div class="box">
-                <h3>Upper / Lower</h3>
-                ...
+    <p>
+        Focus on one muscle group per day.
+        Great for bodybuilding and recovery.
+    </p>
+
+    <ul>
+        <li>Monday: Chest</li>
+        <li>Tuesday: Back</li>
+        <li>Wednesday: Legs</li>
+        <li>Thursday: Arms</li>
+        <li>Friday: Shoulders</li>
+    </ul>
+
+    <p>
+        Best for 4-5 training days per week.
+    </p>
             </div>
 
         </div>
@@ -802,7 +846,18 @@
         <button onclick="saveSettings()">
             Save Changes
         </button>
-    </div>
+        <!--Delete account-->
+        <button
+        onclick="deleteAccount()"
+        style="
+        margin-top:12px;
+        background:#d32f2f;
+        color:white;
+        "
+        >
+        Delete Account
+        </button>
+        </div>
 </div>
 <!-- IMAGE MODAL -->
 <div class="image-modal" id="imageModal">
@@ -2083,6 +2138,53 @@ function saveSettings(){
     closeSettings();
 
     alert("✅ Settings updated");
+}
+async function deleteAccount() {
+
+    const user = auth.currentUser;
+
+    if (!user) return;
+
+    const confirmed = confirm(
+        "Are you sure?\n\nThis will permanently delete your account and all workout data."
+    );
+
+    if (!confirmed) return;
+
+    try {
+
+        await db.collection("users")
+            .doc(user.uid)
+            .delete();
+
+        await db.collection("presence")
+            .doc(user.uid)
+            .delete();
+
+        localStorage.clear();
+
+        await user.delete();
+
+        alert("Account deleted.");
+
+    } catch (error) {
+
+        console.error(error);
+
+        if (
+            error.code ===
+            "auth/requires-recent-login"
+        ) {
+
+            alert(
+                "Please log out and log back in before deleting your account."
+            );
+
+        } else {
+
+            alert(error.message);
+        }
+    }
 }
 function updateUserPresence(userId){
 
