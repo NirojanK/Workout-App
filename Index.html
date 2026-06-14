@@ -187,6 +187,21 @@
         <h3>Best Streak</h3>
         <p id="dashBestStreak">0</p>
         </div>
+        <div class="dash-card">
+        <h3>Steps Today</h3>
+        <p id="dashSteps">0 👣</p>
+
+        <progress
+        id="stepsProgress"
+        value="0"
+        max="10000"
+        style="width:100%;margin-top:10px;"
+        ></progress>
+
+        <small id="stepsGoalText">
+        0 / 10000
+        </small>
+        </div>
         <div class="dash-card pro-card locked" id="analyticsCard">
         <div class="pro-badge">
             PRO
@@ -214,6 +229,21 @@
 <div class="achievements-box">
     <h3>Achievements</h3>
     <div id="achievementsGrid" class="achievements-grid"></div>
+</div>
+<div class="history-box">
+
+    <h3>Daily Steps</h3>
+
+    <input
+        type="number"
+        id="stepInput"
+        placeholder="Enter today's steps"
+    >
+
+    <button onclick="saveSteps()">
+        Save Steps
+    </button>
+
 </div>
 <div class="history-box">
     <h3>Workout History</h3>
@@ -1027,6 +1057,9 @@ function loadUserData(userId) {
         );
         renderHistory(data.history || []);
         updateProfilePage(data);
+        updateStepsUI(
+        data.stepsToday || 0
+        );
         applyProStatus();
             renderAchievements(data.achievements || []);
             document.getElementById("dashGoal").innerText =
@@ -1527,6 +1560,46 @@ async function saveExerciseLog(exerciseName, button){
     button.classList.remove("saved");
 
     }, 1500);
+}
+async function saveSteps() {
+
+    const user = auth.currentUser;
+
+    if(!user) return;
+
+    const steps =
+        Number(
+            document.getElementById("stepInput").value
+        );
+
+    if(!steps) return;
+
+    const ref =
+        db.collection("users").doc(user.uid);
+
+    await ref.set({
+        stepsToday: steps
+    }, { merge:true });
+
+    updateStepsUI(steps);
+}
+
+function updateStepsUI(steps = 0){
+
+    document.getElementById(
+        "dashSteps"
+    ).innerText =
+        steps.toLocaleString() + " 👣";
+
+    document.getElementById(
+        "stepsProgress"
+    ).value = steps;
+
+    document.getElementById(
+        "stepsGoalText"
+    ).innerText =
+        steps.toLocaleString() +
+        " / 10,000";
 }
 async function toggleFavorite(exerciseName){
 
