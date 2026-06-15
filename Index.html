@@ -190,17 +190,31 @@
         <div class="dash-card">
         <h3>Steps Today</h3>
         <p id="dashSteps">0 👣</p>
-
         <progress
         id="stepsProgress"
         value="0"
         max="10000"
         style="width:100%;margin-top:10px;"
         ></progress>
-
         <small id="stepsGoalText">
         0 / 10000
         </small>
+        </div>
+        <div class="dash-card" id="foodScannerCard">
+
+        <h3>📸 Food Scanner</h3>
+
+        <input
+        type="file"
+        id="foodImage"
+        accept="image/*"
+        capture="environment"
+        >
+
+        <button onclick="scanFood()">
+        Analyze Meal
+        </button>
+
         </div>
         <div class="dash-card pro-card locked" id="analyticsCard">
         <div class="pro-badge">
@@ -229,21 +243,6 @@
 <div class="achievements-box">
     <h3>Achievements</h3>
     <div id="achievementsGrid" class="achievements-grid"></div>
-</div>
-<div class="history-box">
-
-    <h3>Daily Steps</h3>
-
-    <input
-        type="number"
-        id="stepInput"
-        placeholder="Enter today's steps"
-    >
-
-    <button onclick="saveSteps()">
-        Save Steps
-    </button>
-
 </div>
 <div class="history-box">
     <h3>Workout History</h3>
@@ -633,6 +632,7 @@
         </div>
     </div>
 </div>
+
 <!-- TEAM MODAL -->
 <div class="team-modal" id="teamModal">
     <div class="team-modal-content">
