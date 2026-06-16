@@ -200,22 +200,6 @@
         0 / 10000
         </small>
         </div>
-        <div class="dash-card" id="foodScannerCard">
-
-        <h3>📸 Food Scanner</h3>
-
-        <input
-        type="file"
-        id="foodImage"
-        accept="image/*"
-        capture="environment"
-        >
-
-        <button onclick="scanFood()">
-        Analyze Meal
-        </button>
-
-        </div>
         <div class="dash-card pro-card locked" id="analyticsCard">
         <div class="pro-badge">
             PRO
@@ -940,6 +924,32 @@
         </button>
     </div>
 </div>
+</div>
+<div class="food-modal" id="foodModal">
+
+    <div class="food-modal-content">
+
+        <span
+            class="close-food"
+            onclick="closeFoodModal()"
+        >
+            &times;
+        </span>
+
+        <h2>🍽 Meal Analysis</h2>
+
+        <p id="foodName"></p>
+
+        <p><strong>Calories:</strong> <span id="foodCalories"></span></p>
+
+        <p><strong>Protein:</strong> <span id="foodProtein"></span></p>
+
+        <p><strong>Carbs:</strong> <span id="foodCarbs"></span></p>
+
+        <p><strong>Fat:</strong> <span id="foodFat"></span></p>
+
+    </div>
+
 </div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
