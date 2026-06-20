@@ -11,3 +11,4 @@ Stuff that needs to get added:
 #add normal-to-hard difficulty for each workout, color coded (green to red)
 #add one rep max function
 #add new workouts to each muscle group
+#fix it so that when the user clicks complete workout it doesn't get clicked twice
