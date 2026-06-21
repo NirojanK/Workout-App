@@ -1088,6 +1088,7 @@ let workoutTimer;
 let workoutSeconds = 0;
 let workoutActive = false;
 let workoutStartTime = null;
+let workoutCompleting = false;
 const MIN_WORKOUT_SECONDS = 20 * 60;
 
 function startWorkout(){
@@ -1355,7 +1356,7 @@ function updateFavoriteUI(favorites = []){
             }
         });
 }
-function completeWorkout(day) {
+async function completeWorkout(day) {
     const user = auth.currentUser;
     if (!user) return;
     if(!workoutActive){
@@ -1664,11 +1665,31 @@ function closeWorkoutModal(){
         .classList.remove("active");
 }
 
-function finishWorkout(day){
+async function finishWorkout(day){
+
+    if(workoutCompleting){
+        return;
+    }
+
+    workoutCompleting = true;
+
+    document
+        .querySelectorAll("#workoutModal button")
+        .forEach(btn => btn.disabled = true);
 
     closeWorkoutModal();
 
-    completeWorkout(day);
+    try{
+        await completeWorkout(day);
+    }
+    finally{
+
+        workoutCompleting = false;
+
+        document
+            .querySelectorAll("#workoutModal button")
+            .forEach(btn => btn.disabled = false);
+    }
 }
 function selectGoal(goal){
 
