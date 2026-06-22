@@ -12,3 +12,4 @@ Stuff that needs to get added:
 #add one rep max function
 #add new workouts to each muscle group
 #fix it so that when the user clicks complete workout it doesn't get clicked twice
+#fux women's section, currently not dispaying when user clicks women for workouts
