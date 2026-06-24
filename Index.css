@@ -956,7 +956,22 @@ body {
     margin-bottom:10px;
     font-size:1.4rem;
 }
+/* DIFFICULTY */
+.difficulty-easy{
+    border-left: 6px solid #4CAF50;
+}
 
+.difficulty-medium{
+    border-left: 6px solid #FFC107;
+}
+
+.difficulty-hard{
+    border-left: 6px solid #F44336;
+}
+
+.difficulty-elite{
+    border-left: 6px solid #9C27B0;
+}
 /* ACHIEVEMENTS */
 .profile-achievements{
     background:
