@@ -2343,6 +2343,28 @@ window.addEventListener("click", (e) => {
 window.addEventListener("load", () => {
 
     addFavoriteButtons();
+    
+    // Difficulty colors
+    document.querySelectorAll(".legs-workout")
+    .forEach(card => {
+        card.classList.add("difficulty-hard");
+    });
+
+    document.querySelectorAll(".push-workout")
+    .forEach(card => {
+        card.classList.add("difficulty-medium");
+    });
+
+    document.querySelectorAll(".pull-workout")
+    .forEach(card => {
+        card.classList.add("difficulty-medium");
+    });
+
+    document.querySelectorAll(".cardio-workout")
+    .forEach(card => {
+        card.classList.add("difficulty-easy");
+    });
+
 
     const savedWorkout =
     localStorage.getItem(
