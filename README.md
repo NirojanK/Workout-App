@@ -14,3 +14,4 @@ Stuff that needs to get added:
 #fix it so that when the user clicks complete workout it doesn't get clicked twice
 #fux women's section, currently not dispaying when user clicks women for workouts
 #make it so the user has the ability to log each individual workout 
+#add reccomended foods based on user goal
