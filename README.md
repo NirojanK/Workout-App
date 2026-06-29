@@ -16,3 +16,4 @@ Stuff that needs to get added:
 #make it so the user has the ability to log each individual workout 
 #add reccomended foods based on user goal
 #find new testers
+#Ive noticed lately I haven't had much time to work on the app, this is mostly due to to waking up a little later than usual and watching streams
