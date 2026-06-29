@@ -15,3 +15,4 @@ Stuff that needs to get added:
 #fux women's section, currently not dispaying when user clicks women for workouts
 #make it so the user has the ability to log each individual workout 
 #add reccomended foods based on user goal
+#find new testers
