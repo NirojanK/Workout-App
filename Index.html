@@ -50,7 +50,6 @@
             Splits
             </a>
             </li>
-            <li><button id="auraProBtn">Aura Pro</button></li>
         </ul>
     </div>
     <div class="nav-right">
@@ -200,16 +199,6 @@
         0 / 10000
         </small>
         </div>
-        <div class="dash-card pro-card locked" id="analyticsCard">
-        <div class="pro-badge">
-            PRO
-        </div>
-
-        <h3>Advanced Analytics</h3>
-
-    <p class="locked-text">
-        Upgrade to unlock
-    </p>
 </div>
 </div>
 </div>
@@ -898,42 +887,6 @@
         Cancel Workout
     </button>
 </div>
-<!-- Aura Pro Modal -->
-<div id="proModal" class="pro-modal">
-    <div class="pro-modal-content">
-        <button class="close-modal" id="closeProModal">×</button>
-        <h1>Aura Pro</h1>
-        <p class="pro-subtitle">Unlock premium features and level up your fitness journey.</p>
-        <div class="pro-features">
-            <div class="pro-feature-card">
-                <h3>Advanced Analytics</h3>
-                <p>Track progress with detailed workout insights.</p>
-            </div>
-            <div class="pro-feature-card">
-                <h3>Custom Workout Plans</h3>
-                <p>Create and save personalized routines.</p>
-            </div>
-            <div class="pro-feature-card">
-                <h3>Exclusive Themes</h3>
-                <p>Unlock premium app customization options.</p>
-            </div>
-            <div class="pro-feature-card">
-                <h3>Future Features</h3>
-                <p>Get early access to upcoming Aura updates.</p>
-            </div>
-        </div>
-        <div class="pro-price">
-            <span>$4.99/month</span>
-        </div>
-        <button
-        class="upgrade-btn"
-        onclick="activatePro()"
-        >
-        Upgrade to Pro
-        </button>
-    </div>
-</div>
-</div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -972,7 +925,7 @@ function signUp() {
 
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
-            alert("Account created!");
+            alert("Welcome to Aura Farmer!");
         })
         .catch(err => alert(err.message));
 }
@@ -1053,7 +1006,6 @@ function loadUserData(userId) {
         updateStepsUI(
         data.stepsToday || 0
         );
-        applyProStatus();
             renderAchievements(data.achievements || []);
             document.getElementById("dashGoal").innerText =
                 data.goal || "None";
@@ -1148,41 +1100,6 @@ function closeSplitModal(){
         .getElementById("splitModal")
         .classList.remove("active");
 }
-function applyProStatus(){
-
-    const upgradeBtn =
-    document.querySelector(".upgrade-btn");
-
-    if(currentUserData?.isPro){
-
-    upgradeBtn.innerText = "Aura Pro Active ⚡";
-
-    upgradeBtn.disabled = true;
-    }   
-
-    const analyticsCard =
-        document.getElementById("analyticsCard");
-
-    if(!analyticsCard) return;
-
-    if(currentUserData?.isPro){
-
-        analyticsCard.classList.remove("locked");
-
-        analyticsCard.innerHTML = `
-            <div class="pro-badge">
-                PRO
-            </div>
-
-            <h3>Advanced Analytics</h3>
-
-            <p>
-                Workout consistency: 92%
-            </p>
-        `;
-    }
-}
-
 function updateWorkoutTimer(){
 
     const minutes =
@@ -1451,7 +1368,7 @@ else{
     xpEarned: xpEarned
 });
 
-history = history.slice(0, 10);
+history = history.slice(0, 50);
 
         if(xp >= 100) {
             showLevelUp(getAuraRank(level + 1));
@@ -1492,14 +1409,7 @@ history = history.slice(0, 10);
 );
 renderHistory(history);
         renderAchievements(achievements);
-        document.getElementById("coachInsight").innerText =
-        getCoachInsight({
-        workouts,
-        streak,
-        level,
-        lastWorkout: day
-    });
-    });
+        });
 }
 async function saveExerciseLog(exerciseName, button){
 
@@ -1627,29 +1537,6 @@ async function toggleFavorite(exerciseName){
     }, { merge:true });
 
     updateFavoriteUI(favorites);
-}
-async function activatePro(){
-
-    const user = auth.currentUser;
-
-    if(!user) return;
-
-    await db.collection("users")
-    .doc(user.uid)
-    .update({
-        isPro: true,
-        subscriptionStatus: "active"
-    });
-
-    currentUserData = {
-    ...currentUserData,
-    isPro: true
-    };
-
-    applyProStatus();
-    proModal.classList.remove("active");
-
-    alert("Aura Pro Activated ⚡");
 }
 function openWorkoutModal(){
 
@@ -2320,26 +2207,6 @@ function loadActiveUsers(){
             activeCount + " Active";
     });
 }
-const proModal = document.getElementById("proModal");
-const closeProModal = document.getElementById("closeProModal");
-const auraProBtn = document.getElementById("auraProBtn");
-
-/* OPEN MODAL */
-auraProBtn.addEventListener("click", () => {
-    proModal.classList.add("active");
-});
-
-/* CLOSE BUTTON */
-closeProModal.addEventListener("click", () => {
-    proModal.classList.remove("active");
-});
-
-/* CLICK OUTSIDE */
-window.addEventListener("click", (e) => {
-    if (e.target === proModal) {
-        proModal.classList.remove("active");
-    }
-});
 window.addEventListener("load", () => {
 
     addFavoriteButtons();
