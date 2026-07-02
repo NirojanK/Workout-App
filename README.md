@@ -19,3 +19,4 @@ Stuff that needs to get added:
 #Ive noticed lately I haven't had much time to work on the app, this is mostly due to to waking up a little later than usual and watching streams
 #I almost have all the testers I need, just one more!
 #Finally got 12 testers!
+#released the CBT today (July 2, 2026) !!
