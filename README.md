@@ -21,3 +21,4 @@ Stuff that needs to get added:
 #Finally got 12 testers!
 #released the CBT today (July 2, 2026) !!
 # issues found by testers : Some don't want to make an account, some don't like how timer is not at the top and that they can only save a PR for certain workouts but it's not stored anywhere.
+#make this your main project, above all else start working on it
