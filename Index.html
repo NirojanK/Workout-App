@@ -28,6 +28,13 @@
               <button class="aura-btn" onclick="signUp()">Sign Up</button>
               <button class="aura-btn" onclick="login()">Login</button>
         </div>
+        <a
+        href="#"
+        id="forgotPasswordLink"
+        onclick="forgotPassword(); return false;"
+        >
+        Forgot Password?
+        </a>
         <p id="userStatus"></p>
     </div>
 </div>
@@ -104,7 +111,7 @@
     <div class="hero-text">
         <h1>Build your aura by working out!</h1>
         <p>
-            Tap the button below to get started, and then when your done tap "Mark Complete".
+            Tap the button below to get started, and then when you're done tap "Mark Complete".
         </p>
 
         <a href="#workouts" onclick="openWorkoutSelector()">
@@ -919,10 +926,6 @@ function signUp() {
             await db.collection("users").doc(user.uid).set({
                 displayName: displayName,
                 email: email,
-
-                isPro: false,
-                subscriptionStatus: "free",
-
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             });
             alert("Welcome to Aura Farmer!");
@@ -935,6 +938,39 @@ function login() {
     auth.signInWithEmailAndPassword(email, password)
         .then(() => alert("Logged in!"))
         .catch(err => alert(err.message));
+}
+function forgotPassword() {
+
+    const email = document.getElementById("email").value.trim();
+
+    if (!email) {
+        alert("Please enter your email address first.");
+        return;
+    }
+
+    auth.sendPasswordResetEmail(email)
+        .then(() => {
+            alert(
+                "Password reset email sent!\n\nPlease check your inbox (and spam folder)."
+            );
+        })
+        .catch(error => {
+
+            switch (error.code) {
+
+                case "auth/user-not-found":
+                    alert("No account exists with that email.");
+                    break;
+
+                case "auth/invalid-email":
+                    alert("Please enter a valid email address.");
+                    break;
+
+                default:
+                    alert(error.message);
+            }
+
+        });
 }
 function logout() {
     document.getElementById(
@@ -1431,7 +1467,7 @@ async function saveExerciseLog(exerciseName, button){
 
     if(!reps){
 
-        alert("Enter weight and reps.");
+        alert("Please enter the number of reps.");
 
         return;
     }
@@ -1459,7 +1495,7 @@ async function saveExerciseLog(exerciseName, button){
 
     setTimeout(() => {
 
-    button.innerText = "Save";
+    button.innerText = "💾 Save";
 
     button.classList.remove("saved");
 
