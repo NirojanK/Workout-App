@@ -23,3 +23,4 @@ Stuff that needs to get added:
 # issues found by testers : Some don't want to make an account, some don't like how timer is not at the top and that they can only save a PR for certain workouts but it's not stored anywhere.
 #make this your main project, above all else start working on it
 #need to make users more active somehow along side getting new users
+#create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
