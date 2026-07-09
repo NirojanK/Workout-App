@@ -24,3 +24,4 @@ Stuff that needs to get added:
 #make this your main project, above all else start working on it
 #need to make users more active somehow along side getting new users
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
+#make users log their entire workout so that they can see what they did during that day instead of it just being blanket covered into a group like chest or legs
