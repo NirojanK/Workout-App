@@ -1646,6 +1646,17 @@ async function completeWorkout(day) {
     }
     
     const duration = stopWorkout();
+    const completedWorkout = {
+
+    workout: day,
+
+    date: today,
+
+    duration: duration,
+
+    exercises: [...currentWorkoutExercises]
+
+    };
 
         // Increase values
         xp += xpEarned;
@@ -1684,7 +1695,10 @@ async function completeWorkout(day) {
     bestStreak,
 
     history,
-    achievements
+    achievements,
+
+    workoutHistory:
+    firebase.firestore.FieldValue.arrayUnion(completedWorkout),
 
 }, { merge: true });
 
@@ -1783,7 +1797,7 @@ async function saveExerciseLog(exerciseName, button){
     };
     
     currentWorkoutExercises.push(log);
-    
+
     const ref =
         db.collection("users").doc(user.uid);
 
