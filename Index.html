@@ -1587,9 +1587,10 @@ async function completeWorkout(day) {
     
     const ref = db.collection("users").doc(user.uid);
 
-    ref.get().then(doc => {
-        
-        let data = doc.exists ? doc.data() : {};
+    const doc = await ref.get();
+
+    let data = doc.exists ? doc.data() : {};
+
 
         let achievements = data.achievements || [];
 
@@ -1683,7 +1684,7 @@ async function completeWorkout(day) {
         if (level === 5) addAchievement(achievements, "Aura Rising");
         if (level === 10) addAchievement(achievements, "Aura Master");
 
-        ref.set({
+       await ref.set({
     lastWorkout: day,
     lastWorkoutDate: today,
 
@@ -1702,6 +1703,8 @@ async function completeWorkout(day) {
 
 }, { merge: true });
 
+    currentWorkoutExercises = [];
+
         updateAuraUI(
     day,
     xp,
@@ -1712,8 +1715,7 @@ async function completeWorkout(day) {
 );
 renderHistory(history);
         renderAchievements(achievements);
-        });
-}
+        }
 async function saveExerciseLog(exerciseName, button){
 
     const user = auth.currentUser;
@@ -1865,6 +1867,8 @@ async function saveExerciseLog(exerciseName, button){
     personalRecords: personalRecords
 
     }, { merge: true });
+
+    
 
     data.personalRecords = personalRecords;
     renderPersonalRecords(data);
