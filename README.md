@@ -25,3 +25,4 @@ Stuff that needs to get added:
 #need to make users more active somehow along side getting new users
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
 #make users log their entire workout so that they can see what they did during that day instead of it just being blanket covered into a group like chest or legs
+#A tester noted that their is still too much scrolling involved, a user should be able to switch between muscle groups even if they already selected one, and dashboard and achievements should be in it's own tabs so that they don't have to scroll past it everytime
