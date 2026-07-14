@@ -118,6 +118,7 @@
     </div>
 </div>    
 </nav>
+<div id="homeTab" class="tab-page">
 <!-- Hero Section -->
 <section class="hero" id = "home">
     <div class="hero-text">
@@ -144,6 +145,8 @@
         <img src="favicon.png" alt="logo">
     </div>
 </section>
+</div>
+<div id="profileTab" class="tab-page" style="display:none;">
 <!-- PROFILE PAGE -->
 <section class="profile-page" id="profilePage">
     <div class="profile-header">
@@ -197,6 +200,7 @@
     </div>
 
     </div>
+</div>
     <!-- Dashboard -->
  <div class="dashboard">
     <div class="dashboard-grid">
@@ -233,6 +237,8 @@
     <h3>Achievements</h3>
     <div id="achievementsGrid" class="achievements-grid"></div>
 </div>
+<!--History Tab-->
+<div id="historyTab" class="tab-page" style="display:none;">
 <div class="history-box">
     <h3>Workout History</h3>
 
@@ -245,6 +251,7 @@
     >
         View Full History →
     </button>
+</div>
 </div>
 <!--Splits guide
 <section class="split-guide">
@@ -299,6 +306,7 @@
 </section>
 -->
 <!-- Workout Sections -->
+ <div id="workoutTab" class="tab-page" style="display:none;">
  <section id="exerciseSection">
  <h2 class="section-title">Exercises</h2>
  <button
@@ -573,6 +581,7 @@
     </div>
     </div>
 </section>
+
 <div class="global-workout-complete">
 
     <img
@@ -580,7 +589,7 @@
         class="global-complete-btn"
         onclick="openWorkoutModal()"
     >
-
+</div>
 </div>
 <!-- Footer -->
 <footer class="footer">
@@ -1340,6 +1349,18 @@ let workoutStartTime = null;
 let workoutCompleting = false;
 const MIN_WORKOUT_SECONDS = 20 * 60;
 
+function showTab(tabId) {
+
+    document
+        .querySelectorAll(".tab-page")
+        .forEach(tab => {
+
+            tab.style.display = "none";
+
+        });
+
+    document.getElementById(tabId).style.display = "block";
+}
 function startWorkout(){
 
     if(workoutActive){
