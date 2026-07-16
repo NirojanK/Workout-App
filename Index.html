@@ -127,7 +127,7 @@
             Tap the button below to get started, and then when you're done tap "Mark Complete".
         </p>
 
-        <a href="#workouts" onclick="openWorkoutSelector()">
+        <a href="#workouts" onclick="showTab('workoutTab'); openWorkoutSelector();">
         <img src="start.png" id = "cta-btn" style = "width:300px; height:300px; margin-right:8px;">
         </a>
 
@@ -145,6 +145,7 @@
         <img src="favicon.png" alt="logo">
     </div>
 </section>
+<div id ="profileTab" class="tab-page" style="display:none;">
     <!-- Dashboard -->
  <div class="dashboard">
     <div class="dashboard-grid">
@@ -164,6 +165,7 @@
         <h3>Best Streak</h3>
         <p id="dashBestStreak">0</p>
         </div>
+</div>
 </div>
 </div>
 </div>
@@ -232,10 +234,12 @@
     <button onclick="pauseTimer()">Pause</button>
     <button onclick="resetTimer()">Reset</button>
 </div>
-<!--Achievements-->    
+<!--Achievements-->
+<div id ="homeTab" class="tab-page" style="display:none;">    
 <div class="achievements-box">
     <h3>Achievements</h3>
     <div id="achievementsGrid" class="achievements-grid"></div>
+</div>
 </div>
 <!--History Tab-->
 </div>
