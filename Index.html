@@ -144,32 +144,9 @@
     <div class="hero-image">
         <img src="favicon.png" alt="logo">
     </div>
+</div>
 </section>
 <div id ="profileTab" class="tab-page" style="display:none;">
-    <!-- Dashboard -->
- <div class="dashboard">
-    <div class="dashboard-grid">
-        <div class="dash-card">
-        <h3>Environment</h3>
-        <p id="dashEnvironment">Gym</p>
-        </div>
-        <div class="dash-card">
-        <h3>Goal</h3>
-        <p id="dashGoal">None</p>
-        </div>
-        <div class="dash-card">
-        <h3>Streak</h3>
-        <p id="dashStreak">0 Days 🔥</p>
-        </div>
-        <div class="dash-card">
-        <h3>Best Streak</h3>
-        <p id="dashBestStreak">0</p>
-        </div>
-</div>
-</div>
-</div>
-</div>
-<div id="profileTab" class="tab-page" style="display:none;">
 <!-- PROFILE PAGE -->
 <section class="profile-page" id="profilePage">
     <div class="profile-header">
@@ -221,9 +198,34 @@
         <p>No personal records yet.</p>
 
     </div>
-
+    <!--Achievements--> 
+    <div class="achievements-box">
+    <h3>Achievements</h3>
+    <div id="achievementsGrid" class="achievements-grid"></div>
     </div>
+    </div>
+        <!-- Dashboard -->
+ <div class="dashboard">
+    <div class="dashboard-grid">
+        <div class="dash-card">
+        <h3>Environment</h3>
+        <p id="dashEnvironment">Gym</p>
+        </div>
+        <div class="dash-card">
+        <h3>Goal</h3>
+        <p id="dashGoal">None</p>
+        </div>
+        <div class="dash-card">
+        <h3>Streak</h3>
+        <p id="dashStreak">0 Days 🔥</p>
+        </div>
+        <div class="dash-card">
+        <h3>Best Streak</h3>
+        <p id="dashBestStreak">0</p>
+        </div>
 </div>
+</div>
+</div>   
 </section>
 <!--Rest Timer-->
 <div class="timer-box">
@@ -234,15 +236,7 @@
     <button onclick="pauseTimer()">Pause</button>
     <button onclick="resetTimer()">Reset</button>
 </div>
-<!--Achievements-->
-<div id ="homeTab" class="tab-page" style="display:none;">    
-<div class="achievements-box">
-    <h3>Achievements</h3>
-    <div id="achievementsGrid" class="achievements-grid"></div>
-</div>
-</div>
 <!--History Tab-->
-</div>
 <div id="historyTab" class="tab-page" style="display:none;">
 <div class="history-box">
     <h3>Workout History</h3>
@@ -603,9 +597,6 @@
         Build discipline. Track progression.
         Grow your Aura.
     </p>
-    <div class="footer-links">
-        <a href="#home">Home</a>
-    </div>
     <p class="footer-contact">
         Contact:
         nirokal92@gmail.com
