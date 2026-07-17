@@ -2303,7 +2303,7 @@ body {
 
     position: fixed;
 
-    bottom: 25px;
+    bottom: 90px;
     right: 25px;
 
     width: 180px;
@@ -2321,7 +2321,7 @@ body {
 
     color: white;
 
-    z-index: 999;
+    z-index: 10000;
 
     display: none;
 
@@ -2455,7 +2455,9 @@ button:hover {
 button:active {
     transform: scale(0.95);
 }
-
+.tab-page {
+    padding-bottom: 100px;
+}
 /* LOCK EFFECT */
 .locked::before{
     content:"PRO";
