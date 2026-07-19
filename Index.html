@@ -238,19 +238,29 @@
 </div>
 <!--History Tab-->
 <div id="historyTab" class="tab-page" style="display:none;">
-<div class="history-box">
-    <h3>Workout History</h3>
 
-    <div id="historyList"></div>
+    <div class="history-box">
 
-    <button
-        id="historyToggleBtn"
-        onclick="toggleHistory()"
-        style="display:none;"
-    >
-        View Full History →
-    </button>
-</div>
+        <h3>Workout History</h3>
+
+        <p class="history-subtitle">
+            Tap a workout to view all exercises.
+        </p>
+
+        <div id="historyList"></div>
+
+        <div id="historyEmpty" style="display:none;">
+
+            <h4>No workouts yet 💪</h4>
+
+            <p>
+                Complete your first workout to begin tracking your progress.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
 <!--Splits guide
 <section class="split-guide">
@@ -325,36 +335,8 @@
         <img src="back-img4.jpg">
         <img src="back-img5.jpg">
     </div>
-    <ul class="exercise-list">
-        <li class="exercise-item">
-    <div class="exercise-card">
-        <!-- LEFT SIDE -->
-        <div class="exercise-info">
-            <h5>Pullups</h5>
-            <p>until failure</p>
-        </div>
-        <!-- RIGHT SIDE -->
-        <div class="exercise-log">
-            <div class="input-group">
-                <label>Reps</label>
-                <input
-                    type="number"
-                    placeholder="Enter reps"
-                    class="reps-input"
-                >
-            </div>
-            <button onclick="saveExerciseLog('Pullups', this)">
-                💾 Save
-            </button>
+    <div id="backExercises" class="exercise-list">
     </div>
-    </div>
-    </li>
-        <li><strong>Seated Cable Rows</strong><span>8-12 reps</span></li>
-        <li><strong>Barbell Rows</strong><span>5-10 reps</span></li>
-        <li><strong>Lat Pulldowns</strong><span>7-10 reps</span></li>
-        <li><strong>Reverse Cable Flys</strong><span>8-10 reps</span></li>
-        <li><strong>Dumbbell Rows</strong><span>10-15 reps</span></li>
-    </ul>
     </div>
         <div class="box workout-group push-workout">
         <h3>Chest</h3>
@@ -364,63 +346,10 @@
             <img src="chest-img4.jpg">
             <img src="chest-img5.jpg">
         </div>
-        <ul class="exercise-list">
-            <li class="exercise-item">
-
-    <div class="exercise-card">
-
-        <!-- LEFT SIDE -->
-        <div class="exercise-info">
-
-            <h5>Bench Press</h5>
-
-            <p>(3 sets of 8–10 reps)</p>
-
+        <div
+        id="chestExercises"
+        class="exercise-list">
         </div>
-
-        <!-- RIGHT SIDE -->
-        <div class="exercise-log">
-
-            <div class="input-group">
-
-                <label>Weight (lbs)</label>
-
-                <input
-                    type="number"
-                    placeholder="Enter weight"
-                    class="weight-input"
-                >
-
-            </div>
-
-            <div class="input-group">
-
-                <label>Reps</label>
-
-                <input
-                    type="number"
-                    placeholder="Enter reps"
-                    class="reps-input"
-                >
-
-            </div>
-
-            <button onclick="saveExerciseLog('Bench Press', this)">
-                💾 Save
-            </button>
-
-        </div>
-
-    </div>
-
-</li>
-            <li><strong>Push-ups</strong><span> (1 or 2 sets until failure)</span></li>
-            <li><strong>Incline Dumbbell Press</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Machine Chest Press</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Incline smith machine bench press</strong><span> (3 sets of 6-10 reps)</span></li>
-            <li><strong>Chest Flys</strong><span> (3 sets of 10-15 reps)</span></li>
-            <li><strong>Dips</strong><span> (3 sets of 4-9 reps)</span></li>
-        </ul>
         </div>
         <div class="box workout-group legs-workout">
         <h3>Legs</h3>
@@ -431,45 +360,7 @@
             <img src="leg-img4.jpg">
             <img src="leg-img5.jpg">
         </div>
-        <ul class="exercise-list">
-            <li class="exercise-item">
-            <div class="exercise-card">
-        <!-- LEFT SIDE -->
-        <div class="exercise-info">
-            <h5><strong>Squats</strong></h5>
-            <p>(3-4 sets of 8–10 reps)</p>
-        </div>
-        <!-- RIGHT SIDE -->
-        <div class="exercise-log">
-            <div class="input-group">
-                <label>Weight (lbs)</label>
-                <input
-                    type="number"
-                    placeholder="Enter weight"
-                    class="weight-input"
-                >
-                <label>Reps</label>
-                <input
-                    type="number"
-                    placeholder="Enter reps"
-                    class="reps-input"
-                >
-            </div>
-            <button onclick="saveExerciseLog('Squats', this)">
-                💾 Save
-            </button>
-        </div>
-    </div>
-    </li>
-            <li><strong>Lunges</strong><span> (2 laps)</span></li>
-            <li><strong>Romanian Deadlifts</strong><span> (3 sets of 6-10 reps)</span></li>
-            <li><strong>Leg Extensions</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
-            <li><strong>Hamstring Curls</strong><span> (3 sets of 6-10 reps)</span></li>
-            <li><strong>Hip Thrusts</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Hip Adductions</strong><span> (3 sets of 15 reps)</span></li>
-            <li><strong>Hip Abductions</strong><span> (3 sets of 15 reps)</span></li>
-        </ul>
+        <div id="legExercises" class="exercise-list">
         </div>
         <div class="box workout-group pull-workout">
         <h3>Arm Exercises</h3>
@@ -482,27 +373,17 @@
             <img src="arm-img6.jpg">
             <img src="arm-img7.jpg">
         </div>
-        <ul class="exercise-list">
-            <li><strong>EZ-Bar Bicep Curls</strong><span> (3 sets of 5-9 reps)</span></li>
-            <li><strong>Chin Ups</strong><span> (3-4 sets of 6-10 reps)</span></li>
-            <li><strong>Machine Curls</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Tricep Extensions</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Close-Grip Curls</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Tricep Dips</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-10 reps)</span></li>
-        </ul>
+        <div id="armExercises" class="exercise-list">
+        </div>
+    </div>
+        <div class="box workout-group push-workout">
+        <h3>Shoulder Exercises</h3>
+        <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
         </div>
         <div class="box workout-group push-workout">
         <h3>Shoulder Exercises</h3>
         <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
-        <ul class="exercise-list">
-            <li><strong>Overhead Press</strong><span> (3 sets of 8-10 reps)</span></li>
-            <li><strong>Lateral Raises</strong><span> (3 sets of 10-15 reps)</span></li>
-            <li><strong>Front Raises</strong><span> (3 sets of 10-15 reps)</span></li>
-            <li><strong>Reverse Pec Deck Flys</strong><span> (3 sets of 10-15 reps)</span></li>
-            <li><strong>Farmer's walk </strong><span> (2-4 laps)</span></li>
-            <li><strong>Face Pulls</strong><span> (3 sets of 10-15 reps)</span></li>
-        </ul>
+        <div id="shoulderExercises" class="exercise-list">
     </div>
         <div class="box workout-group cardio-workout">
         <h3>Cardio + core</h3>
@@ -511,13 +392,7 @@
             <img src="cardio-img2.jpg">
             <img src="cardio-img3.jpg">
         </div>
-        <ul class="exercise-list">
-            <li><strong>12:3:30</strong><span> (12 incline, 3 speed, 30 minutes)</span></li>
-            <li><strong>Plank</strong><span> (1 to 3 minutes)</span></li>
-            <li><strong>Decline Sit-ups or Cable Crunches</strong><span> (10-20 reps)</span></li>
-            <li><strong>Leg-raises</strong><span> (3 sets of 10 reps)</span></li>
-            <li><strong>Box steps</strong><span> (1-2 minutes)</span></li>
-        </ul>
+        <div id="cardioExercises" class="exercise-list">
     </div>
     <div class="box workout-group cardio-workout">
         <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
@@ -590,6 +465,25 @@
     >
 </div>
 </div>
+<nav class="bottom-nav">
+
+    <button onclick="showTab('homeTab')">
+        🏠<br>Home
+    </button>
+
+    <button onclick="showTab('workoutTab')">
+        💪<br>Workouts
+    </button>
+
+    <button onclick="showTab('historyTab')">
+        📈<br>History
+    </button>
+
+    <button onclick="showTab('profileTab')">
+        👤<br>Profile
+    </button>
+
+</nav>
 <!-- Footer -->
 <footer class="footer">
     <h2>Aura Farmer</h2>
@@ -914,25 +808,6 @@
         Cancel Workout
     </button>
 </div>
-<nav class="bottom-nav">
-
-    <button onclick="showTab('homeTab')">
-        🏠<br>Home
-    </button>
-
-    <button onclick="showTab('workoutTab')">
-        💪<br>Workouts
-    </button>
-
-    <button onclick="showTab('historyTab')">
-        📈<br>History
-    </button>
-
-    <button onclick="showTab('profileTab')">
-        👤<br>Profile
-    </button>
-
-</nav>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -949,7 +824,10 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.firestore();
 </script>
+
 <script>
+
+
 let currentUserData = null;
 let isGuest = false;
 let showFullHistory = false;
