@@ -362,6 +362,7 @@
         </div>
         <div id="legExercises" class="exercise-list">
         </div>
+        </div>
         <div class="box workout-group pull-workout">
         <h3>Arm Exercises</h3>
         <p>Mix these into your chest or back workouts at the end.</p>
@@ -379,11 +380,8 @@
         <div class="box workout-group push-workout">
         <h3>Shoulder Exercises</h3>
         <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
-        </div>
-        <div class="box workout-group push-workout">
-        <h3>Shoulder Exercises</h3>
-        <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
         <div id="shoulderExercises" class="exercise-list">
+    </div>
     </div>
         <div class="box workout-group cardio-workout">
         <h3>Cardio + core</h3>
@@ -826,7 +824,44 @@ const db = firebase.firestore();
 </script>
 
 <script>
-
+const workoutData = {
+    chest: [
+        {
+            name: "Bench Press",
+            reps: "3 sets of 8–10 reps",
+            usesWeight: true
+        },
+        {
+            name: "Push-ups",
+            reps: "1-2 sets until failure",
+            usesWeight: false
+        },
+        {
+            name: "Incline Dumbbell Press",
+            reps: "3 sets of 8-10 reps",
+            usesWeight: true
+        },
+        {
+            name: "Machine Chest Press",
+            reps: "3 sets of 8-10 reps",
+            usesWeight: true
+        },
+        {
+            name: "Incline Smith Machine Bench Press",
+            reps: "3 sets of 6-10 reps",
+            usesWeight: true
+        },
+        {
+            name: "Chest Flys",
+            reps: "3 sets of 10-15 reps",
+            usesWeight: true
+        },
+        {
+            name: "Dips",
+            reps: "3 sets of 4-9 reps",
+            usesWeight: false
+        ]
+};
 
 let currentUserData = null;
 let isGuest = false;
@@ -1266,6 +1301,61 @@ function startWorkout(){
 
     }, 1000);
 }
+function renderExerciseCards(containerId, exercises){
+
+    const container = document.getElementById(containerId);
+
+    container.innerHTML = "";
+
+    exercises.forEach(exercise=>{
+
+        container.innerHTML += `
+        <div class="exercise-card">
+
+            <div class="exercise-info">
+                <h5>${exercise.name}</h5>
+                <p>${exercise.reps}</p>
+            </div>
+
+            <div class="exercise-log">
+
+                ${
+                    exercise.usesWeight
+                    ?
+                    `
+                    <input
+                        class="weight-input"
+                        type="number"
+                        placeholder="Weight (lbs)">
+                    `
+                    :
+                    ""
+                }
+
+                <input
+                    class="reps-input"
+                    type="number"
+                    placeholder="Reps">
+
+                <button
+                    onclick="saveExerciseLog('${exercise.name}', this)">
+                    Save Set
+                </button>
+
+                <div class="saved-sets"></div>
+
+            </div>
+
+        </div>
+        `;
+
+    });
+
+}
+renderExerciseCards(
+    "chestExercises",
+    workoutData.chest
+);
 function openTeamModal(){
 
     document
