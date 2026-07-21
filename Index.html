@@ -390,6 +390,7 @@
             <img src="cardio-img2.jpg">
             <img src="cardio-img3.jpg">
         </div>
+        </div>
         <div id="cardioExercises" class="exercise-list">
     </div>
     <div class="box workout-group cardio-workout">
@@ -859,9 +860,206 @@ const workoutData = {
         {
             name: "Dips",
             reps: "3 sets of 4-9 reps",
-            usesWeight: false
-        ]
-};
+            usesWeight: true
+        }
+    ],
+    back: [
+       {
+            name: "Pull-ups",
+            reps: "3 sets of 4-8 reps",
+            usesWeight: true
+        },
+        {
+            name: "Lat Pulldowns",
+            reps: "3 sets of 8-12 reps",
+            usesWeight: true
+        },
+        {
+            name: "Seated Cable Rows",
+            reps: "3 sets of 8-12 reps",
+            usesWeight: true
+        },
+        {
+            name: "Chest Supported Rows",
+            reps: "3 sets of 8-12 reps",
+            usesWeight: true
+        },
+        {
+            name: "Barbell Rows",
+            reps: "3 sets of 6-10 reps",
+            usesWeight: true
+        },
+        {
+            name: "Straight Arm Pulldowns",
+            reps: "3 sets of 10-15 reps",
+            usesWeight: true
+        },
+        {
+            name: "Face Pulls",
+            reps: "3 sets of 12-15 reps",
+            usesWeight: true
+        }
+    ],
+    legs: [
+    {
+        name: "Barbell Squats",
+        reps: "3 sets of 6-10 reps",
+        usesWeight: true
+    },
+    {
+        name: "Romanian Deadlifts",
+        reps: "3 sets of 8-10 reps",
+        usesWeight: true
+    },
+    {
+        name: "Leg Press",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Leg Extensions",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Hamstring Curls",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Standing Calf Raises",
+        reps: "3 sets of 12-20 reps",
+        usesWeight: true
+    },
+    {
+        name: "Walking Lunges",
+        reps: "3 sets of 10-12 reps per leg",
+        usesWeight: true
+    }
+    ],
+    arms: [
+    {
+        name: "Barbell Curl",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Hammer Curl",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Preacher Curl",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Tricep Pushdowns",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Overhead Tricep Extension",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Skull Crushers",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Cable Curls",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    }
+    ],
+    shoulders: [
+    {
+        name: "Overhead Press",
+        reps: "3 sets of 6-10 reps",
+        usesWeight: true
+    },
+    {
+        name: "Dumbbell Shoulder Press",
+        reps: "3 sets of 8-12 reps",
+        usesWeight: true
+    },
+    {
+        name: "Lateral Raises",
+        reps: "3 sets of 12-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Rear Delt Flys",
+        reps: "3 sets of 12-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Front Raises",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Face Pulls",
+        reps: "3 sets of 12-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Shrugs",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: true
+    }
+    ],
+    cardio: [
+    {
+        name: "Running",
+        reps: "20-60 minutes",
+        usesWeight: false
+    },
+    {
+        name: "Walking",
+        reps: "20-60 minutes",
+        usesWeight: false
+    },
+    {
+        name: "Cycling",
+        reps: "20-60 minutes",
+        usesWeight: false
+    },
+    {
+        name: "StairMaster",
+        reps: "15-30 minutes",
+        usesWeight: false
+    },
+    {
+        name: "Jump Rope",
+        reps: "10-20 minutes",
+        usesWeight: false
+    },
+    {
+        name: "Plank",
+        reps: "30-120 seconds",
+        usesWeight: false
+    },
+    {
+        name: "Hanging Leg Raises",
+        reps: "3 sets of 10-15 reps",
+        usesWeight: false
+    },
+    {
+        name: "Cable Crunches",
+        reps: "3 sets of 12-15 reps",
+        usesWeight: true
+    },
+    {
+        name: "Russian Twists",
+        reps: "3 sets of 20 reps",
+        usesWeight: true
+    }
+  ]
+}
+
 
 let currentUserData = null;
 let isGuest = false;
@@ -1355,6 +1553,26 @@ function renderExerciseCards(containerId, exercises){
 renderExerciseCards(
     "chestExercises",
     workoutData.chest
+);
+renderExerciseCards(
+    "backExercises",
+    workoutData.back
+);
+renderExerciseCards(
+    "legExercises",
+    workoutData.legs
+);
+renderExerciseCards(
+    "armExercises",
+    workoutData.arms
+);
+renderExerciseCards(
+    "shoulderExercises",
+    workoutData.shoulders
+);
+renderExerciseCards(
+    "cardioExercises",
+    workoutData.cardio
 );
 function openTeamModal(){
 
