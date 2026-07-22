@@ -248,6 +248,11 @@
         </p>
 
         <div id="historyList"></div>
+        <button
+        id="historyToggleBtn"
+        style="display:none;"
+        onclick="toggleHistory()">
+        </button>
 
         <div id="historyEmpty" style="display:none;">
 
@@ -1318,7 +1323,7 @@ function loadUserData(userId) {
                 data.streak || 0,
                 data.bestStreak || 0
         );
-        renderHistory(data.history || []);
+        renderHistory(data.workoutHistory || []);
         updateProfilePage(data);
         loadLastWorkoutValues(data);
         renderPersonalRecords(data);
@@ -2333,21 +2338,59 @@ function renderHistory(history = []) {
 
         div.className = "history-item";
 
-        div.innerHTML = `
-            <span>
-                <img
-                    src="liftsymbol.png"
-                    alt="${item.workout}"
-                    style="width:28px;height:28px;margin-right:8px;"
-                >
-                ${item.workout}
-                (${item.duration || 0} min)
-            </span>
+        const exercises = (item.exercises || []).map(exercise => `
+    <div class="history-exercise">
+        <strong>${exercise.exercise}</strong><br>
 
-            <span>${item.date}</span>
-        `;
+        ${
+            exercise.weight
+                ? `${exercise.weight} lbs × ${exercise.reps} reps`
+                : `${exercise.reps} reps`
+        }
+    </div>
+    `).join("");
 
-        list.appendChild(div);
+    div.innerHTML = `
+    <div class="history-header">
+
+        <div>
+            <img
+                src="liftsymbol.png"
+                alt="${item.workout}"
+                style="width:28px;height:28px;margin-right:8px;"
+            >
+
+            <strong>${item.workout}</strong>
+            (${item.duration || 0} min)
+        </div>
+
+        <div>${item.date}</div>
+
+    </div>
+
+    <button class="history-expand-btn">
+        ▼ View Exercises
+    </button>
+
+    <div class="history-exercises" style="display:none;">
+        ${exercises}
+    </div>
+    `;
+
+    list.appendChild(div);
+    const button = div.querySelector(".history-expand-btn");
+    const exerciseList = div.querySelector(".history-exercises");
+
+    button.onclick = () => {
+
+    const open = exerciseList.style.display === "block";
+
+    exerciseList.style.display = open ? "none" : "block";
+
+    button.innerText = open
+        ? "▼ View Exercises"
+        : "▲ Hide Exercises";
+    };
     });
 
     if(history.length > 3){
