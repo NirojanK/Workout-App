@@ -28,3 +28,4 @@ Stuff that needs to get added:
 #A tester noted that their is still too much scrolling involved, a user should be able to switch between muscle groups even if they already selected one, and dashboard and achievements should be in it's own tabs so that they don't have to scroll past it everytime
 #Make the workouts easier to navigate through
 #Need to allow user to input workouts rather than select and store it somewhere
+#focus on promoting this app soon
