@@ -30,3 +30,4 @@ Stuff that needs to get added:
 #Need to allow user to input workouts rather than select and store it somewhere
 #focus on promoting this app soon
 #looks at top earning apps regarding fitness and try to compare
+#might need to look into making a background for the website too
