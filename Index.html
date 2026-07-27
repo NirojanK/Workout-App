@@ -243,10 +243,16 @@
 
         <h3>Workout History</h3>
 
+        <button
+        class="aura-btn"
+        onclick="openManualWorkoutModal()"
+        style="margin-bottom:15px;">
+        ➕ Add Workout
+        </button>
+
         <p class="history-subtitle">
-            Tap a workout to view all exercises.
+        Tap a workout to view all exercises.
         </p>
-        
         <div id="historyList"></div>
         <button
         id="historyToggleBtn"
@@ -733,6 +739,41 @@
             </button>
 
         </div>
+
+    </div>
+
+</div>
+<!-- Manual Workout Modal -->
+<div class="workout-modal" id="manualWorkoutModal">
+
+    <div class="workout-modal-content">
+
+        <span
+            class="close-workout"
+            onclick="closeManualWorkoutModal()">
+            &times;
+        </span>
+
+        <h2>Add Workout</h2>
+
+        <input
+            id="manualWorkoutName"
+            placeholder="Workout Name">
+
+        <input
+            id="manualWorkoutDuration"
+            type="number"
+            placeholder="Duration (minutes)">
+
+        <div id="manualExercises"></div>
+
+        <button onclick="addManualExercise()">
+            + Add Exercise
+        </button>
+
+        <button onclick="saveManualWorkout()">
+            Save Workout
+        </button>
 
     </div>
 
@@ -1628,6 +1669,87 @@ document.addEventListener("change", function(e){
     }
 
 });
+async function saveManualWorkout(){
+
+    const user = auth.currentUser;
+
+    if(!user){
+        alert("Please log in first.");
+        return;
+    }
+
+    const workoutName =
+        document.getElementById("manualWorkoutName").value.trim();
+
+    const duration =
+        Number(document.getElementById("manualWorkoutDuration").value) || 0;
+
+    if(workoutName === ""){
+        alert("Please enter a workout name.");
+        return;
+    }
+
+    const exercises = [];
+
+    document
+        .querySelectorAll("#manualExercises .manualExercise")
+        .forEach(card => {
+
+            const select = card.querySelector(".exerciseSelect");
+
+            let exercise = select.value;
+
+            if(exercise === "Other"){
+                exercise = card.querySelector(".customExercise").value.trim();
+            }
+
+            if(exercise){
+
+                exercises.push({
+
+                    exercise: exercise,
+
+                    weight: Number(card.querySelector(".exerciseWeight").value) || null,
+
+                    reps: Number(card.querySelector(".exerciseReps").value) || 0
+
+                });
+
+            }
+
+        });
+
+    const workout = {
+
+        workout: workoutName,
+
+        date: new Date().toDateString(),
+
+        duration: duration,
+
+        exercises: exercises
+
+    };
+
+    const ref = db.collection("users").doc(user.uid);
+
+    await ref.set({
+
+        workoutHistory:
+            firebase.firestore.FieldValue.arrayUnion(workout)
+
+    }, { merge: true });
+
+    currentUserData.workoutHistory =
+        currentUserData.workoutHistory || [];
+
+    currentUserData.workoutHistory.unshift(workout);
+
+    renderHistory(currentUserData.workoutHistory);
+
+    closeManualWorkoutModal();
+
+}
 function renderExerciseCards(containerId, exercises){
 
     const container = document.getElementById(containerId);
@@ -2064,7 +2186,12 @@ async function completeWorkout(day) {
     streak,
     bestStreak
 );
-renderHistory(history);
+currentUserData.workoutHistory =
+    currentUserData.workoutHistory || [];
+
+currentUserData.workoutHistory.unshift(completedWorkout);
+
+renderHistory(currentUserData.workoutHistory);
         renderAchievements(achievements);
         }
 async function saveExerciseLog(exerciseName, button){
@@ -2311,6 +2438,23 @@ function closeWorkoutModal(){
     document
         .getElementById("workoutModal")
         .classList.remove("active");
+}
+function openManualWorkoutModal(){
+
+    document
+        .getElementById("manualWorkoutModal")
+        .classList.add("active");
+
+}
+
+function closeManualWorkoutModal(){
+
+    document
+        .getElementById("manualWorkoutModal")
+        .classList.remove("active");
+
+    document.getElementById("manualExercises").innerHTML = "";
+
 }
 
 async function finishWorkout(day){
