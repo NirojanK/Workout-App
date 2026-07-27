@@ -246,7 +246,7 @@
         <p class="history-subtitle">
             Tap a workout to view all exercises.
         </p>
-
+        
         <div id="historyList"></div>
         <button
         id="historyToggleBtn"
@@ -1064,7 +1064,55 @@ const workoutData = {
     }
   ]
 }
+const allExercises = [
 
+"Bench Press",
+"Incline Bench Press",
+"Machine Chest Press",
+"Chest Fly",
+"Push-ups",
+"Dips",
+
+"Pull-ups",
+"Lat Pulldowns",
+"Seated Cable Rows",
+"Barbell Rows",
+"Chest Supported Rows",
+"Straight Arm Pulldowns",
+"Face Pulls",
+
+"Squats",
+"Romanian Deadlift",
+"Leg Press",
+"Leg Extension",
+"Hamstring Curl",
+"Standing Calf Raise",
+
+"Barbell Curl",
+"Hammer Curl",
+"Preacher Curl",
+"Cable Curl",
+
+"Tricep Pushdown",
+"Overhead Tricep Extension",
+"Skull Crusher",
+
+"Shoulder Press",
+"Dumbbell Shoulder Press",
+"Lateral Raise",
+"Rear Delt Fly",
+"Front Raise",
+"Shrugs",
+
+"Running",
+"Cycling",
+"Walking",
+"StairMaster",
+"Jump Rope",
+"Plank",
+"Cable Crunch"
+
+];
 
 let currentUserData = null;
 let isGuest = false;
@@ -1504,6 +1552,82 @@ function startWorkout(){
 
     }, 1000);
 }
+function createExerciseDropdown(){
+
+    return `
+
+<select class="exerciseSelect">
+
+${allExercises.map(exercise => `
+<option value="${exercise}">
+${exercise}
+</option>
+`).join("")}
+
+<option value="Other">
+Other...
+</option>
+
+</select>
+
+<input
+class="customExercise"
+placeholder="Custom exercise"
+style="display:none;">
+
+`;
+
+}
+
+function addManualExercise(){
+
+    const container =
+        document.getElementById("manualExercises");
+
+    container.innerHTML += `
+
+    <div class="manualExercise">
+
+        ${createExerciseDropdown()}
+
+        <input
+            class="exerciseWeight"
+            type="number"
+            placeholder="Weight">
+
+        <input
+            class="exerciseReps"
+            type="number"
+            placeholder="Reps">
+
+    </div>
+
+    `;
+
+}
+document.addEventListener("change", function(e){
+
+    if(!e.target.classList.contains("exerciseSelect"))
+        return;
+
+    const custom =
+        e.target.parentElement.querySelector(".customExercise");
+
+    if(e.target.value === "Other"){
+
+        custom.style.display = "block";
+
+        custom.focus();
+
+    }else{
+
+        custom.style.display = "none";
+
+        custom.value = "";
+
+    }
+
+});
 function renderExerciseCards(containerId, exercises){
 
     const container = document.getElementById(containerId);
