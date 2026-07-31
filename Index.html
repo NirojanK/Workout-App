@@ -2606,35 +2606,59 @@ function renderHistory(history = []) {
 
         div.className = "history-item";
 
-        const exercises = (item.exercises || []).map(exercise => `
-    <div class="history-exercise">
-        <strong>${exercise.exercise}</strong><br>
+    const exercises = (item.exercises || []).map(exercise => `
+
+<div class="history-exercise-row">
+
+    <div class="history-exercise-name">
+
+        ${exercise.exercise}
+
+    </div>
+
+    <div class="history-exercise-result">
 
         ${
             exercise.weight
-                ? `${exercise.weight} lbs × ${exercise.reps} reps`
+                ? `${exercise.weight} lbs × ${exercise.reps}`
                 : `${exercise.reps} reps`
         }
+
     </div>
-    `).join("");
+
+</div>
+
+`).join("");
 
     div.innerHTML = `
     <div class="history-header">
 
-        <div>
-            <img
-                src="liftsymbol.png"
-                alt="${item.workout}"
-                style="width:28px;height:28px;margin-right:8px;"
-            >
+    <div class="history-title">
 
-            <strong>${item.workout}</strong>
-            (${item.duration || 0} min)
+        <img
+            src="liftsymbol.png"
+            style="width:30px;height:30px;margin-right:10px;"
+        >
+
+        <div>
+
+            <h4>${item.workout}</h4>
+
+            <div class="history-meta">
+
+                <span>${item.date}</span>
+
+                <span>${item.duration || 0} min</span>
+
+                <span>${item.exercises.length} exercises</span>
+
+            </div>
+
         </div>
 
-        <div>${item.date}</div>
-
     </div>
+
+</div>
 
     <button class="history-expand-btn">
         ▼ View Exercises
