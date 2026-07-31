@@ -2441,7 +2441,7 @@ body {
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:10px;
+    margin-bottom:20px;
 }
 
 .history-expand-btn{
@@ -2455,14 +2455,54 @@ body {
     margin-top:10px;
 }
 
-.history-exercise{
-    padding:8px 12px;
-    border-left:3px solid #d4af37;
-    margin-bottom:8px;
-    background:rgba(255,255,255,.05);
-    border-radius:6px;
-}
+.history-exercise-row{
 
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#fff;
+
+    padding:14px 18px;
+
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    border-left:4px solid #d4af37;
+
+}
+.history-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+.history-meta{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:5px;
+
+    color:#777;
+
+    font-size:.9rem;
+
+}
+.history-exercise-result{
+
+    color:#555;
+
+    font-weight:600;
+
+}
 button{
     background: linear-gradient(to right, white, silver);
     border: none;
