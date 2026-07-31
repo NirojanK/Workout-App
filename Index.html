@@ -1,3285 +1,3459 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" href="favicon.png" />
-    <title>Aura Farmer</title>
-    <link rel="stylesheet" href="Index.css">
-</head>
-<body>
-<!-- LOGIN PAGE -->
-<div id="loginPage">
-    <div class="aura-background">
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    <span></span>
-    </div>
-    <div class="login-box">
-        <img src="favicon.png" alt="Aura Farm" class="logo-image" style="width: 150px; height: 150px; margin-right: 10px;">
-        <p style="font-size: 12px; opacity: 0.7;">Get strong, build Aura</p>
-        <input type="text" id="signupName" placeholder="Display Name" required>
-        <input type="email" id="email" placeholder="Email" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <div class ="auth-buttons">
-              <button class="aura-btn" onclick="signUp()">Sign Up</button>
-              <button class="aura-btn" onclick="login()">Login</button>
-              <div class="divider"></div>
-              <div class="circle"></div>
-              <div class="divider"></div>
-              <button class="google-btn" onclick="googleLogin()">
-               Continue with Google
-              </button>
-              <button
-              class="guest-btn"
-              onclick="continueAsGuest()"
-              >
-        Continue as Guest
-        </button>
-        </div>
-        <a
-        href="#"
-        id="forgotPasswordLink"
-        onclick="forgotPassword(); return false;"
-        >
-        Forgot Password?
-        </a>
-        <p id="userStatus"></p>
-    </div>
-</div>
-<!-- APP CONTENT -->
-<div id="appContent">
-<!-- Navbar -->
-<nav class="navbar">
-    <div class="nav-left">
-        <h2 class="logo">Aura Farmer</h2>
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html, body{
+    overflow-x:hidden;
+}
+html {
+    scroll-behavior: smooth;
+}
 
-        <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
-            <li>
-            <a href="#" onclick="openTeamModal()">
-            Team
-            </a>
-            </li>
-            <li>
-            <a href="#" onclick ="openSplitModal()">
-            Training Split Guides
-            </a>
-            </li>
-        </ul>
-    </div>
-    <div class="nav-right">
-    <div class="active-users">
-    <span class="online-dot"></span>
-    <span id="activeUsersCount">
-        0 Active
-    </span>
-    <div class="profile-container">
-        <button class="profile-btn" id="profileBtn">
-            <img
-                src=""
-                alt="Profile"
-                class="profile-image"
-                id="navProfileImage"
-            />
-            <div class="avatar" id="navFallbackAvatar"></div>
-            <span class="profile-name"></span>
-        </button>
-        <div class="profile-dropdown" id="profileDropdown">
-            <div class="dropdown-header">
-                <img
-                    src=""
-                    alt="Profile"
-                    class="dropdown-profile-image"
-                    id="dropdownProfileImage"
-                />
-                <div class="dropdown-avatar" id="dropdownFallbackAvatar">
-                </div>
-                <div>
-                    <h4></h4>
-                    <p id="profileEmail"></p>
-                </div>
-            </div>
-            <div class="dropdown-divider"></div>
-            <label class="upload-btn">
-                Upload Photo
-                <input type="file" id="imageUpload" hidden accept="image/*">
-            </label>
-            <a href="#" onclick="openSettings()">
-            Settings
-            </a>
-            <a href="#" class="logout" onclick="logout()">
-            Logout
-            </a>
-        </div>
-    </div>
-</div>    
-</nav>
-<div id="homeTab" class="tab-page">
-<!-- Hero Section -->
-<section class="hero" id = "home">
-    <div class="hero-text">
-        <h1>Build your aura by working out!</h1>
-        <p>
-            Tap the button below to get started, and then when you're done tap "Mark Complete".
-        </p>
+.auth-btn-img:hover {
+    transform: scale(1.05);
+}
 
-        <a href="#workouts" onclick="showTab('workoutTab'); openWorkoutSelector();">
-        <img src="start.png" id = "cta-btn" style = "width:300px; height:300px; margin-right:8px;">
-        </a>
+.workout-btn-img {
+     width:320px;
 
-        <!-- Social Icons -->
-        <div class="hero-links">
-            <a href="https://www.youtube.com/@nirokal">
-                <img src="youtube-icon.png" alt="YouTube">
-            </a>
-            <a href="https://www.instagram.com/fitnesswithniro/">
-                <img src="instagram-icon.png" alt="Instagram">
-            </a>
-        </div>
-    </div>
-    <div class="hero-image">
-        <img src="favicon.png" alt="logo">
-    </div>
-</div>
-</section>
-<div id ="profileTab" class="tab-page" style="display:none;">
-<!-- PROFILE PAGE -->
-<section class="profile-page" id="profilePage">
-    <div class="profile-header">
-        <img
-            src=""
-            id="profilePageImage"
-            class="profile-page-image"
-        />
-        <div>
-            <h2 id="profilePageName">
-                Niro
-            </h2>
-            <div class="profile-meta">
-            <p id="profilePageRank">
-                Aura Novice
-            </p>
-        <div class="profile-progress">
-        <div
-        class="profile-progress-fill"
-        id="profileProgressFill"
-        ></div>
-         <span
-        class="profile-progress-text"
-        id="profileProgressText"
-    >
-        0 / 100 XP
-    </span>
-    </div>
-</div>
-        </div>
-    </div>
-    <!-- STATS -->
-    <div class="profile-stats">
-        <div class="profile-stat">
-            <h3>Level</h3>
-            <p id="profileLevel">1</p>
-        </div>
-        <div class="profile-stat">
-            <h3>Workouts</h3>
-            <p id="profileWorkouts">0</p>
-        </div>
-    </div>
-    <div class="pr-box">
+    max-width:100%;
 
-    <h3>🏆 Personal Records</h3>
+    height:auto;
 
-    <div id="personalRecordsList">
+    cursor:pointer;
 
-        <p>No personal records yet.</p>
+    transition:0.25s ease;
 
-    </div>
-    <!--Achievements--> 
-    <div class="achievements-box">
-    <h3>Achievements</h3>
-    <div id="achievementsGrid" class="achievements-grid"></div>
-    </div>
-    </div>
-        <!-- Dashboard -->
- <div class="dashboard">
-    <div class="dashboard-grid">
-        <div class="dash-card">
-        <h3>Environment</h3>
-        <p id="dashEnvironment">Gym</p>
-        </div>
-        <div class="dash-card">
-        <h3>Goal</h3>
-        <p id="dashGoal">None</p>
-        </div>
-        <div class="dash-card">
-        <h3>Streak</h3>
-        <p id="dashStreak">0 Days 🔥</p>
-        </div>
-        <div class="dash-card">
-        <h3>Best Streak</h3>
-        <p id="dashBestStreak">0</p>
-        </div>
-</div>
-</div>
-</div>   
-</section>
-<!--Rest Timer-->
-<div class="timer-box">
-    <h3>Rest Timer</h3>
-    <p id="timerDisplay">60s</p>
-    <button onclick="startTimer(60)">Start 60s</button>
-    <button onclick="startTimer(90)">Start 90s</button>
-    <button onclick="pauseTimer()">Pause</button>
-    <button onclick="resetTimer()">Reset</button>
-</div>
-<!--History Tab-->
-<div id="historyTab" class="tab-page" style="display:none;">
+    display:block;
 
-    <div class="history-box">
+    margin:20px auto 30px auto;
 
-        <h3>Workout History</h3>
-
-        <button
-        class="aura-btn"
-        onclick="openManualWorkoutModal()"
-        style="margin-bottom:15px;">
-        ➕ Add Workout
-        </button>
-
-        <p class="history-subtitle">
-        Tap a workout to view all exercises.
-        </p>
-        <div id="historyList"></div>
-        <button
-        id="historyToggleBtn"
-        style="display:none;"
-        onclick="toggleHistory()">
-        </button>
-
-        <div id="historyEmpty" style="display:none;">
-
-            <h4>No workouts yet 💪</h4>
-
-            <p>
-                Complete your first workout to begin tracking your progress.
-            </p>
-
-        </div>
-
-    </div>
-
-</div>
-<!--Splits guide
-<section class="split-guide">
-    <div class="aura-particles">
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    <span></span><span></span><span></span><span></span><span></span>
-    </div>
-    <h2 class="section-title">Training Split Guide</h2>
-    <div class="container">
-        <div class="box">
-            <h3>PPL (Push Pull Legs)</h3>
-            <p>
-                Best for consistency and balanced growth.
-                Train 5–6 days per week.
-            </p>
-            <ul>
-                <li>Push: Chest, Shoulders, Triceps</li>
-                <li>Pull: Back, Biceps</li>
-                <li>Legs: Quads, Hamstrings, Glutes</li>
-            </ul>
-        </div>
-        <div class="box">
-            <h3>Bro Split</h3>
-            <p>
-                Focus on one muscle group per day.
-                Great for isolating muscles.
-                4-5 days per week.
-            </p>
-            <ul>
-                <li>Day 1: Chest</li>
-                <li>Day 2: Back</li>
-                <li>Day 3: Legs</li>
-                <li>Day 4: Arms</li>
-            </ul>
-        </div>
-
-        <div class="box">
-            <h3>Upper / Lower Split</h3>
-            <p>
-                Great for beginners and strength focus.
-                2-3 days per week.
-            </p>
-            <ul>
-                <li>Upper Body: Chest, Back, Arms</li>
-                <li>Lower Body: Legs, Glutes</li>
-            </ul>
-        </div>
-    </div>
-</section>
--->
-<!-- Workout Sections -->
- <div id="workoutTab" class="tab-page" style="display:none;">
- <section id="exerciseSection">
- <h2 class="section-title">Exercises</h2>
- <button
-    id="changeWorkoutBtn"
-    onclick="openWorkoutSelector()"
-    style="display:none;"
- >
-    Change Workout
-</button>
- </section>
-<div class="container" id="workouts">
-    <div class="box workout-group pull-workout">
-    <h3>Back</h3>
-    <div class="img-row">
-        <img src="back-img2.jpg">
-        <img src="back-img3.jpg">
-        <img src="back-img4.jpg">
-        <img src="back-img5.jpg">
-    </div>
-    <div id="backExercises" class="exercise-list">
-    </div>
-    </div>
-        <div class="box workout-group push-workout">
-        <h3>Chest</h3>
-        <div class="img-row">
-            <img src="chest-img2.jpg">
-            <img src="chest-img3.jpg">
-            <img src="chest-img4.jpg">
-            <img src="chest-img5.jpg">
-        </div>
-        <div
-        id="chestExercises"
-        class="exercise-list">
-        </div>
-        </div>
-        <div class="box workout-group legs-workout">
-        <h3>Legs</h3>
-        <div class="img-row">
-            <img src="leg-img.jpg">
-            <img src="leg-img2.jpg">
-            <img src="leg-img3.jpg">
-            <img src="leg-img4.jpg">
-            <img src="leg-img5.jpg">
-        </div>
-        <div id="legExercises" class="exercise-list">
-        </div>
-        </div>
-        <div class="box workout-group pull-workout">
-        <h3>Arm Exercises</h3>
-        <p>Mix these into your chest or back workouts at the end.</p>
-        <div class="img-row">
-            <img src="arm-img.jpg">
-            <img src="arm-img2.jpg">
-            <img src="arm-img4.jpg">
-            <img src="arm-img5.jpg">
-            <img src="arm-img6.jpg">
-            <img src="arm-img7.jpg">
-        </div>
-        <div id="armExercises" class="exercise-list">
-        </div>
-    </div>
-        <div class="box workout-group push-workout">
-        <h3>Shoulder Exercises</h3>
-        <p>Can be done on chest day, leg day, back day, or on it's own day.</p>
-        <div id="shoulderExercises" class="exercise-list">
-    </div>
-    </div>
-        <div class="box workout-group cardio-workout">
-        <h3>Cardio + core</h3>
-        <div class ="img-row">
-            <img src="cardio-img.jpg">
-            <img src="cardio-img2.jpg">
-            <img src="cardio-img3.jpg">
-        </div>
-        </div>
-        <div id="cardioExercises" class="exercise-list">
-    </div>
-    <div class="box workout-group cardio-workout">
-        <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
-        <h5>Great for active recovery, flexibility, and consistency.</h5>
-    </div>
-    </div>
-<!--Meet the team 
-<section class="team-section" id="team">
-    <h2 class="section-title">Meet the Team</h2>
-    <div class="team-container">
-        <div class="team-card">
-            <img src="team1.jpg" alt="Coach 1">
-            <h3>Niro</h3>
-            <p>Founder & Fitness Coach</p>
-            <p style = "color:burlywood">-----------------------</p>
-            <p>Niro has a background in fitness and technology. He started his journey in fitness when he was a kid.</p>
-        </div>
-        <div class="team-card">
-            <img src="team2.jpg" alt="Artist">
-            <h3>Rico</h3>
-            <p>Main Artist</p>
-            <p style = "color:burlywood">-----------------------</p>
-            <p>Rico is a renowned artist also from Toronto with impressive feats like working with Marvel on their popular game Marvel Rivals. He's an extremely talented artist and one of the kindest people ever.</p>
-        </div>
-    </div>
-</section>
--->
-<section class="women-section"id="womenSection">
+    filter:
+        drop-shadow(0 8px 18px rgba(0,0,0,0.25));
+       
+    margin:10px auto 18px auto;
     
-    <h2 class="section-title">Women’s Training</h2>
-    <div class="women-workout">
-    <div class="container">
-        <div class="box">
-            <h3>Glutes & Legs Focus</h3>
-            <ul class="exercise-list">
-                <li><strong>Hip Thrusts</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Romanian Deadlifts</strong><span> (3 sets of 6-10 reps)</span></li>
-                <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
-            </ul>
-        </div>
-        <div class="box">
-            <h3>Core & Conditioning</h3>
-            <ul class="exercise-list">
-                <li><strong>Planks</strong><span> (30 seconds - 2 minutes)</span></li>
-                <li><strong>Leg Raises</strong><span> (3 sets of 10-15 reps)</span></li>
-                <li><strong>Russian Twists</strong><span> (3 sets of 10-15 reps)</span></li>
-            </ul>
-        </div>
-        <div class="box">
-            <h3>Back and Triceps</h3>
-            <ul class="exercise-list">
-                <li><strong>Lat Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Dumbbell rows or machine rows</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Tricep Dips</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Tricep Pulldowns</strong><span> (3 sets of 8-12 reps)</span></li>
-                <li><strong>Seated Cable Rows</strong><span> (3 sets of 8-12 reps)</span></li>
-            </ul>
-        </div>
-    </div>
-    </div>
-</section>
-
-<div class="global-workout-complete">
-
-    <img
-        src="complete.png"
-        class="global-complete-btn"
-        onclick="openWorkoutModal()"
-    >
-</div>
-</div>
-<nav class="bottom-nav">
-
-    <button onclick="showTab('homeTab')">
-        🏠<br>Home
-    </button>
-
-    <button onclick="showTab('workoutTab')">
-        💪<br>Workouts
-    </button>
-
-    <button onclick="showTab('historyTab')">
-        📈<br>History
-    </button>
-
-    <button onclick="showTab('profileTab')">
-        👤<br>Profile
-    </button>
-
-</nav>
-<!-- Footer -->
-<footer class="footer">
-    <h2>Aura Farmer</h2>
-    <p class="footer-tagline">
-        Build discipline. Track progression.
-        Grow your Aura.
-    </p>
-    <p class="footer-contact">
-        Contact:
-        nirokal92@gmail.com
-    </p>
-    <p class="footer-copy">
-        © 2026 Aura Farmer. All rights reserved.
-    </p>
-</footer>
-<!-- GOAL MODAL -->
-<div class="goal-modal" id="goalModal">
-    <div class="goal-content">
-        <h2>Choose Your Goal</h2>
-        <p>
-            Personalize your Aura journey.
-        </p>
-        <div class="goal-options">
-            <button onclick="selectGoal('Build Muscle')">
-                💪 Build Muscle
-            </button>
-            <button onclick="selectGoal('Lose Fat')">
-                🔥 Lose Fat
-            </button>
-            <button onclick="selectGoal('Strength')">
-                🏋️ Strength
-            </button>
-            <button onclick="selectGoal('Consistency')">
-                📈 Consistency
-            </button>
-            <button onclick="selectGoal('Athleticism')">
-                ⚡ Athleticism
-            </button>
-        </div>
-    </div>
-</div>
-
-<!-- TEAM MODAL -->
-<div class="team-modal" id="teamModal">
-    <div class="team-modal-content">
-
-        <span
-            class="close-team"
-            onclick="closeTeamModal()"
-        >
-            &times;
-        </span>
-
-        <h2>Meet the Team</h2>
-
-        <div class="team-container">
-
-            <div class="team-card">
-                <img src="team1.jpg" alt="Coach 1">
-                <h3>Niro</h3>
-                <p>Founder & Fitness Coach</p>
-
-                <p style="color:burlywood">
-                    -----------------------
-                </p>
-
-                <p>
-                    Niro has a background in fitness and technology.
-                    He started his journey in fitness when he was a kid.
-                </p>
-            </div>
-
-            <div class="team-card">
-                <img src="team2.jpg" alt="Artist">
-                <h3>Rico</h3>
-                <p>Main Artist</p>
-
-                <p style="color:burlywood">
-                    -----------------------
-                </p>
-
-                <p>
-                    Rico is a renowned artist from Toronto
-                    who has worked with Marvel Rivals.
-                </p>
-            </div>
-
-        </div>
-
-    </div>
-</div>
-<!-- SPLIT MODAL -->
-<div class="split-modal" id="splitModal">
-
-    <div class="split-modal-content">
-
-        <span
-            class="close-split"
-            onclick="closeSplitModal()"
-        >
-            &times;
-        </span>
-
-        <h2>Training Split Guides: </h2>
-
-        <div class="container">
-            <div class="box">
-    <h3>Beginner Full Body</h3>
-
-    <p>
-        Perfect for new lifters.
-        Train 2-3 times per week.
-    </p>
-
-    <ul>
-        <li>Squats</li>
-        <li>Bench Press</li>
-        <li>Rows</li>
-        <li>Planks</li>
-    </ul>
-
-    <p>
-        Focus on learning technique and consistency.
-    </p>
-</div>
-            <div class="box">
-                 <h3>PPL (Push Pull Legs)</h3>
-
-         <p>
-        Great for intermediate and advanced lifters.
-        Train 5-6 days per week.
-        </p>
-
-    <ul>
-        <li><strong>Push:</strong> Chest, Shoulders, Triceps</li>
-        <li><strong>Pull:</strong> Back, Biceps</li>
-        <li><strong>Legs:</strong> Quads, Hamstrings, Glutes, Calves</li>
-    </ul>
-
-    <p>
-        Example:
-        Push → Pull → Legs → Rest → Repeat
-    </p>
-            </div>
-
-            <div class="box">
-                 <h3>Bro Split</h3>
-
-    <p>
-        Focus on one muscle group per day.
-        Great for bodybuilding and recovery.
-    </p>
-
-    <ul>
-        <li>Monday: Chest</li>
-        <li>Tuesday: Back</li>
-        <li>Wednesday: Legs</li>
-        <li>Thursday: Arms</li>
-        <li>Friday: Shoulders</li>
-    </ul>
-
-    <p>
-        Best for 4-5 training days per week.
-    </p>
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-<div class="workout-selector-modal"
-     id="workoutSelectorModal">
-
-    <div class="workout-selector-content">
-
-        <h2>
-            What are you training today?
-        </h2>
-
-        <button onclick="selectWorkout('push')">
-            💪 Push
-        </button>
-
-        <button onclick="selectWorkout('pull')">
-            🦍 Pull
-        </button>
-
-        <button onclick="selectWorkout('legs')">
-            🦵 Legs
-        </button>
-
-        <button onclick="selectWorkout('cardio')">
-            ❤️ Cardio
-        </button>
-
-        <button onclick="selectWorkout('women')">
-            🌸 Women's Training
-        </button>
-
-    </div>
-
-</div>
-<!-- WORKOUT COMPLETE MODAL -->
-<div class="workout-modal" id="workoutModal">
-
-    <div class="workout-modal-content">
-
-        <span
-        class="close-workout"
-        onclick="closeWorkoutModal()"
-        >
-        &times;
-        </span>
-        <h2>Complete Workout</h2>
-
-        <p>What workout did you finish?</p>
-
-        <div class="workout-options">
-
-            <button onclick="finishWorkout('Chest Day')">
-                Push
-            </button>
-
-            <button onclick="finishWorkout('Back Day')">
-                Pull
-            </button>
-
-            <button onclick="finishWorkout('Leg Day')">
-                Legs
-            </button>
-
-            <button onclick="finishWorkout('Cardio Day')">
-                Cardio
-            </button>
-
-            <button onclick="finishWorkout('Arm Day')">
-                Arms
-            </button>
-
-            <button onclick="finishWorkout('Custom')">
-                Custom
-            </button>
-
-        </div>
-
-    </div>
-
-</div>
-<!-- Manual Workout Modal -->
-<div class="workout-modal" id="manualWorkoutModal">
-
-    <div class="workout-modal-content">
-
-        <span
-            class="close-workout"
-            onclick="closeManualWorkoutModal()">
-            &times;
-        </span>
-
-        <h2>Add Workout</h2>
-
-        <input
-            id="manualWorkoutName"
-            placeholder="Workout Name">
-
-        <input
-            id="manualWorkoutDuration"
-            type="number"
-            placeholder="Duration (minutes)">
-
-        <div id="manualExercises"></div>
-
-        <button onclick="addManualExercise()">
-            + Add Exercise
-        </button>
-
-        <button onclick="saveManualWorkout()">
-            Save Workout
-        </button>
-
-    </div>
-
-</div>
-<!-- ACHIEVEMENT TOAST -->
-<div class="achievement-toast" id="achievementToast">
-    <h3>🏆Achievement Unlocked!</h3>
-    <p id="achievementText"></p>
-</div>
-<!-- LEVEL UP -->
-<div class="levelup-overlay" id="levelUpOverlay">
-    <div class="levelup-box">
-        <h1>🎉 LEVEL UP!</h1>
-        <p id="levelUpText"></p>
-    </div>
-</div>
-<!-- SETTINGS MODAL -->
-<div class="settings-modal" id="settingsModal">
-    <div class="settings-content">
-        <span
-            class="close-settings"
-            onclick="closeSettings()"
-        >
-            &times;
-        </span>
-        <h2>Settings</h2>
-        <!-- DISPLAY NAME -->
-        <div class="settings-group">
-            <label>Display Name</label>
-            <input
-                type="text"
-                id="displayNameInput"
-                placeholder="Enter display name"
-            />
-        </div>
-        <!-- CHANGE GOAL -->
-        <div class="settings-group">
-            <label>Fitness Goal</label>
-            <select id="goalSelect">
-                <option>Build Muscle</option>
-                <option>Lose Fat</option>
-                <option>Strength</option>
-                <option>Consistency</option>
-                <option>Athleticism</option>
-            </select>
-        </div>
-        <!-- SAVE -->
-        <button onclick="saveSettings()">
-            Save Changes
-        </button>
-        <!--Delete account-->
-        <button
-        onclick="deleteAccount()"
-        style="
-        margin-top:12px;
-        background:#d32f2f;
-        color:white;
-        "
-        >
-        Delete Account
-        </button>
-        </div>
-</div>
-<!-- IMAGE MODAL -->
-<div class="image-modal" id="imageModal">
-    <span class="close-modal" id="closeModal">
-        &times;
-    </span>
-    <img id="modalImage" />
-</div>
-<div class="workout-session" id="workoutSession">
-    <h4>⏱ Workout Active</h4>
-    <p id="workoutSessionTime">
-        00:00
-    </p>
-     <button onclick="cancelWorkout()">
-        Cancel Workout
-    </button>
-</div>
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
-
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyBzA2YhWeUn2eNpyd0zQoM8s9smjtBrsno",
-  authDomain: "workoutapp-f029c.firebaseapp.com",
-  projectId: "workoutapp-f029c",
-};
-
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-</script>
-
-<script>
-const workoutData = {
-    chest: [
-        {
-            name: "Bench Press",
-            reps: "3 sets of 8–10 reps",
-            usesWeight: true
-        },
-        {
-            name: "Push-ups",
-            reps: "1-2 sets until failure",
-            usesWeight: false
-        },
-        {
-            name: "Incline Dumbbell Press",
-            reps: "3 sets of 8-10 reps",
-            usesWeight: true
-        },
-        {
-            name: "Machine Chest Press",
-            reps: "3 sets of 8-10 reps",
-            usesWeight: true
-        },
-        {
-            name: "Incline Smith Machine Bench Press",
-            reps: "3 sets of 6-10 reps",
-            usesWeight: true
-        },
-        {
-            name: "Chest Flys",
-            reps: "3 sets of 10-15 reps",
-            usesWeight: true
-        },
-        {
-            name: "Dips",
-            reps: "3 sets of 4-9 reps",
-            usesWeight: true
-        }
-    ],
-    back: [
-       {
-            name: "Pull-ups",
-            reps: "3 sets of 4-8 reps",
-            usesWeight: true
-        },
-        {
-            name: "Lat Pulldowns",
-            reps: "3 sets of 8-12 reps",
-            usesWeight: true
-        },
-        {
-            name: "Seated Cable Rows",
-            reps: "3 sets of 8-12 reps",
-            usesWeight: true
-        },
-        {
-            name: "Chest Supported Rows",
-            reps: "3 sets of 8-12 reps",
-            usesWeight: true
-        },
-        {
-            name: "Barbell Rows",
-            reps: "3 sets of 6-10 reps",
-            usesWeight: true
-        },
-        {
-            name: "Straight Arm Pulldowns",
-            reps: "3 sets of 10-15 reps",
-            usesWeight: true
-        },
-        {
-            name: "Face Pulls",
-            reps: "3 sets of 12-15 reps",
-            usesWeight: true
-        }
-    ],
-    legs: [
-    {
-        name: "Barbell Squats",
-        reps: "3 sets of 6-10 reps",
-        usesWeight: true
-    },
-    {
-        name: "Romanian Deadlifts",
-        reps: "3 sets of 8-10 reps",
-        usesWeight: true
-    },
-    {
-        name: "Leg Press",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Leg Extensions",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Hamstring Curls",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Standing Calf Raises",
-        reps: "3 sets of 12-20 reps",
-        usesWeight: true
-    },
-    {
-        name: "Walking Lunges",
-        reps: "3 sets of 10-12 reps per leg",
-        usesWeight: true
-    }
-    ],
-    arms: [
-    {
-        name: "Barbell Curl",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Hammer Curl",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Preacher Curl",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Tricep Pushdowns",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Overhead Tricep Extension",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Skull Crushers",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Cable Curls",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    }
-    ],
-    shoulders: [
-    {
-        name: "Overhead Press",
-        reps: "3 sets of 6-10 reps",
-        usesWeight: true
-    },
-    {
-        name: "Dumbbell Shoulder Press",
-        reps: "3 sets of 8-12 reps",
-        usesWeight: true
-    },
-    {
-        name: "Lateral Raises",
-        reps: "3 sets of 12-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Rear Delt Flys",
-        reps: "3 sets of 12-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Front Raises",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Face Pulls",
-        reps: "3 sets of 12-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Shrugs",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: true
-    }
-    ],
-    cardio: [
-    {
-        name: "Running",
-        reps: "20-60 minutes",
-        usesWeight: false
-    },
-    {
-        name: "Walking",
-        reps: "20-60 minutes",
-        usesWeight: false
-    },
-    {
-        name: "Cycling",
-        reps: "20-60 minutes",
-        usesWeight: false
-    },
-    {
-        name: "StairMaster",
-        reps: "15-30 minutes",
-        usesWeight: false
-    },
-    {
-        name: "Jump Rope",
-        reps: "10-20 minutes",
-        usesWeight: false
-    },
-    {
-        name: "Plank",
-        reps: "30-120 seconds",
-        usesWeight: false
-    },
-    {
-        name: "Hanging Leg Raises",
-        reps: "3 sets of 10-15 reps",
-        usesWeight: false
-    },
-    {
-        name: "Cable Crunches",
-        reps: "3 sets of 12-15 reps",
-        usesWeight: true
-    },
-    {
-        name: "Russian Twists",
-        reps: "3 sets of 20 reps",
-        usesWeight: true
-    }
-  ]
 }
-const allExercises = [
 
-"Bench Press",
-"Incline Bench Press",
-"Machine Chest Press",
-"Chest Fly",
-"Push-ups",
-"Dips",
-
-"Pull-ups",
-"Lat Pulldowns",
-"Seated Cable Rows",
-"Barbell Rows",
-"Chest Supported Rows",
-"Straight Arm Pulldowns",
-"Face Pulls",
-
-"Squats",
-"Romanian Deadlift",
-"Leg Press",
-"Leg Extension",
-"Hamstring Curl",
-"Standing Calf Raise",
-
-"Barbell Curl",
-"Hammer Curl",
-"Preacher Curl",
-"Cable Curl",
-
-"Tricep Pushdown",
-"Overhead Tricep Extension",
-"Skull Crusher",
-
-"Shoulder Press",
-"Dumbbell Shoulder Press",
-"Lateral Raise",
-"Rear Delt Fly",
-"Front Raise",
-"Shrugs",
-
-"Running",
-"Cycling",
-"Walking",
-"StairMaster",
-"Jump Rope",
-"Plank",
-"Cable Crunch"
-
-];
-
-let currentUserData = null;
-let isGuest = false;
-let showFullHistory = false;
-let currentWorkoutExercises = [];
-let fullWorkoutHistory = [];
-// ---------------- AUTH ----------------
-function signUp() {
-    const displayName = document.getElementById("signupName").value;
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    auth.createUserWithEmailAndPassword(email, password)
-        .then(async (userCredential) => {
-            const user = userCredential.user;
-            // Save user info to Firestore
-            await db.collection("users").doc(user.uid).set({
-                displayName: displayName,
-                email: email,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
-            });
-            alert("Welcome to Aura Farmer!");
-        })
-        .catch(err => alert(err.message));
+.workout-btn-img:hover {
+    transform: scale(1.05)
+    translateY(-2px);
 }
-function login() {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    auth.signInWithEmailAndPassword(email, password)
-        .then(() => alert("Logged in!"))
-        .catch(err => alert(err.message));
+
+.start-btn-img {
+    width: 180px;
+    height: auto;
+    cursor: pointer;
+    transition: transform 0.2s ease;
 }
-async function googleLogin() {
 
-    const provider = new firebase.auth.GoogleAuthProvider();
-
-    try {
-
-        let result;
-
-        if (window.Capacitor && Capacitor.isNativePlatform()) {
-
-            await auth.signInWithRedirect(provider);
-            return;
-
-        } else {
-
-            result = await auth.signInWithPopup(provider);
-
-        }
-
-        const user = result.user;
-
-        // Create user document if it doesn't exist
-        const ref = db.collection("users").doc(user.uid);
-
-        const doc = await ref.get();
-
-        if (!doc.exists) {
-
-            await ref.set({
-
-                displayName: user.displayName,
-
-                email: user.email,
-
-                level: 1,
-
-                xp: 0,
-
-                streak: 0,
-
-                workoutsCompleted: 0,
-
-                exerciseLogs: [],
-
-                personalRecords: {}
-
-            });
-
-        }
-    }
-    catch(error){
-
-        console.error(error);
-
-        alert(error.message);
-
-    }
-
+.start-btn-img:hover {
+    transform: scale(1.05);
 }
-function continueAsGuest(){
+.aura-btn {
+    width: 100%;
+    max-width: 320px;
+    padding: 14px;
+    border: none;
+    border-radius: 12px;
 
-    document.getElementById("loginPage").style.display = "none";
-
-    document.getElementById("appContent").style.display = "block";
-
-    isGuest = true;
-
-    currentUserData = {
-
-        displayName: "Guest",
-
-        level: 1,
-
-        xp: 0,
-
-        workouts: 0,
-
-        streak: 0,
-
-        bestStreak: 0,
-
-        goal: "None",
-
-        achievements: [],
-
-        history: [],
-
-        exerciseLogs: [],
-
-        personalRecords: {}
-
-    };
-
-    updateProfilePage(currentUserData);
-
-    updateAuraUI(
-        "None",
-        0,
-        1,
-        0,
-        0,
-        0
+    background: linear-gradient(
+        180deg,
+        #b87a3d,
+        #8d5b2d
     );
 
-    renderHistory([]);
+    color: black;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
 
-    renderAchievements([]);
+    transition: transform 0.15s ease;
+}
 
-    renderPersonalRecords(currentUserData);
+.aura-btn:hover {
+    transform: scale(1.02);
+}
 
+.aura-btn:active {
+    transform: scale(0.98);
+}
+.history-item img {
+    vertical-align: middle;
+}
+/*Login*/
+#loginPage{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    background: linear-gradient(to bottom, #d2b48c, #f5f5dc);
+}
+.login-box{
+    width: 600px;
+    max-width: 90%;
 
-    
-    showAchievementToast(
-    "👋 You're using Guest Mode. Your progress is stored only on this device."
-);
+    padding: 30px;
+
+    background: rgba(0,0,0,0.55);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.35);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    gap: 12px;
+
+    /*temporary*/
+        height:auto !important;
+    min-height:auto !important;
+    justify-content:flex-start !important;
 
 }
-function forgotPassword() {
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
 
-    const email = document.getElementById("email").value.trim();
-
-    if (!email) {
-        alert("Please enter your email address first.");
-        return;
-    }
-
-    auth.sendPasswordResetEmail(email)
-        .then(() => {
-            alert(
-                "Password reset email sent!\n\nPlease check your inbox (and spam folder)."
-            );
-        })
-        .catch(error => {
-
-            switch (error.code) {
-
-                case "auth/user-not-found":
-                    alert("No account exists with that email.");
-                    break;
-
-                case "auth/invalid-email":
-                    alert("Please enter a valid email address.");
-                    break;
-
-                default:
-                    alert(error.message);
-            }
-
-        });
+    border-radius: 6px;
+    border: none;
+    outline: none;
 }
-async function logout(){
 
-    if (isGuest) {
-
-        isGuest = false;
-
-        currentUserData = null;
-
-        location.reload();
-
-        return;
-
-    }
-
-    await auth.signOut();
-
+.login-box input:focus {
+    box-shadow: 0 0 8px rgba(255,255,255,0.6);
 }
-// ---------------- AUTH STATE ----------------
-auth.onAuthStateChanged((user) => {
-    const loginPage = document.getElementById("loginPage");
-    const appContent = document.getElementById("appContent");
-    if (user) {
-        isGuest = false;
-        updateUserPresence(user.uid);
-        loginPage.style.display = "none";
-        appContent.style.display = "block";
-        document.getElementById(
-        "profileEmail"
-        ).innerText = user.email;
+.login-box button {
+    margin: 5px;
+    padding: 10px 16px;
 
-        loadUserData(user.uid);
-        checkGoalSetup(user.uid);
-    }
-    else {
-    loginPage.style.display = "flex";
-    /* HIDE ENTIRE APP */
-    appContent.style.display = "none";
+    border: none;
+    border-radius: 8px;
+
+    background: linear-gradient(to right, #ffffff, #cfcfcf);
+    font-weight: 600;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
 }
-});
 
-// ---------------- FIRESTORE ----------------
-function loadUserData(userId) {
-    const ref = db.collection("users").doc(userId);
-    ref.get().then(doc => {
-        if (doc.exists) {
-            const data = doc.data();
-            currentUserData = data;
-            updateFavoriteUI(
-            data.favorites || []
-            );
-            document.querySelector(
-            ".profile-name"
-            ).innerText =
-            data.displayName || "Aura User";
-            const initials = (data.displayName || "A")
-            .split(" ")
-            .map(word => word[0])
-            .join("")
-            .toUpperCase();
-            document.getElementById(
-            "navFallbackAvatar"
-            ).innerText = initials;
-            document.getElementById(
-            "dropdownFallbackAvatar"
-            ).innerText = initials;
-            document.getElementById(
-            "dashEnvironment"
-            ).innerText =
-            data.environment || "Gym";
-            updateAuraUI(
-                data.lastWorkout || "None",
-                data.xp || 0,
-                data.level || 1,
-                data.workouts || 0,
-                data.streak || 0,
-                data.bestStreak || 0
-        );
-        renderHistory(data.workoutHistory || []);
-        updateProfilePage(data);
-        loadLastWorkoutValues(data);
-        renderPersonalRecords(data);
-            renderAchievements(data.achievements || []);
-            document.getElementById("dashGoal").innerText =
-                data.goal || "None";
-        } else {
-            updateAuraUI("None", 0, 1, 0, 0, 0);
-            renderAchievements([]);
-            renderHistory([]);
-        }
-    });
+.login-box button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
 }
-function renderPersonalRecords(data){
 
-    const list =
-        document.getElementById("personalRecordsList");
-
-    if(!list) return;
-
-    list.innerHTML = "";
-
-    const prs = data.personalRecords || {};
-
-    if(Object.keys(prs).length === 0){
-
-        list.innerHTML =
-            "<p>No personal records yet.</p>";
-
-        return;
-    }
-
-    Object.entries(prs).forEach(([exercise, record]) => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "history-item";
-
-        div.innerHTML = `
-            <span>${exercise}</span>
-            <span>
-                ${
-                    record.weight
-                        ? `${record.weight} lbs × ${record.reps}`
-                        : `${record.reps} reps`
-                }
-            </span>
-        `;
-
-        list.appendChild(div);
-
-    });
-
+.login-box button:active {
+    transform: scale(0.95);
 }
-function loadLastWorkoutValues(data){
+.divider{
+    width:100%;
+    height:1px;
 
-    const logs = data.exerciseLogs || [];
+    background:rgba(255,255,255,0.2);
 
-    // Get the most recent log for each exercise
-    const latestLogs = {};
-
-    logs.forEach(log => {
-
-        const current = latestLogs[log.exercise];
-
-        if(
-            !current ||
-            log.timestamp > current.timestamp
-        ){
-            latestLogs[log.exercise] = log;
-        }
-
-    });
-
-    document
-        .querySelectorAll(".exercise-card")
-        .forEach(card => {
-
-            const title =
-                card.querySelector("h5");
-
-            if(!title) return;
-
-            const log =
-                latestLogs[title.innerText];
-
-            if(!log) return;
-
-            const weightInput =
-                card.querySelector(".weight-input");
-
-            const repsInput =
-                card.querySelector(".reps-input");
-
-            if(weightInput && log.weight != null){
-
-                weightInput.value = log.weight;
-
-            }
-
-            if(repsInput){
-
-                repsInput.value = log.reps;
-
-            }
-
-        });
-
+    margin:10px 0;
 }
-function checkGoalSetup(userId){
+.circle{
+    width:10px;
+    height:10px;
 
-    const ref =
-        db.collection("users").doc(userId);
+    background:rgba(255,255,255,0.2);
 
-    ref.get().then(doc => {
+    border-radius:50%;
 
-        if(doc.exists){
-
-            const data = doc.data();
-
-            if(!data.goal){
-
-                document
-                    .getElementById("goalModal")
-                    .classList.add("active");
-            }
-        }
-    });
+    margin:0 auto;
 }
-let workoutTimer;
-let workoutSeconds = 0;
-let workoutActive = false;
-let workoutStartTime = null;
-let workoutCompleting = false;
-const MIN_WORKOUT_SECONDS = 20 * 60;
+.aura-background{
+    position: fixed;
+    inset: 0;
 
-function showTab(tabId) {
+    overflow: hidden;
+    pointer-events: none;
 
-    document
-        .querySelectorAll(".tab-page")
-        .forEach(tab => {
-
-            tab.style.display = "none";
-
-        });
-
-    document.getElementById(tabId).style.display = "block";
+    z-index: 0;
 }
-function startWorkout(){
 
-    if(workoutActive){
-        return;
-    }
+.aura-background span{
 
-    workoutActive = true;
+    position: absolute;
 
-    workoutStartTime = Date.now();
+    bottom: -120px;
 
-    localStorage.setItem(
-        "workoutStartTime",
-        workoutStartTime
+    border-radius: 50%;
+
+    background: radial-gradient(
+        circle,
+        rgba(0,255,180,0.45),
+        rgba(0,255,180,0)
     );
 
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "block";
+    filter: blur(10px);
 
-    updateWorkoutTimer();
-
-    workoutTimer = setInterval(() => {
-
-        workoutSeconds = Math.floor(
-            (Date.now() - workoutStartTime) / 1000
-        );
-
-        updateWorkoutTimer();
-
-    }, 1000);
-}
-function createExerciseDropdown(){
-
-    return `
-
-<select class="exerciseSelect">
-
-${allExercises.map(exercise => `
-<option value="${exercise}">
-${exercise}
-</option>
-`).join("")}
-
-<option value="Other">
-Other...
-</option>
-
-</select>
-
-<input
-class="customExercise"
-placeholder="Custom exercise"
-style="display:none;">
-
-`;
-
+    animation: floatAura linear infinite;
 }
 
-function addManualExercise(){
-
-    const container =
-        document.getElementById("manualExercises");
-
-    container.innerHTML += `
-
-    <div class="manualExercise">
-
-        ${createExerciseDropdown()}
-
-        <input
-            class="exerciseWeight"
-            type="number"
-            placeholder="Weight">
-
-        <input
-            class="exerciseReps"
-            type="number"
-            placeholder="Reps">
-
-    </div>
-
-    `;
-
-}
-document.addEventListener("change", function(e){
-
-    if(!e.target.classList.contains("exerciseSelect"))
-        return;
-
-    const custom =
-        e.target.parentElement.querySelector(".customExercise");
-
-    if(e.target.value === "Other"){
-
-        custom.style.display = "block";
-
-        custom.focus();
-
-    }else{
-
-        custom.style.display = "none";
-
-        custom.value = "";
-
-    }
-
-});
-async function saveManualWorkout(){
-
-    const user = auth.currentUser;
-
-    if(!user){
-        alert("Please log in first.");
-        return;
-    }
-
-    const workoutName =
-        document.getElementById("manualWorkoutName").value.trim();
-
-    const duration =
-        Number(document.getElementById("manualWorkoutDuration").value) || 0;
-
-    if(workoutName === ""){
-        alert("Please enter a workout name.");
-        return;
-    }
-
-    const exercises = [];
-
-    document
-        .querySelectorAll("#manualExercises .manualExercise")
-        .forEach(card => {
-
-            const select = card.querySelector(".exerciseSelect");
-
-            let exercise = select.value;
-
-            if(exercise === "Other"){
-                exercise = card.querySelector(".customExercise").value.trim();
-            }
-
-            if(exercise){
-
-                exercises.push({
-
-                    exercise: exercise,
-
-                    weight: Number(card.querySelector(".exerciseWeight").value) || null,
-
-                    reps: Number(card.querySelector(".exerciseReps").value) || 0
-
-                });
-
-            }
-
-        });
-
-    const workout = {
-
-        workout: workoutName,
-
-        date: new Date().toDateString(),
-
-        duration: duration,
-
-        exercises: exercises
-
-    };
-
-    const ref = db.collection("users").doc(user.uid);
-
-    await ref.set({
-
-        workoutHistory:
-            firebase.firestore.FieldValue.arrayUnion(workout)
-
-    }, { merge: true });
-
-    currentUserData.workoutHistory =
-        currentUserData.workoutHistory || [];
-
-    currentUserData.workoutHistory.unshift(workout);
-
-    renderHistory(currentUserData.workoutHistory);
-
-    closeManualWorkoutModal();
-
-}
-function renderExerciseCards(containerId, exercises){
-
-    const container = document.getElementById(containerId);
-
-    container.innerHTML = "";
-
-    exercises.forEach(exercise=>{
-
-        container.innerHTML += `
-        <div class="exercise-card">
-
-            <div class="exercise-info">
-                <h5>${exercise.name}</h5>
-                <p>${exercise.reps}</p>
-            </div>
-
-            <div class="exercise-log">
-
-                ${
-                    exercise.usesWeight
-                    ?
-                    `
-                    <input
-                        class="weight-input"
-                        type="number"
-                        placeholder="Weight (lbs)">
-                    `
-                    :
-                    ""
-                }
-
-                <input
-                    class="reps-input"
-                    type="number"
-                    placeholder="Reps">
-
-                <button
-                    onclick="saveExerciseLog('${exercise.name}', this)">
-                    Save Set
-                </button>
-
-                <div class="saved-sets"></div>
-
-            </div>
-
-        </div>
-        `;
-
-    });
-
-}
-renderExerciseCards(
-    "chestExercises",
-    workoutData.chest
-);
-renderExerciseCards(
-    "backExercises",
-    workoutData.back
-);
-renderExerciseCards(
-    "legExercises",
-    workoutData.legs
-);
-renderExerciseCards(
-    "armExercises",
-    workoutData.arms
-);
-renderExerciseCards(
-    "shoulderExercises",
-    workoutData.shoulders
-);
-renderExerciseCards(
-    "cardioExercises",
-    workoutData.cardio
-);
-function openTeamModal(){
-
-    document
-        .getElementById("teamModal")
-        .classList.add("active");
+/* Different sizes + positions */
+
+.aura-background span:nth-child(1){
+    left: 10%;
+    width: 120px;
+    height: 120px;
+    animation-duration: 14s;
 }
 
-function closeTeamModal(){
-
-    document
-        .getElementById("teamModal")
-        .classList.remove("active");
-}
-function openSplitModal(){
-
-    document
-        .getElementById("splitModal")
-        .classList.add("active");
+.aura-background span:nth-child(2){
+    left: 25%;
+    width: 80px;
+    height: 80px;
+    animation-duration: 18s;
 }
 
-function closeSplitModal(){
-
-    document
-        .getElementById("splitModal")
-        .classList.remove("active");
-}
-function updateWorkoutTimer(){
-
-    const minutes =
-        Math.floor(workoutSeconds / 60);
-
-    const seconds =
-        workoutSeconds % 60;
-
-    document.getElementById(
-        "workoutSessionTime"
-    ).innerText =
-
-        String(minutes).padStart(2, "0")
-        + ":" +
-        String(seconds).padStart(2, "0");
-}
-function openWorkoutSelector(){
-
-    document
-        .getElementById("workoutSelectorModal")
-        .classList.add("active");
+.aura-background span:nth-child(3){
+    left: 45%;
+    width: 140px;
+    height: 140px;
+    animation-duration: 20s;
 }
 
-function selectWorkout(type){
-
-    localStorage.setItem(
-    "selectedWorkout",
-    type
-    );
-
-    document
-        .getElementById("workoutSelectorModal")
-        .classList.remove("active");
-
-    document
-        .querySelectorAll(".workout-group")
-        .forEach(group => {
-            group.style.display = "none";
-        });
-
-    document.getElementById(
-        "womenSection"
-    ).style.display = "none";
-
-    if(type === "women"){
-
-        document.getElementById(
-            "womenSection"
-        ).style.display = "block";
-
-    } else {
-
-        document
-            .querySelectorAll("." + type + "-workout")
-            .forEach(group => {
-                group.style.display = "block";
-            });
-    }
-
-    document.getElementById(
-        "exerciseSection"
-    ).style.display = "block";
-
-    document.getElementById(
-        "workouts"
-    ).style.display = "flex";
-
-    startWorkout();
-}
-function stopWorkout(){
-
-    clearInterval(workoutTimer);
-
-    workoutActive = false;
-
-    workoutStartTime = null;
-
-    localStorage.removeItem(
-        "workoutStartTime"
-    );
-
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "none";
-
-    localStorage.removeItem(
-    "selectedWorkout"
-    );
-
-    return Math.floor(workoutSeconds / 60);
-}
-function cancelWorkout(){
-
-    if(!confirm(
-        "Cancel this workout session?"
-    )){
-        return;
-    }
-
-    clearInterval(workoutTimer);
-
-    workoutActive = false;
-
-    workoutSeconds = 0;
-
-    workoutStartTime = null;
-
-    localStorage.removeItem(
-        "workoutStartTime"
-    );
-
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "none";
-
-    localStorage.removeItem(
-    "selectedWorkout"
-    );
-
-    updateWorkoutTimer();
-}
-function addFavoriteButtons(){
-
-    document
-        .querySelectorAll(".exercise-list li")
-        .forEach(item => {
-
-            const exerciseName =
-                item.querySelector("strong")?.innerText ||
-                item.querySelector("h5")?.innerText;
-
-            if(!exerciseName) return;
-
-            const star =
-                document.createElement("button");
-
-            star.innerText = "☆";
-
-            star.className =
-                "favorite-btn";
-
-            star.dataset.exercise =
-                exerciseName;
-
-            star.onclick = () =>
-                toggleFavorite(exerciseName);
-
-            item.appendChild(star);
-        });
-}
-function updateFavoriteUI(favorites = []){
-
-    document
-        .querySelectorAll(".favorite-btn")
-        .forEach(btn => {
-
-            const exercise =
-                btn.dataset.exercise;
-
-            if(favorites.includes(exercise)){
-
-                btn.innerText = "⭐";
-
-                btn.classList.add("favorited");
-
-            } else {
-
-                btn.innerText = "☆";
-
-                btn.classList.remove("favorited");
-            }
-        });
-}
-async function completeWorkout(day) {
-    const user = auth.currentUser;
-    if (isGuest) {
-
-    stopWorkout();
-
-    showAchievementToast(
-        "🎉 Workout completed! Sign in to save your progress."
-    );
-
-    return;
-    }
-
-    if (!user) return;
-    if(!workoutActive){
-
-    alert("Start a workout first.");
-
-    return;
-    }
-    if(workoutSeconds < MIN_WORKOUT_SECONDS){
-
-    const remainingMinutes =
-        Math.ceil(
-            (MIN_WORKOUT_SECONDS - workoutSeconds) / 60
-        );
-
-    alert(
-        `Workout must be at least 20 minutes.\n\n${remainingMinutes} minute(s) remaining.`
-    );
-
-    return;
-    }
-    
-    const ref = db.collection("users").doc(user.uid);
-
-    const doc = await ref.get();
-
-    let data = doc.exists ? doc.data() : {};
-
-
-        let achievements = data.achievements || [];
-
-        let xp = data.xp || 0;
-        let level = data.level || 1;
-        let workouts = data.workouts || 0;
-        let streak = data.streak || 0;
-        let bestStreak = data.bestStreak || 0;
-        let history = data.history || [];
-
-        const today = new Date().toDateString();
-        const lastWorkoutDate = data.lastWorkoutDate || null;
-
-    let xpEarned = 25;
-
-    if(lastWorkoutDate){
-
-    const lastDate = new Date(lastWorkoutDate);
-    const currentDate = new Date(today);
-
-    const diffTime =
-        currentDate - lastDate;
-
-    const diffDays =
-        diffTime / (1000 * 60 * 60 * 24);
-
-    /* SAME DAY WORKOUT */
-    if(diffDays === 0){
-
-        xpEarned = 5;
-    }
-
-    /* NEXT DAY */
-    else if(diffDays === 1){
-
-        streak++;
-    }
-
-    /* LOST STREAK */
-    else if(diffDays > 1){
-
-        streak = 1;
-    }
-    }
-    else{
-
-    streak = 1;
-    }    
-    if(streak === 0){
-    streak = 1;
-    }
-    if(streak > bestStreak){
-    bestStreak = streak;
-    }
-    
-    const duration = stopWorkout();
-    const completedWorkout = {
-
-    workout: day,
-
-    date: today,
-
-    duration: duration,
-
-    exercises: [...currentWorkoutExercises]
-
-    };
-
-        // Increase values
-        xp += xpEarned;
-        workouts++;
-        history.unshift({
-    workout: day,
-    date: today,
-    duration: duration,
-    xpEarned: xpEarned
-    });
-
-    history = history.slice(0, 50);
-
-        if(xp >= 100) {
-            showLevelUp(getAuraRank(level + 1));
-            level++;
-            xp = 0;
-        }
-
-        // 🔥 Achievement logic
-        if (workouts === 1) addAchievement(achievements, "First Workout");
-        if (workouts === 5) addAchievement(achievements, "Getting Started");
-        if (workouts === 10) addAchievement(achievements, "Consistent");
-        if (level === 5) addAchievement(achievements, "Aura Rising");
-        if (level === 10) addAchievement(achievements, "Aura Master");
-
-       await ref.set({
-    lastWorkout: day,
-    lastWorkoutDate: today,
-
-    xp,
-    level,
-    workouts,
-
-    streak,
-    bestStreak,
-
-    history,
-    achievements,
-
-    workoutHistory:
-    firebase.firestore.FieldValue.arrayUnion(completedWorkout),
-
-}, { merge: true });
-
-    currentWorkoutExercises = [];
-
-        updateAuraUI(
-    day,
-    xp,
-    level,
-    workouts,
-    streak,
-    bestStreak
-);
-currentUserData.workoutHistory =
-    currentUserData.workoutHistory || [];
-
-currentUserData.workoutHistory.unshift(completedWorkout);
-
-renderHistory(currentUserData.workoutHistory);
-        renderAchievements(achievements);
-        }
-async function saveExerciseLog(exerciseName, button){
-
-    const user = auth.currentUser;
-    const container = button.parentElement;
-
-    const weightInput =
-    container.querySelector(".weight-input");
-
-    const weight =
-    weightInput ? weightInput.value : "";
-
-    const reps =
-    container.querySelector(".reps-input").value;
-
-    if(isGuest){
-
-    const log = {
-
-        exercise: exerciseName,
-
-        weight: weight ? Number(weight) : null,
-
-        reps: Number(reps),
-
-        date: new Date().toDateString()
-
-    };
-
-    let guestLogs =
-        JSON.parse(localStorage.getItem("guestLogs") || "[]");
-
-    guestLogs.push(log);
-
-    localStorage.setItem(
-        "guestLogs",
-        JSON.stringify(guestLogs)
-    );
-
-    button.innerText = "Saved ✓";
-
-    button.classList.add("saved");
-
-    setTimeout(() => {
-
-        button.innerText = "💾 Save";
-
-        button.classList.remove("saved");
-
-    },1500);
-
-    return;
-    }
-
-    if(!user) return;
-
-
-    if(!reps){
-
-        alert("Please enter the number of reps.");
-
-        return;
-    }
-
-    const selectedWorkout =
-    localStorage.getItem("selectedWorkout") || "Custom";
-
-    const log = {
-
-    exercise: exerciseName,
-
-    workout: selectedWorkout,
-
-    weight: weight ? Number(weight) : null,
-
-    reps: Number(reps),
-
-    date: new Date().toDateString(),
-
-    timestamp: Date.now()
-
-    };
-    
-    currentWorkoutExercises.push(log);
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    const doc = await ref.get();
-
-    const data = doc.data() || {};
-
-    const personalRecords =
-    data.personalRecords || {};
-
-    const currentPR =
-    personalRecords[exerciseName];
-
-    let isNewPR = false;
-
-    if(!currentPR){
-
-    isNewPR = true;
-
-    }
-    const currentWeight = currentPR?.weight ?? 0;
-    const currentReps = currentPR?.reps ?? 0;
-
-    if(weight){
-
-    if(
-        Number(weight) > currentWeight ||
-
-        (
-            Number(weight) === currentWeight &&
-            Number(reps) > currentReps
-        )
-    ){
-        isNewPR = true;
-    }
-
-    }else{
-
-    if(Number(reps) > currentReps){
-        isNewPR = true;
-    }
-
-    }
-    if (isNewPR) {
-
-    personalRecords[exerciseName] = {
-
-        weight: weight ? Number(weight) : null,
-
-        reps: Number(reps),
-
-        date: log.date,
-
-        timestamp: log.timestamp
-
-    };
-
-    }
-
-    await ref.set({
-
-    exerciseLogs:
-        firebase.firestore.FieldValue.arrayUnion(log),
-
-    personalRecords: personalRecords
-
-    }, { merge: true });
-
-    
-
-    data.personalRecords = personalRecords;
-    renderPersonalRecords(data);
-
-    if(isNewPR){
-
-    showAchievementToast(
-        `🏆 New ${exerciseName} PR!`
-    );
-
-    }
-
-    button.innerText = "Saved ✓";
-
-    button.classList.add("saved");
-
-    setTimeout(() => {
-
-    button.innerText = "💾 Save";
-
-    button.classList.remove("saved");
-
-    }, 1500);
-}
-async function saveSteps() {
-
-    const user = auth.currentUser;
-
-    if(!user) return;
-
-    const steps =
-        Number(
-            document.getElementById("stepInput").value
-        );
-
-    if(!steps) return;
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    await ref.set({
-        stepsToday: steps
-    }, { merge:true });
-
+.aura-background span:nth-child(4){
+    left: 65%;
+    width: 90px;
+    height: 90px;
+    animation-duration: 16s;
 }
 
-async function toggleFavorite(exerciseName){
+.aura-background span:nth-child(5){
+    left: 80%;
+    width: 160px;
+    height: 160px;
+    animation-duration: 24s;
+}
 
-    const user = auth.currentUser;
+.aura-background span:nth-child(6){
+    left: 90%;
+    width: 70px;
+    height: 70px;
+    animation-duration: 15s;
+}
 
-    if(!user) return;
+@keyframes floatAura{
 
-    const ref =
-        db.collection("users").doc(user.uid);
+    0%{
+        transform:
+            translateY(0)
+            scale(1);
 
-    const doc = await ref.get();
-
-    const data = doc.data() || {};
-
-    let favorites = data.favorites || [];
-
-    if(favorites.includes(exerciseName)){
-
-        favorites =
-            favorites.filter(
-                item => item !== exerciseName
-            );
-
-    } else {
-
-        favorites.push(exerciseName);
+        opacity: 0;
     }
 
-    await ref.set({
-        favorites
-    }, { merge:true });
-
-    updateFavoriteUI(favorites);
-}
-function openWorkoutModal(){
-
-    document
-        .getElementById("workoutModal")
-        .classList.add("active");
-}
-
-function closeWorkoutModal(){
-
-    document
-        .getElementById("workoutModal")
-        .classList.remove("active");
-}
-function openManualWorkoutModal(){
-
-    document
-        .getElementById("manualWorkoutModal")
-        .classList.add("active");
-
-}
-
-function closeManualWorkoutModal(){
-
-    document
-        .getElementById("manualWorkoutModal")
-        .classList.remove("active");
-
-    document.getElementById("manualExercises").innerHTML = "";
-
-}
-
-async function finishWorkout(day){
-
-    if(workoutCompleting){
-        return;
+    15%{
+        opacity: 0.5;
     }
 
-    workoutCompleting = true;
-
-    document
-        .querySelectorAll("#workoutModal button")
-        .forEach(btn => btn.disabled = true);
-
-    closeWorkoutModal();
-
-    try{
-        await completeWorkout(day);
-    }
-    finally{
-
-        workoutCompleting = false;
-
-        document
-            .querySelectorAll("#workoutModal button")
-            .forEach(btn => btn.disabled = false);
-    }
-}
-function selectGoal(goal){
-
-    const user = auth.currentUser;
-
-    if(!user) return;
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    ref.set({
-        goal: goal
-    }, { merge:true });
-
-    document
-        .getElementById("goalModal")
-        .classList.remove("active");
-
-    document
-        .getElementById("dashGoal")
-        .innerText = goal;
-}
-
-//-----------------Helper Function------
-function addAchievement(list, achievement) {
-    if (!list.includes(achievement)) {
-        list.push(achievement);
-
-        showAchievementToast(achievement);
-
-        // small visual delay refresh
-        setTimeout(() => {
-            renderAchievements(list);
-        }, 300);
-    }
-}
-function showAchievementToast(achievement){
-
-    const toast =
-        document.getElementById("achievementToast");
-
-    const text =
-        document.getElementById("achievementText");
-
-    text.innerText = achievement;
-
-    toast.classList.add("active");
-
-    setTimeout(() => {
-
-        toast.classList.remove("active");
-
-    }, 3000);
-}
-function showLevelUp(rank){
-
-    const overlay =
-        document.getElementById("levelUpOverlay");
-
-    const text =
-        document.getElementById("levelUpText");
-
-    text.innerText =
-        "You reached " + rank;
-
-    overlay.classList.add("active");
-
-    setTimeout(() => {
-
-        overlay.classList.remove("active");
-
-    }, 3000);
-}
-function renderAchievements(userAchievements = []) {
-    const grid = document.getElementById("achievementsGrid");
-    grid.innerHTML = "";
-
-    const allAchievements = [
-        "First Workout",
-        "Getting Started",
-        "Consistent",
-        "Aura Rising",
-        "Aura Master"
-    ];
-
-    allAchievements.forEach(name => {
-        const card = document.createElement("div");
-
-        const unlocked = userAchievements.includes(name);
-
-        card.className = "achievement-card " + (unlocked ? "unlocked" : "locked");
-
-        card.innerHTML = `
-            <h4>${unlocked ? "<img src='auratrophy.png' alt='Trophy' style='width:48px; height:48px;'>" : "🔒"}</h4>
-            <p>${name}</p>
-        `;
-
-        grid.appendChild(card);
-    });
-}
-function renderHistory(history = []) {
-
-    fullWorkoutHistory = history;
-
-    const list =
-        document.getElementById("historyList");
-
-    const toggleBtn =
-        document.getElementById("historyToggleBtn");
-
-    list.innerHTML = "";
-
-    const workoutsToShow =
-        showFullHistory
-            ? history
-            : history.slice(0, 3);
-
-    workoutsToShow.forEach(item => {
-
-        const div =
-            document.createElement("div");
-
-        div.className = "history-item";
-
-    const exercises = (item.exercises || []).map(exercise => `
-
-<div class="history-exercise-row">
-
-    <div class="history-exercise-name">
-
-        ${exercise.exercise}
-
-    </div>
-
-    <div class="history-exercise-result">
-
-        ${
-            exercise.weight
-                ? `${exercise.weight} lbs × ${exercise.reps}`
-                : `${exercise.reps} reps`
-        }
-
-    </div>
-
-</div>
-
-`).join("");
-
-    div.innerHTML = `
-    <div class="history-header">
-
-    <div class="history-title">
-
-        <img
-            src="liftsymbol.png"
-            style="width:30px;height:30px;margin-right:10px;"
-        >
-
-        <div>
-
-            <h4>${item.workout}</h4>
-
-            <div class="history-meta">
-
-                <span>${item.date}</span>
-
-                <span>${item.duration || 0} min</span>
-
-                <span>${item.exercises.length} exercises</span>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-    <button class="history-expand-btn">
-        ▼ View Exercises
-    </button>
-
-    <div class="history-exercises" style="display:none;">
-        ${exercises}
-    </div>
-    `;
-
-    list.appendChild(div);
-    const button = div.querySelector(".history-expand-btn");
-    const exerciseList = div.querySelector(".history-exercises");
-
-    button.onclick = () => {
-
-    const open = exerciseList.style.display === "block";
-
-    exerciseList.style.display = open ? "none" : "block";
-
-    button.innerText = open
-        ? "▼ View Exercises"
-        : "▲ Hide Exercises";
-    };
-    });
-
-    if(history.length > 3){
-
-        toggleBtn.style.display = "block";
-
-        toggleBtn.innerText =
-            showFullHistory
-                ? "Show Less ▲"
-                : `View ${history.length - 3} More Workouts ▼`;
-
-    } else {
-
-        toggleBtn.style.display = "none";
-    }
-}
-function toggleHistory(){
-
-    showFullHistory =
-        !showFullHistory;
-
-    renderHistory(fullWorkoutHistory);
-}
-// ---------------- UI ----------------
-const profileBtn = document.getElementById("profileBtn");
-const dropdown = document.getElementById("profileDropdown");
-
-/* IMAGE ELEMENTS */
-const navProfileImage = document.getElementById("navProfileImage");
-const dropdownProfileImage = document.getElementById("dropdownProfileImage");
-
-/* FALLBACK INITIALS */
-const navFallbackAvatar = document.getElementById("navFallbackAvatar");
-const dropdownFallbackAvatar = document.getElementById("dropdownFallbackAvatar");
-
-/* IMAGE INPUT */
-const imageUpload = document.getElementById("imageUpload");
-
-/* TOGGLE DROPDOWN */
-profileBtn.addEventListener("click", () => {
-    dropdown.classList.toggle("active");
-});
-
-/* CLOSE DROPDOWN */
-window.addEventListener("click", (e) => {
-
-    if (
-        !profileBtn.contains(e.target) &&
-        !dropdown.contains(e.target)
-    ) {
-        dropdown.classList.remove("active");
-    }
-});
-
-/* IMAGE UPLOAD */
-imageUpload.addEventListener("change", () => {
-
-    const file = imageUpload.files[0];
-
-    if(file){
-        const reader = new FileReader();
-
-reader.onload = function(e){
-
-    const imageURL = e.target.result;
-
-    navProfileImage.src = imageURL;
-    dropdownProfileImage.src = imageURL;
-
-    navProfileImage.style.display = "block";
-    dropdownProfileImage.style.display = "block";
-
-    navFallbackAvatar.style.display = "none";
-    dropdownFallbackAvatar.style.display = "none";
-
-    localStorage.setItem("profileImage", imageURL);
-    };
-
-    reader.readAsDataURL(file);
-    }
-});
-
-/* LOAD SAVED IMAGE */
-window.addEventListener("DOMContentLoaded", () => {
-
-    const savedImage = localStorage.getItem("profileImage");
-
-    if(savedImage){
-
-        navProfileImage.src = savedImage;
-        dropdownProfileImage.src = savedImage;
-
-        navProfileImage.style.display = "block";
-        dropdownProfileImage.style.display = "block";
-
-        navFallbackAvatar.style.display = "none";
-        dropdownFallbackAvatar.style.display = "none";
-    }
-});
-// ---------------- REVIEWS ----------------
-
-function prevReview() {
-    const track = document.querySelector(".reviews-track");
-    track.appendChild(track.firstElementChild);
-}
-
-function nextReview() {
-    const track = document.querySelector(".reviews-track");
-    track.insertBefore(track.lastElementChild, track.firstElementChild);
-}
-
-// ---------------- TIMER ----------------
-
-let timer;
-let timeLeft = 60;
-let timerEndTime = null;
-
-function startTimer(seconds) {
-
-    clearInterval(timer);
-
-    timerEndTime =
-        Date.now() + (seconds * 1000);
-
-    updateDisplay();
-
-    timer = setInterval(() => {
-
-        timeLeft = Math.max(
-            0,
-            Math.ceil(
-                (timerEndTime - Date.now()) / 1000
-            )
-        );
-
-        updateDisplay();
-
-        if(timeLeft <= 0){
-
-            clearInterval(timer);
-
-            const audio =
-                new Audio(
-                    "https://www.soundjay.com/buttons/beep-07.mp3"
-                );
-
-            audio.play();
-        }
-
-    }, 250);
-}
-
-function pauseTimer() {
-    clearInterval(timer);
-}
-
-function resetTimer() {
-    clearInterval(timer);
-    timeLeft = 60;
-    updateDisplay();
-}
-
-
-
-function updateDisplay() {
-    document.getElementById("timerDisplay").innerText = timeLeft + "s";
-}
-function getAuraRank(level){
-
-    if(level >= 25){
-        return "👑 Aura Ascended";
+    50%{
+        transform:
+            translateY(-50vh)
+            scale(1.2);
     }
 
-    if(level >= 15){
-        return "⚡ Aura Elite";
-    }
+    100%{
+        transform:
+            translateY(-110vh)
+            scale(0.8);
 
-    if(level >= 10){
-        return "🔥 Aura Warrior";
+        opacity: 0;
     }
-
-    if(level >= 5){
-        return "💪 Aura Builder";
-    }
-
-    return "🌱 Aura Novice";
 }
-function getCoachInsight(data){
-
-    const workouts =
-        data.workouts || 0;
-
-    const streak =
-        data.streak || 0;
-
-    const level =
-        data.level || 1;
-
-    const lastWorkout =
-        data.lastWorkout || "None";
-
-    /* BEGINNER */
-    if(workouts < 3){
-        return "🌱 Build momentum with consistency.";
-    }
-
-    /* STREAK */
-    if(streak >= 7){
-        return "🔥 You're on fire. Keep the streak alive.";
-    }
-
-    /* HIGH LEVEL */
-    if(level >= 10){
-        return "⚡ Your Aura is evolving rapidly.";
-    }
-
-    /* LEGS */
-    if(lastWorkout !== "Leg Day"){
-        return "🦵 Don't skip leg day this week.";
-    }
-
-    /* DEFAULT */
-    return "💪 Progress comes from consistency.";
+#appContent{
+    display:none;
 }
-function updateAuraUI(
-    lastWorkout,
-    xp,
-    level,
-    workouts = 0,
-    streak = 0,
-    bestStreak = 0
-) {
-
-    document.getElementById("dashStreak").innerText =
-        streak + " Days 🔥";
-
-    document.getElementById("dashBestStreak").innerText =
-        bestStreak;
+/* BODY */
+body {
+    margin: 0;
+    background: linear-gradient(to bottom, #d2b48c, #e6d3a3);
+    font-family: 'Segoe UI', sans-serif;
+    font-size:16px;
 }
-function updateProfilePage(data){
-    
-    /* IMAGE */
-    const savedImage =
-        localStorage.getItem("profileImage");
 
-    if(savedImage){
+@keyframes gradientMove {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+/* NAVBAR */
+.navbar{
+    width:100%;
+    height:80px;
+    padding:0 40px;
 
-        document.getElementById(
-            "profilePageImage"
-        ).src = savedImage;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    background:linear-gradient(to right, black, #444);
+    color:burlywood;
+}
+
+/* LEFT SIDE */
+.nav-left{
+    display:flex;
+    align-items:center;
+    gap:40px;
+}
+
+.logo{
+    font-size:1.5rem;
+}
+
+.nav-links{
+    display:flex;
+    gap:25px;
+    list-style:none;
+}
+
+.nav-links a{
+    color:burlywood;
+    text-decoration:none;
+    transition:0.3s;
+}
+
+.nav-links a:hover{
+    opacity:0.7;
+    background: smokeywhite;
+    text-decoration: lightgreen underline;
+}
+
+/* RIGHT SIDE */
+.nav-right{
+    display:flex;
+    align-items:center;
+}
+/* SPLIT GUIDE MODAL */
+
+.split-modal{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,0.75);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.split-modal.active{
+    display:flex;
+}
+
+.split-modal-content{
+
+    width:min(95%, 900px);
+
+    max-height:85vh;
+    overflow-y:auto;
+
+    background: burlywood;
+
+    padding:40px;
+
+    border-radius:24px;
+
+    position:relative;
+}
+
+.close-split{
+
+    position:absolute;
+
+    top:15px;
+    right:20px;
+
+    font-size:2rem;
+
+    cursor:pointer;
+}
+#auraProBtn{
+    background:none;
+
+    border:none;
+
+    color:chartreuse;
+
+    font-size:1rem;
+    font-weight:600;
+
+    cursor:pointer;
+
+    padding:0; /* IMPORTANT */
+
+    margin:0; /* IMPORTANT */
+
+    display:flex;
+    align-items:center;
+
+    height:auto;
+}
+/* =========================
+   ACTIVE USERS
+========================= */
+
+.active-users{
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+
+    margin-right:20px;
+
+    font-size:0.95rem;
+
+    color:burlywood;
+}
+
+/* DOT */
+.online-dot{
+    width:10px;
+    height:10px;
+
+    background:#22c55e;
+
+    border-radius:50%;
+
+    animation:pulseDot 1.8s infinite;
+}
+
+/* PULSE */
+@keyframes pulseDot{
+
+    0%{
+        opacity:1;
+        transform:scale(1);
     }
 
-    /* NAME */
-    document.getElementById(
-    "profilePageName"
-    ).innerText =
-    data.displayName || "Aura User";
-
-    /* RANK */
-    document.getElementById(
-        "profilePageRank"
-    ).innerText =
-        getAuraRank(data.level || 1);
-    document.getElementById(
-    "profileProgressFill"
-    ).style.width =
-    ((data.xp || 0) / 100) * 100 + "%";
-
-    document.getElementById(
-    "profileProgressText"
-    ).innerText =
-    (data.xp || 0) + " / 100 XP";   
-    /* STATS */
-    document.getElementById(
-        "profileLevel"
-    ).innerText =
-        data.level || 1;
-    document.getElementById(
-        "profileWorkouts"
-    ).innerText =
-        data.workouts || 0;
-    
-    renderPersonalRecords(data);
-}
-const modal = document.getElementById("imageModal");
-const modalImage = document.getElementById("modalImage");
-const closeModal = document.getElementById("closeModal");
-
-/* SELECT ALL WORKOUT IMAGES */
-const workoutImages = document.querySelectorAll(".img-row img");
-
-/* OPEN MODAL */
-workoutImages.forEach(img => {
-
-    img.addEventListener("click", () => {
-
-        modal.classList.add("active");
-
-        modalImage.src = img.src;
-    });
-});
-
-/* CLOSE BUTTON */
-closeModal.addEventListener("click", () => {
-    modal.classList.remove("active");
-});
-
-/* CLICK OUTSIDE IMAGE */
-modal.addEventListener("click", (e) => {
-
-    if(e.target === modal){
-        modal.classList.remove("active");
+    50%{
+        opacity:0.5;
+        transform:scale(1.3);
     }
-});
-const settingsModal =
-    document.getElementById("settingsModal");
 
-/* OPEN */
-function openSettings(){
+    100%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+/* PROFILE */
+.profile-page{
+    box-shadow:
+    0 0 20px rgba(127,255,0,0.08);
+    border: 2px solid black;
+}
+.profile-container{
+    position:relative;
+}
 
-    settingsModal.classList.add("active");
+.profile-btn{
+    display:flex;
+    align-items:center;
+    gap:12px;
 
-    loadSettings();
+    background:none;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+/* PROFILE IMAGES */
+.profile-image,
+.dropdown-profile-image{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+    object-fit:cover;
+
+    display:none;
+}
+
+.dropdown-profile-image{
+    width:50px;
+    height:50px;
+}
+
+/* FALLBACK AVATARS */
+.avatar,
+.dropdown-avatar{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#3b82f6;
+    color:white;
+    font-weight:bold;
+}
+/* UPLOAD BUTTON */
+.upload-btn{
+    display:block;
+
+    width:100%;
+
+    background:rgba(255,255,255,0.08);
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    text-align:left;
+
+    cursor:pointer;
+
+    transition:0.25s;
+
+    margin-bottom:6px;
+}
+
+.upload-btn:hover{
+    background:rgba(255,255,255,0.14);
+}
+
+/* AVATAR */
+.avatar,
+.dropdown-avatar{
+    width:42px;
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:#3b82f6;
+    font-weight:bold;
+}
+
+.profile-name{
+    font-size:0.95rem;
+}
+
+/* DROPDOWN */
+.profile-dropdown{
+
+    position:absolute;
+
+    top:70px;
+    right:0;
+
+    width:260px;
+
+    background:#1b1b1b;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.35);
+
+    opacity:0;
+    visibility:hidden;
+
+    transform:
+        translateY(10px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        visibility 0.25s;
+
+    z-index:1000;
+}
+
+/* SHOW DROPDOWN */
+.profile-dropdown.active{
+    opacity:1;
+    visibility:visible;
+
+    transform:
+        translateY(0);
+}
+
+/* HEADER */
+.dropdown-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+}
+
+.dropdown-header h4{
+    margin-bottom:3px;
+}
+
+.dropdown-header p{
+    font-size:0.85rem;
+    opacity:0.7;
+}
+
+/* DIVIDER */
+.dropdown-divider{
+    width:100%;
+    height:1px;
+    background:rgba(255,255,255,0.1);
+
+    margin:8px 0;
+}
+
+/* LINKS */
+.profile-dropdown a{
+  display:block;
+
+    width:100%;
+
+    text-decoration:none;
+
+    color:white;
+
+    padding:12px 14px;
+
+    border-radius:10px;
+
+    transition:0.25s;
+
+    margin-top:6px;
+}
+
+.profile-dropdown a:hover{
+    background:rgba(255,255,255,0.08);
+}
+
+.logout:hover{
+    background:rgba(239,68,68,0.2);
+}
+/* =========================
+   SETTINGS MODAL
+========================= */
+
+.settings-modal{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:10000;
+
+    backdrop-filter:blur(6px);
+}
+
+.settings-modal.active{
+    display:flex;
+}
+
+/* CONTENT */
+.settings-content{
+    background:white;
+
+    width:min(90%, 450px);
+
+    padding:35px;
+
+    border-radius:28px;
+
+    position:relative;
+
+    animation:settingsPop 0.25s ease;
 }
 
 /* CLOSE */
-function closeSettings(){
-    settingsModal.classList.remove("active");
+.close-settings{
+    position:absolute;
 
+    top:15px;
+    right:20px;
+
+    font-size:2rem;
+
+    cursor:pointer;
 }
-function loadSettings(){
 
-    const user = auth.currentUser;
-    
-
-    if(!user) return;
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    ref.get().then(doc => {
-
-        if(doc.exists){
-
-            const data = doc.data();
-
-            document.getElementById(
-                "displayNameInput"
-            ).value =
-                data.displayName || "";
-
-            document.getElementById(
-                "goalSelect"
-            ).value =
-                data.goal || "Build Muscle";
-        }
-    });
+/* GROUPS */
+.settings-group{
+    margin:25px 0;
 }
-function saveSettings(){
 
-    const user = auth.currentUser;
-    if(!user) return;
+.settings-group label{
+    display:block;
 
-    const displayName =
-        document.getElementById(
-            "displayNameInput"
-        ).value;
+    margin-bottom:8px;
 
-    const goal =
-        document.getElementById(
-            "goalSelect"
-        ).value;
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    ref.set({
-
-        displayName,
-        goal,
-    }, { merge:true });
-
-    /* UPDATE UI */
-    document.querySelector(
-    ".profile-name"
-    ).innerText = displayName;
-
-    document.getElementById(
-        "profilePageName"
-    ).innerText = displayName;
-
-    document.getElementById(
-        "dashGoal"
-    ).innerText = goal;
-
-    closeSettings();
-
-    alert("✅ Settings updated");
+    font-weight:600;
 }
-async function deleteAccount() {
 
-    const user = auth.currentUser;
+/* INPUTS */
+.settings-group input,
+.settings-group select{
+    width:100%;
 
-    if (!user) return;
+    padding:14px;
 
-    const confirmed = confirm(
-        "Are you sure?\n\nThis will permanently delete your account and all workout data."
+    border-radius:12px;
+
+    border:1px solid #ccc;
+
+    font-size:1rem;
+}
+
+/* ANIMATION */
+@keyframes settingsPop{
+
+    from{
+        transform:scale(0.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+/* =========================
+   PROFILE PAGE
+========================= */
+
+.profile-page{
+    width:min(95%, 1000px);
+
+    margin:60px auto;
+
+    padding:40px;
+
+    background:
+        rgba(255,255,255,0.12);
+
+    backdrop-filter:blur(12px);
+
+    border-radius:30px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.15);
+}
+
+/* HEADER */
+.profile-header{
+    display:flex;
+    align-items:center;
+
+    gap:25px;
+
+    margin-bottom:40px;
+}
+
+/* IMAGE */
+.profile-page-image{
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    object-fit:cover;
+
+    background:#ddd;
+}
+/*Profile progress exp bar*/
+.profile-progress{
+   position: relative;
+    width: 220px;
+    height: 16px;
+    background: whitesmoke;
+    border-radius: 999px;
+    overflow: hidden;
+    margin-top: 10px;
+    border: 2px solid black;
+}
+.profile-progress-text{
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    color: black;
+
+    z-index: 5;
+
+    pointer-events: none;
+
+    text-shadow:
+        glow 0 0 4px rgba(255,255,255,0.8);
+}
+.profile-progress-fill{
+    height: 100%;
+    width: 0%;
+    opacity: 0.9;
+    border-radius: 20px;
+
+    background: linear-gradient(
+        90deg,
+        #7fff00,
+        #00ffcc,
+        #7fff00
     );
 
-    if (!confirmed) return;
+    background-size: 300% 100%;
 
-    try {
+    position: relative;
 
-        await db.collection("users")
-            .doc(user.uid)
-            .delete();
+    overflow: hidden;
 
-        await db.collection("presence")
-            .doc(user.uid)
-            .delete();
+    transition: width 0.6s ease;
 
-        localStorage.clear();
-
-        await user.delete();
-
-        alert("Account deleted.");
-
-    } catch (error) {
-
-        console.error(error);
-
-        if (
-            error.code ===
-            "auth/requires-recent-login"
-        ) {
-
-            alert(
-                "Please log out and log back in before deleting your account."
-            );
-
-        } else {
-
-            alert(error.message);
-        }
-    }
+    animation: auraWave 4s linear infinite;
 }
-function updateUserPresence(userId){
+.profile-progress-fill::before{
+    content: "";
 
-    const ref =
-        db.collection("presence").doc(userId);
+    position: absolute;
 
-    setInterval(() => {
+    top: 0;
+    left: -50%;
 
-        ref.set({
-            lastActive: Date.now()
-        });
+    width: 200%;
+    height: 100%;
 
-    }, 15000);
-
-    /* INITIAL */
-    ref.set({
-        lastActive: Date.now()
-    });
-
-    loadActiveUsers();
-}
-function loadActiveUsers(){
-
-    const fiveMinutes = 5 * 60 * 1000;
-
-    db.collection("presence")
-    .onSnapshot((snapshot) => {
-
-        let activeCount = 0;
-
-        snapshot.forEach(doc => {
-
-            const data = doc.data();
-
-            if(
-                data.lastActive &&
-                Date.now() - data.lastActive < fiveMinutes
-            ){
-                activeCount++;
-            }
-        });
-
-        document.getElementById(
-            "activeUsersCount"
-        ).innerText =
-            activeCount + " Active";
-    });
-}
-window.addEventListener("load", () => {
-
-    addFavoriteButtons();
-    
-    // Difficulty colors
-    document.querySelectorAll(".legs-workout")
-    .forEach(card => {
-        card.classList.add("difficulty-hard");
-    });
-
-    document.querySelectorAll(".push-workout")
-    .forEach(card => {
-        card.classList.add("difficulty-medium");
-    });
-
-    document.querySelectorAll(".pull-workout")
-    .forEach(card => {
-        card.classList.add("difficulty-medium");
-    });
-
-    document.querySelectorAll(".cardio-workout")
-    .forEach(card => {
-        card.classList.add("difficulty-easy");
-    });
-
-
-    const savedWorkout =
-    localStorage.getItem(
-        "selectedWorkout"
+    background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255,255,255,0.35) 50%,
+        transparent 80%
     );
 
-if(savedWorkout){
+    animation: shimmerWave 2.5s linear infinite;
+}
+.profile-progress-fill::after{
+    content: "";
 
-    document
-        .querySelectorAll(".workout-group")
-        .forEach(group => {
-            group.style.display = "none";
-        });
+    position: absolute;
 
-    if(savedWorkout === "women"){
+    inset: 0;
 
-        document.getElementById(
-            "womenSection"
-        ).style.display = "block";
-
-    } else {
-
-        document
-            .querySelectorAll(
-                "." + savedWorkout + "-workout"
-            )
-            .forEach(group => {
-                group.style.display = "block";
-            });
-    }
-
-    document.getElementById(
-        "exerciseSection"
-    ).style.display = "block";
-
-    document.getElementById(
-        "workouts"
-    ).style.display = "flex";
-    }
-
-    const savedStartTime =
-        localStorage.getItem("workoutStartTime");
-
-    if(!savedStartTime) return;
-
-    const elapsedSeconds =
-        Math.floor(
-            (Date.now() - Number(savedStartTime)) / 1000
+    background-image:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.45) 2px,
+            transparent 3px
+        ),
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.25) 1.5px,
+            transparent 2.5px
         );
 
-    // Ignore anything older than 4 hours
-    if(elapsedSeconds > 14400){
+    background-size:
+        40px 40px,
+        25px 25px;
 
-        localStorage.removeItem(
-            "workoutStartTime"
-        );
+    animation: bubbleRise 5s linear infinite;
 
-        return;
+    opacity: 0.7;
+}
+@keyframes bubbleRise{
+
+    0%{
+        background-position:
+            0 20px,
+            10px 30px;
     }
 
-    workoutStartTime =
-        Number(savedStartTime);
+    100%{
+        background-position:
+            0 -40px,
+            10px -30px;
+    }
+}
+@keyframes auraWave{
 
-    workoutActive = true;
+    0%{
+        background-position: 0% 50%;
+    }
 
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "block";
+    100%{
+        background-position: 300% 50%;
+    }
+}
 
-    workoutTimer = setInterval(() => {
+@keyframes shimmerWave{
 
-        workoutSeconds = Math.floor(
-            (Date.now() - workoutStartTime) / 1000
+    0%{
+        transform: translateX(-30%);
+    }
+
+    100%{
+        transform: translateX(30%);
+    }
+}
+/* NAME */
+.profile-header h2{
+    font-size:2rem;
+
+    margin-bottom:5px;
+}
+
+/* RANK */
+#profilePageRank{
+    opacity:0.75;
+
+    font-size:1.1rem;
+}
+
+/* STATS */
+.profile-stats{
+    display:grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+    gap:20px;
+
+    margin-bottom:35px;
+}
+
+.profile-stat{
+    background:
+        rgba(255,255,255,0.08);
+    border-radius:20px;
+    padding:25px;
+    text-align:center;
+    border: 2px solid black;
+
+}
+.profile-stat h3{
+    font-size:1.2rem;
+    opacity:0.75;
+    margin-bottom:10px;
+}
+.pr-box{
+
+    margin:20px 0;
+
+    padding:20px;
+
+    background:#e5b964;
+
+    border: 2px solid black;
+
+    border-radius:15px;
+
+    box-shadow:0 2px 10px rgba(0,0,0,.15);
+
+}
+
+.pr-box h3{
+
+    margin-bottom:15px;
+
+}
+
+#personalRecordsList .history-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    padding:20px;
+
+    border-bottom:1px solid #eee;
+
+}
+/* GOAL */
+.profile-goal{
+    background:
+        rgba(255,255,255,0.08);
+
+    padding:25px;
+
+    border-radius:20px;
+}
+.profile-goal h3{
+    margin-bottom:10px;
+    font-size:1.4rem;
+}
+/* DIFFICULTY */
+.box.difficulty-easy{
+    border:2px solid #4CAF50;
+    box-shadow:0 0 18px rgba(76,175,80,.35);
+}
+
+.box.difficulty-medium{
+    border:2px solid #FFC107;
+    box-shadow:0 0 18px rgba(255,193,7,.35);
+}
+
+.box.difficulty-hard{
+    border:2px solid #F44336;
+    box-shadow:0 0 18px rgba(244,67,54,.35);
+}
+
+.box.difficulty-elite{
+    border:2px solid #9C27B0;
+    box-shadow:0 0 18px rgba(156,39,176,.35);
+}
+/* ACHIEVEMENTS */
+.profile-achievements{
+    background:
+        rgba(255,255,255,0.08);
+
+    padding:25px;
+
+    border-radius:20px;
+}
+.profile-achievements h3{
+    margin-bottom:20px;
+    font-size:1.4rem;
+}
+
+/* MOBILE */
+@media (max-width:768px){
+
+    .profile-page{
+        padding:25px;
+    }
+
+    .profile-header{
+        flex-direction:column;
+
+        text-align:center;
+    }
+
+    .profile-page-image{
+        width:100px;
+        height:100px;
+    }
+}
+/*Dashboard*/
+.dashboard {
+    padding: 40px 20px;
+    text-align: center;
+
+    background: rgba(0,0,0,0.05);
+    border-radius: 12px;
+
+    margin: 40px auto;
+    max-width: 900px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    margin: 30px auto 10px auto; /* tighter spacing */
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.dash-card {
+    background: linear-gradient(to right, black, #444);
+    color: burlywood;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    
+}
+
+.dash-card h3 {
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+.dash-card p {
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+/* HERO SECTION */
+.hero {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    max-width: 1600px;
+    width: 100%;
+    margin: 40px auto;
+
+    padding: 60px 40px; /* 🔥 fixed */
+
+    gap: 40px;
+    flex-wrap: wrap;
+
+    border-radius: 15px;
+    border: 2px solid rgba(0,0,0,0.1);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+
+    background: rgba(255,255,255,0.2);
+    backdrop-filter: blur(6px);
+}
+
+.hero-text {
+    max-width: 500px;
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-text p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #333;
+}
+/* CALL TO ACTION BUTTON */
+.cta-btn {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 14px 28px;
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Click feel */
+.cta-btn:active {
+    transform: scale(0.98);
+}
+
+/* SOCIAL ICONS */
+.hero-links {
+    margin-top: 25px;
+    display: flex;
+    gap: 15px;
+}
+
+.hero-links img {
+    width: 35px;
+    height: 35px;
+    transition: 0.2s ease;
+}
+
+.hero-links img:hover {
+    transform: scale(1.2);
+}
+
+/* HERO IMAGE */
+.hero-image img {
+    width: 420px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* CONTAINER */
+.container {
+    display:flex;
+
+    flex-direction:column;
+
+    gap:30px;
+
+    width:min(95%, 1100px);
+
+    margin:auto;
+
+    padding:40px 0;
+}
+/*Rest-Timer*/
+.timer-box {
+    background: linear-gradient(to right, black, #444);
+    color: burlywood;
+    padding: 20px;
+    border-radius: 12px;
+    border: inset 3px burlywood;
+    width: 250px;
+    margin: 20px auto;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+#timerDisplay {
+    font-size: 32px;
+    margin: 10px 0;
+}
+/*Achievements*/
+.achievements-box {
+    background: linear-gradient(to right, black, #444);
+    color: burlywood;
+    padding: 20px;
+    border-radius: 12px;
+    width: 300px;
+    margin: 20px auto;
+}
+.achievements-box h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.achievements-box li {
+    margin: 20px;
+}
+.achievements-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    justify-content: center;
+}
+
+.achievement-card {
+    width: 140px;
+    padding: 15px;
+    border-radius: 12px;
+    text-align: center;
+    background: linear-gradient(to right, black, #444);
+    color: burlywood;
+    transition: 0.3s;
+}
+
+.achievement-card.locked {
+    opacity: 0.4;
+    filter: grayscale(100%);
+}
+
+.achievement-card.unlocked {
+    box-shadow: 0 0 15px #00ffcc;
+}
+/* =========================
+   ACHIEVEMENT TOAST
+========================= */
+
+.achievement-toast{
+    position:fixed;
+
+    bottom:30px;
+    right:30px;
+
+    background:#111;
+
+    color:white;
+
+    padding:20px 25px;
+
+    border-radius:18px;
+
+    box-shadow:
+        0 15px 40px rgba(0,0,0,0.25);
+
+    transform:
+        translateY(120px);
+
+    opacity:0;
+
+    transition:0.4s ease;
+
+    z-index:9000;
+}
+
+/* ACTIVE */
+.achievement-toast.active{
+    transform:translateY(0);
+
+    opacity:1;
+}
+
+.achievement-toast h3{
+    margin-bottom:5px;
+}
+/* =========================
+   LEVEL UP
+========================= */
+
+.levelup-overlay{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.75);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9500;
+
+    backdrop-filter:blur(5px);
+}
+
+.levelup-overlay.active{
+    display:flex;
+}
+
+/* BOX */
+.levelup-box{
+    background:white;
+
+    padding:50px;
+
+    border-radius:30px;
+
+    text-align:center;
+
+    animation:levelPop 0.4s ease;
+}
+
+.levelup-box h1{
+    font-size:3rem;
+
+    margin-bottom:15px;
+}
+
+@keyframes levelPop{
+
+    from{
+        transform:scale(0.7);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+/* =========================
+   COACH INSIGHT
+========================= */
+
+.recommendation-card{
+    border:
+        1px solid rgba(255,255,255,0.15);
+}
+#coachInsight{
+    line-height:1.7;
+
+    font-size:1rem;
+
+    opacity:0.9;
+}
+/* WORKOUT HISTORY */
+.history-box{
+    background:rgba(255,255,255,0.15);
+    backdrop-filter:blur(10px);
+
+    border-radius:20px;
+
+    padding:25px;
+
+    width:min(90%, 700px);
+
+    margin:30px auto;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.15);
+}
+
+.history-box h3{
+    margin-bottom:20px;
+}
+
+.history-item{
+    display:block;
+
+    background:rgba(255,255,255,.08);
+
+    padding:20px;
+
+    border-radius:14px;
+
+    margin-bottom:18px;
+}
+
+.history-item:hover{
+    transform:translateX(4px);
+}
+.save-workout-btn{
+
+    background:linear-gradient(
+        180deg,
+        #b87a3d,
+        #8d5b2d
+    );
+
+    color:white;
+
+    font-weight:700;
+
+}
+.add-exercise-btn{
+
+    background:#ececec;
+
+    color:#333;
+
+}
+.workout-buttons{
+
+    display:flex;
+    gap:16px;
+    margin-top:30px;
+
+}
+
+.workout-buttons button{
+
+    flex:1;
+
+    padding:14px 18px;
+
+    border:none;
+
+    border-radius:14px;
+
+    font-size:15px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition:.2s ease;
+
+}
+
+.workout-buttons button:hover{
+
+    transform:translateY(-2px);
+
+}
+.workout-group{
+    display:none;
+}
+/* WORKOUT SELECTOR MODAL */
+.workout-selector-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.workout-selector-modal.active{
+
+    display:flex;
+}
+
+.workout-selector-content{
+
+    background:white;
+
+    padding:35px;
+
+    border-radius:28px;
+
+    width:min(90%, 500px);
+
+    text-align:center;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.workout-selector-content button{
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    cursor:pointer;
+
+    font-size:1rem;
+
+    font-weight:700;
+}
+#workouts{
+    display:none;
+}
+#exerciseSection{
+    display:none;
+}
+#womenSection{
+    display:none;
+}
+/* MODERN WORKOUT CARDS */
+.box::before{
+    content:"";
+
+    position:absolute;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:4px;
+
+    background:linear-gradient(
+        to right,
+        #c19a6b,
+        #f5deb3
+    );
+}
+.box{
+    position:relative;
+
+    background:rgba(255,255,255,0.12);
+    backdrop-filter:blur(12px);
+
+    border:1px solid rgba(255,255,255,0.12);
+
+    border-radius:24px;
+
+    width: 100%;
+
+    padding:35px 40px;
+
+    color:#111;
+
+    height:fit-content;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.12);
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease,
+        border 0.3s ease;
+
+    overflow:hidden;
+}
+.box h3{
+    font-size:1.7rem;
+    margin-bottom:18px;
+
+    color:#111;
+    font-weight:700;
+}
+.box p,
+.box li{
+    color:#333;
+    line-height:1.7;
+    font-size:0.98rem;
+}
+/* HOVER */
+.box:hover{
+    transform:translateY(-8px);
+
+    box-shadow:
+        0 20px 45px rgba(0,0,0,0.18);
+
+    border:1px solid rgba(255,255,255,0.25);
+}
+.exercise-item{
+    list-style:none;
+}
+.exercise-item{
+
+    list-style:none;
+
+    display:block !important;
+
+    padding:0 !important;
+
+    background:none !important;
+}
+
+/* MAIN CARD */
+.exercise-card{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:30px;
+
+    background:rgba(255,255,255,0.15);
+
+    padding:24px;
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    border-radius:24px;
+
+    margin-top:18px;
+
+    flex-wrap:wrap;
+}
+
+/* LEFT SIDE */
+.exercise-info{
+
+    min-width:180px;
+    padding: 10px;
+    border : 2px solid black;
+    border-radius: 20px;
+    font-size: 25px;
+}
+
+.exercise-info h4{
+
+    font-size:2rem;
+
+    margin-bottom:10px;
+
+    line-height:1.1;
+}
+
+.exercise-info p{
+
+    font-size:1.1rem;
+
+    opacity:0.7;
+
+    line-height:1.5;
+}
+
+/* RIGHT SIDE */
+.exercise-log{
+
+    flex:1;
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:16px;
+
+    min-width:0;
+}
+.favorite-btn{
+    margin-left:10px;
+    border:none;
+    background:none;
+    cursor:pointer;
+    font-size:18px;
+}
+
+.favorite-btn:hover{
+    transform:scale(1.2);
+}
+
+.favorite-btn.favorited{
+    color:gold;
+}
+
+/* LABELS */
+.input-group{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.input-group label{
+
+    font-size:1rem;
+
+    font-weight:600;
+}
+
+/* INPUTS */
+.exercise-log input{
+
+    width:100%;
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:18px;
+
+    background:#111;
+
+    color:white;
+
+    font-size:1rem;
+
+    outline:none;
+
+    border:1px solid rgba(255,255,255,0.1);
+}
+
+/* SAVE BUTTON */
+.exercise-log button{
+
+    margin-top:10px;
+
+    padding:18px;
+
+    border:none;
+
+    border-radius:20px;
+
+    cursor:pointer;
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #8b5cf6
+    );
+
+    color:white;
+
+    font-size:1.1rem;
+
+    font-weight:700;
+
+    transition:0.25s ease;
+
+    width:180px;
+    align-self:flex-start;
+}
+
+/* HOVER */
+.exercise-log button:hover{
+
+    transform:scale(1.03);
+
+    box-shadow:
+        0 10px 25px rgba(139,92,246,0.35);
+}
+
+/* SAVED STATE */
+.exercise-log button.saved{
+
+    background:linear-gradient(
+        135deg,
+        #22c55e,
+        #16a34a
+    );
+}
+/* IMAGE ROW */
+.img-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 10px 0;
+}
+
+.img-row img{
+    width:120px;
+    height:120px;
+    cursor:zoom-in;
+
+    object-fit:cover;
+
+    border-radius:16px;
+
+    transition:
+        transform 0.3s ease,
+        box-shadow 0.3s ease;
+
+    cursor:pointer;
+
+    border:2px solid rgba(255,255,255,0.2);
+}
+
+.img-row img:hover{
+    transform:scale(1.08);
+
+    box-shadow:
+        0 10px 20px rgba(0,0,0,0.2);
+}
+/* IMAGE MODAL */
+.image-modal{
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+    height:100%;
+
+    background:rgba(0,0,0,0.85);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:5000;
+
+    backdrop-filter:blur(6px);
+
+    animation:fadeIn 0.25s ease;
+}
+
+/* ACTIVE */
+.image-modal.active{
+    display:flex;
+}
+
+/* MODAL IMAGE */
+#modalImage{
+    max-width:80%;
+    max-height:80%;
+
+    border-radius:20px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.4);
+
+    animation:zoomIn 0.25s ease;
+    position:relative;
+    z-index:5001;
+}
+
+/* CLOSE BUTTON */
+.close-modal{
+    position:absolute;
+
+    top:25px;
+    right:35px;
+
+    font-size:3rem;
+
+    color:white;
+
+    cursor:pointer;
+
+    transition:0.25s;
+}
+
+.close-modal:hover{
+    transform:scale(1.1);
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn{
+    from{
+        opacity:0;
+    }
+
+    to{
+        opacity:1;
+    }
+}
+
+@keyframes zoomIn{
+    from{
+        transform:scale(0.8);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+/* EXERCISE LIST */
+.exercise-list{
+    margin-top:24px;
+
+    display:flex;
+    flex-direction:column;
+
+    gap:14px;
+}
+
+.exercise-list li{
+    list-style:none;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    padding:14px 18px;
+
+    border-radius:16px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    transition:0.25s ease;
+}
+
+.exercise-list li:hover{
+    transform:translateX(4px);
+}
+
+.exercise-list strong{
+    font-weight:600;
+}
+
+.exercise-list span{
+    opacity:0.75;
+
+    font-size:0.9rem;
+}
+
+/* LIST */
+.box ul {
+    margin-top: 10px;
+    padding-left: 20px;
+}
+
+.box li {
+    margin-bottom: 5px;
+}
+
+/* LARGE IMAGE (Motivation section) */
+.large-img {
+    width: 100%;
+    max-width: 500px;
+    margin: 10px 0;
+    border-radius: 10px;
+}
+
+/* REVIEWS */
+/* REVIEWS SECTION WRAPPER */
+.reviews-section {
+    padding: 80px 10%;
+    text-align: center;
+}
+
+/* TITLE */
+.reviews-title {
+    background: linear-gradient(to right, darkgray, black);
+    font-size: 2rem;
+    margin-bottom: 30px;
+    font-weight: bold;
+    color: whitesmoke;
+    letter-spacing: 0.5px;
+}
+
+
+.reviews-slider {
+    position: relative;
+    max-width: 700px;
+    margin: 50px auto;
+    overflow: hidden;
+    padding: 30px 0;
+}
+
+.reviews-track {
+    display: flex;
+    transition: transform 0.4s ease;
+}
+
+.slide {
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+/* Make review cards bigger */
+.review-card img {
+    width: 90%;
+    max-width: 600px;
+    border-radius: 15px;
+    display: block;
+}
+
+/* Arrows */
+.prev, .next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.prev { left: 10px; }
+.next { right: 10px; }
+/* CONTACT */
+/* CONTACT SECTION WRAPPER */
+.contact-section {
+    padding: 80px 10%;
+    display: flex;
+    justify-content: center;
+}
+
+/* CARD STYLE (matches your site) */
+.contact-card {
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    width: 100%;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    text-align: center;
+}
+
+/* TEXT */
+.contact-card h2 {
+    margin-bottom: 10px;
+}
+
+.contact-card p {
+    margin-bottom: 20px;
+    color: #ddd;
+}
+
+/* EMAIL ROW */
+.contact-info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.1rem;
+}
+
+/* EMAIL LINK */
+.contact-info a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.contact-info a:hover {
+    text-decoration: underline;
+}
+.team-section {
+    text-align: center;
+    padding: 60px 20px;
+}
+/* TRAINING SPLIT SECTION */
+.split-guide{
+    position: relative;
+
+    padding: 80px 20px;
+
+    overflow: hidden;
+}
+
+/* AURA BUBBLES */
+/* TRAINING SPLIT SECTION */
+.split-guide{
+    position: relative;
+
+    padding: 100px 20px;
+
+    overflow: hidden;
+}
+
+/* FLOATING PARTICLE FIELD */
+/* PARTICLE CONTAINER */
+.aura-particles{
+    position:absolute;
+
+    inset:0;
+
+    overflow:hidden;
+
+    pointer-events:none;
+}
+
+/* PARTICLES */
+.aura-particles span{
+    position:absolute;
+
+    bottom:-40px;
+
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+
+    background:#bdf6ff;
+
+    box-shadow:
+        0 0 10px rgba(0, 47, 255, 0.9);
+
+    animation:
+        floatParticle linear infinite;
+}
+
+/* MIX COLORS */
+/* BLUE PARTICLES */
+.aura-particles span:nth-child(3n){
+    background:#6ee7ff;
+
+    box-shadow:
+        0 0 12px rgba(110,231,255,0.95),
+        0 0 24px rgba(110,231,255,0.6);
+}
+
+/* WHITE PARTICLES */
+.aura-particles span:nth-child(4n){
+    background:#ffffff;
+
+    box-shadow:
+        0 0 10px rgba(255,255,255,1),
+        0 0 20px rgba(255,255,255,0.7);
+}
+
+/* RANDOM POSITIONS */
+.aura-particles span:nth-child(1){ left:5%; animation-duration:7s; animation-delay:0s; }
+.aura-particles span:nth-child(2){ left:12%; animation-duration:9s; animation-delay:1s; }
+.aura-particles span:nth-child(3){ left:18%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(4){ left:26%; animation-duration:10s; animation-delay:0.5s; }
+.aura-particles span:nth-child(5){ left:34%; animation-duration:7s; animation-delay:1.2s; }
+.aura-particles span:nth-child(6){ left:42%; animation-duration:9s; animation-delay:2.5s; }
+.aura-particles span:nth-child(7){ left:50%; animation-duration:8s; animation-delay:0s; }
+.aura-particles span:nth-child(8){ left:58%; animation-duration:10s; animation-delay:1.5s; }
+.aura-particles span:nth-child(9){ left:66%; animation-duration:7s; animation-delay:2s; }
+.aura-particles span:nth-child(10){ left:74%; animation-duration:9s; animation-delay:0.5s; }
+.aura-particles span:nth-child(11){ left:82%; animation-duration:8s; animation-delay:1s; }
+.aura-particles span:nth-child(12){ left:90%; animation-duration:10s; animation-delay:2s; }
+.aura-particles span:nth-child(13){ left:15%; animation-duration:11s; animation-delay:1s; }
+.aura-particles span:nth-child(14){ left:30%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(15){ left:45%; animation-duration:9s; animation-delay:0s; }
+.aura-particles span:nth-child(16){ left:60%; animation-duration:7s; animation-delay:1.5s; }
+.aura-particles span:nth-child(17){ left:75%; animation-duration:10s; animation-delay:0.2s; }
+.aura-particles span:nth-child(18){ left:88%; animation-duration:8s; animation-delay:2s; }
+.aura-particles span:nth-child(19){ left:22%; animation-duration:9s; animation-delay:1s; }
+.aura-particles span:nth-child(20){ left:55%; animation-duration:11s; animation-delay:0.5s; }
+
+/* FLOATING MOTION */
+@keyframes floatParticle{
+
+    0%{
+        transform:
+            translate(0, 0)
+            scale(0.4);
+
+        opacity:0;
+    }
+
+    10%{
+        opacity:1;
+    }
+
+    25%{
+        transform:
+            translate(30px, -140px)
+            scale(0.7);
+    }
+
+    50%{
+        transform:
+            translate(-20px, -320px)
+            scale(1);
+    }
+
+    75%{
+        transform:
+            translate(40px, -520px)
+            scale(1.2);
+    }
+
+    100%{
+        transform:
+            translate(-10px, -760px)
+            scale(1.5);
+
+        opacity:0;
+    }
+}
+/* DIFFERENT DRIFT DIRECTIONS */
+.aura-particles span:nth-child(odd){
+    animation-timing-function:ease-in-out;
+}
+
+.aura-particles span:nth-child(even){
+    animation-timing-function:cubic-bezier(.4,0,.2,1);
+}
+
+/* SOME BIGGER PARTICLES */
+.aura-particles span:nth-child(5n){
+    width:10px;
+    height:10px;
+
+    filter:blur(1px);
+}
+
+/* SOME TINY PARTICLES */
+.aura-particles span:nth-child(3n){
+    width:4px;
+    height:4px;
+}
+/* SECTION HEADERS */
+.section-title{
+    position: relative;
+     z-index: 5;
+
+    width: fit-content;
+
+    margin: 0 auto 50px auto;
+
+    padding: 18px 38px;
+
+    font-size: 2.4rem;
+    font-weight: 800;
+
+    letter-spacing: 0.5px;
+
+    color: #111;
+
+    border-radius: 18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.22),
+            rgba(255,255,255,0.08)
         );
 
-        updateWorkoutTimer();
+    backdrop-filter: blur(10px);
 
-    }, 1000);
-});
-</script>
-</body>
-</html>
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.08);
+
+    overflow: hidden;
+}
+
+/* TOP GLOW LINE */
+.section-title::before{
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 70%;
+
+    height: 3px;
+
+    border-radius: 999px;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            #c19a6b,
+            transparent
+        );
+}
+
+/* SOFT LIGHT EFFECT */
+.section-title::after{
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent 20%,
+            rgba(255,255,255,0.15) 50%,
+            transparent 80%
+        );
+
+    opacity: 0.7;
+
+    pointer-events: none;
+}
+.team-container {
+    display: flex;
+    justify-content: center;
+    gap: 100px;
+    background: rgba(0, 0, 0, 0.05);
+    border: 3px solid black;
+    border-radius: 10px;
+    flex-wrap: wrap;
+}
+
+.team-card {
+    background: linear-gradient(to right, black, #444);
+    color: white;
+    padding: 20px;
+    margin: 20px;
+    border-radius: 12px;
+    width: 220px;
+}
+.team-card h3{
+    font-weight: bold;
+
+}
+.team-card h3::first-letter{
+    color:#c19a6b
+}
+.team-card p{
+    margin-bottom: 10px;
+}
+
+.team-card img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+.section-title {
+    text-align: center;
+}
+.workout-session{
+
+    position: fixed;
+
+    bottom: 90px;
+    right: 25px;
+
+    width: 180px;
+
+    padding: 18px;
+
+    border-radius: 20px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #111,
+        #2b2b2b
+    );
+
+    color: white;
+
+    z-index: 10000;
+
+    display: none;
+
+    text-align: center;
+
+    box-shadow:
+        0 10px 30px rgba(0,0,0,0.35);
+}
+
+.workout-session h4{
+
+    margin-bottom: 10px;
+
+    color: chartreuse;
+}
+
+.workout-session p{
+
+    font-size: 28px;
+
+    font-weight: bold;
+}
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+    background:
+        linear-gradient(
+            to right,
+            #000,
+            #2e2e2e
+        );
+
+    color:white;
+
+    padding:50px 20px;
+
+    text-align:center;
+}
+
+/* TITLE */
+.footer h2{
+    margin-bottom:12px;
+
+    font-size:2rem;
+
+    color:#e0b57a;
+}
+
+/* TAGLINE */
+.footer-tagline{
+    opacity:0.8;
+
+    margin-bottom:30px;
+
+    line-height:1.7;
+}
+
+/* LINKS */
+.footer-links{
+    display:flex;
+
+    justify-content:center;
+
+    gap:25px;
+
+    margin-bottom:25px;
+
+    flex-wrap:wrap;
+}
+
+.footer-links a{
+    color:white;
+
+    text-decoration:none;
+
+    transition:0.25s;
+}
+
+.footer-links a:hover{
+    opacity:0.7;
+}
+
+/* CONTACT */
+.footer-contact{
+    margin-bottom:20px;
+
+    opacity:0.85;
+}
+
+/* COPYRIGHT */
+.footer-copy{
+    opacity:0.55;
+
+    font-size:0.9rem;
+}
+/*Progress Bar*/
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #777;
+    border-radius: 10px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+#progressFill {
+    height: 100%;
+    width: 0%;
+    background: limegreen;
+    transition: width 0.4s ease;
+    transition:width 0.6s ease;
+}
+/* WORKOUT HISTORY */
+.history-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.history-expand-btn{
+    width:100%;
+    margin-top:8px;
+    margin-bottom:10px;
+    cursor:pointer;
+}
+
+.history-exercises{
+    width:100%;
+    margin-top:20px
+}
+
+.history-exercise-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    background:#fff;
+
+    padding:14px 18px;
+
+    margin-bottom:10px;
+
+    border-radius:12px;
+
+    border-left:4px solid #d4af37;
+
+    width:100%;
+
+}
+.history-exercise-name{
+
+    flex:1;
+
+    min-width:0;
+
+    font-weight:600;
+
+}
+.history-exercise-result{
+
+    margin-left:20px;
+
+    white-space:nowrap;
+
+}
+.history-title{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:14px;
+
+}
+.history-meta{
+
+    display:flex;
+
+    gap:18px;
+
+    margin-top:5px;
+
+    color: black;
+
+    font-size:.9rem;
+
+}
+.history-exercise-result{
+
+    color:#555;
+
+    font-weight:600;
+
+}
+button{
+    background: linear-gradient(to right, white, silver);
+    border: none;
+    border-radius: 6px;
+    padding:14px 20px;
+    font-weight: 600;
+    transition: 0.2s ease;
+    margin-top: 15px;
+    margin-bottom: 5px;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+.tab-page {
+    padding-bottom: 100px;
+}
+/* LOCK EFFECT */
+.locked::before{
+    content:"PRO";
+
+    position:absolute;
+
+    top:15px;
+    right:-35px;
+
+    background:#111;
+
+    color:white;
+
+    padding:8px 40px;
+
+    transform:rotate(45deg);
+
+    font-size:0.75rem;
+
+    font-weight:bold;
+}
+.bottom-nav {
+
+    left: 0;
+
+    width: 100%;
+
+    display: flex;
+
+    justify-content: space-around;
+
+    background: #111;
+
+    border-top: 1px solid #333;
+
+    padding: 10px 0;
+
+}
+
+.bottom-nav button {
+
+    background: none;
+
+    border: none;
+
+    color: white;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    flex: 1;
+
+}
+
+.bottom-nav button:hover {
+
+    color: gold;
+
+}
+
+.tab-page {
+
+    min-height: 100vh;
+
+    padding-bottom: 80px;
+
+}
+/* =========================
+   GOAL MODAL
+========================= */
+
+.goal-modal{
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:7000;
+
+    backdrop-filter:blur(6px);
+}
+
+.goal-modal.active{
+    display:flex;
+}
+
+/* CONTENT */
+.goal-content{
+    background:white;
+
+    width:min(90%, 450px);
+
+    padding:40px;
+
+    border-radius:28px;
+
+    text-align:center;
+
+    animation:goalPop 0.25s ease;
+}
+
+.goal-content h2{
+    margin-bottom:10px;
+}
+
+.goal-content p{
+    opacity:0.7;
+
+    margin-bottom:25px;
+}
+
+/* OPTIONS */
+.goal-options{
+    display:flex;
+    flex-direction:column;
+
+    gap:15px;
+}
+
+.goal-options button{
+    width:100%;
+}
+
+/* ANIMATION */
+@keyframes goalPop{
+    from{
+        transform:scale(0.9);
+        opacity:0;
+    }
+
+    to{
+        transform:scale(1);
+        opacity:1;
+    }
+}
+/* RANK CARD */
+#dashRank{
+    font-weight:bold;
+
+    letter-spacing:0.5px;
+    margin-bottom: 15px;
+}
+
+/* OPTIONAL GLOW */
+.rank-glow{
+    animation:rankPulse 2s infinite;
+}
+
+@keyframes rankPulse{
+
+    0%{
+        opacity:0.8;
+    }
+
+    50%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0.8;
+    }
+}
+
+.team-modal{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,0.75);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.team-modal.active{
+    display:flex;
+}
+
+.team-modal-content{
+    width:min(95%, 900px);
+
+    max-height:85vh;
+    overflow-y:auto;
+
+    background: burlywood;
+
+    padding:40px;
+
+    border-radius:24px;
+
+    position:relative;
+}
+
+.close-team{
+    position:absolute;
+
+    top:15px;
+    right:20px;
+
+    font-size:2rem;
+
+    cursor:pointer;
+}
+
+/* Aura Pro Modal */
+.pro-modal{
+    position: fixed;
+    inset: 0;
+
+    background: rgba(0,0,0,0.75);
+
+    display: none;
+
+    justify-content: center;
+    align-items: center;
+
+    z-index: 9999;
+
+    padding: 20px;
+
+    backdrop-filter: blur(6px);
+}
+
+/* OPEN STATE */
+.pro-modal.active{
+    display: flex;
+}
+
+/* MODAL BOX */
+.pro-modal-content{
+    width: 100%;
+    max-width: 520px;
+
+    background: #111;
+
+    border-radius: 24px;
+
+    padding: 32px;
+
+    color: burlywood;
+
+    position: relative;
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,0.4);
+
+    animation: modalFade 0.25s ease;
+}
+
+/* ANIMATION */
+@keyframes modalFade{
+    from{
+        opacity:0;
+        transform:translateY(20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+.close-modal {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    border: none;
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-size: 22px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.close-modal:hover {
+    background: rgba(255,255,255,0.15);
+}
+
+.pro-modal-content h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.pro-subtitle {
+    color: rgba(255,255,255,0.7);
+    margin-bottom: 28px;
+    line-height: 1.5;
+}
+
+.pro-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 28px;
+}
+
+.pro-feature-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.05);
+    border-radius: 16px;
+    padding: 16px;
+}
+
+.pro-feature-card h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.pro-feature-card p {
+    color: rgba(255,255,255,0.65);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.pro-price {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.pro-price span {
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.upgrade-btn {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 14px;
+    background: white;
+    color: black;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.upgrade-btn:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+}
+.global-workout-complete{
+
+    display:flex;
+
+    justify-content:center;
+
+    margin:50px 0;
+}
+
+.global-complete-btn{
+
+    width:320px;
+
+    cursor:pointer;
+
+    transition:0.25s ease;
+}
+
+.global-complete-btn:hover{
+
+    transform:
+        scale(1.05)
+        translateY(-2px);
+}
+
+/* MODAL */
+.workout-modal{
+
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+
+    align-items:center;
+
+    z-index:9999;
+
+    backdrop-filter:blur(6px);
+}
+
+.workout-modal.active{
+
+    display:flex;
+}
+
+.workout-modal-content{
+
+    position:relative;
+
+      background:
+        linear-gradient(
+            180deg,
+            burlywood,
+            wheat
+        );
+
+    width:min(92%,650px);
+
+    max-height:85vh;
+
+    overflow-y:auto;
+
+    padding:40px;
+
+    border-radius:28px;
+
+    text-align:left;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.25);
+}
+.workout-modal-content h2{
+    color:#8d5b2d;
+    margin-bottom:4px;
+    padding-bottom:12px;
+    border-bottom:1px solid #ececec;
+    margin-bottom:18px;
+}
+
+.workout-modal-content p{
+    color:black;
+    margin-bottom:24px;
+}
+.workout-modal-content input,
+.workout-modal-content select{
+
+    width:100%;
+
+    padding:12px 14px;
+
+    margin-bottom:16px;
+
+    border:1px solid #d6d6d6;
+
+    border-radius:12px;
+
+    font-size:15px;
+
+}
+.exercise-entry{
+
+    background:#f9f6ef;
+
+    border:1px solid #e3d2b5;
+
+    border-radius:18px;
+
+    padding:18px;
+
+    margin-bottom:20px;
+
+}
+
+.workout-options{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:14px;
+
+    margin-top:25px;
+}
+
+.workout-options button{
+
+    padding:16px;
+
+    border:none;
+
+    border-radius:16px;
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #8b5cf6
+    );
+
+    color:white;
+
+    font-weight:700;
+
+    cursor:pointer;
+
+    transition:0.2s ease;
+}
+
+.workout-options button:hover{
+
+    transform:scale(1.03);
+}
+.workout-modal-content{
+
+    position:relative;
+
+}
+
+.close-workout{
+
+    position:absolute;
+
+    top:15px;
+
+    right:20px;
+
+    font-size:34px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    color:#bbb;
+
+    transition:.2s;
+
+}
+
+.close-workout:hover{
+
+    color:white;
+
+    transform:scale(1.15);
+
+}
+/* =========================
+   AURA PRO
+========================= */
+
+.pro-card{
+    position:relative;
+
+    overflow:hidden;
+
+    border:1px solid rgba(0,255,255,0.2);
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(20,20,20,0.95),
+            rgba(35,35,35,0.95)
+        );
+}
+
+.pro-card::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        linear-gradient(
+            120deg,
+            transparent,
+            rgba(255,255,255,0.08),
+            transparent
+        );
+
+    transform:translateX(-100%);
+
+    animation:proShine 4s linear infinite;
+}
+
+@keyframes proShine{
+
+    100%{
+        transform:translateX(100%);
+    }
+}
+
+.pro-badge{
+    position:absolute;
+
+    top:12px;
+    right:12px;
+
+    background:
+        linear-gradient(
+            to right,
+            #00ffff,
+            #7c3aed
+        );
+
+    color:white;
+
+    font-size:0.75rem;
+
+    font-weight:700;
+
+    padding:5px 10px;
+
+    border-radius:999px;
+
+    letter-spacing:1px;
+}
+
+.locked{
+    opacity:0.7;
+
+    filter:blur(0.2px);
+}
+
+.locked-text{
+    opacity:0.8;
+
+    font-size:0.95rem;
+}
+
+
+@media (max-width: 600px) {
+    .pro-features {
+        grid-template-columns: 1fr;
+    }
+
+    .pro-modal-content {
+        padding: 24px;
+    }
+}
+
+
+
+/* MOBILE RESPONSIVE (important) */
+@media (max-width: 768px) {
+    .hero {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .hero-image img {
+        width: 100%;
+    }
+
+    .reviews {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 768px){
+
+    /* NAVBAR */
+    .navbar{
+        flex-direction:column;
+        gap:15px;
+
+        height:auto;
+
+        padding:20px;
+    }
+
+    .nav-left{
+        flex-direction:column;
+        gap:15px;
+    }
+
+    .nav-links{
+        flex-wrap:wrap;
+        justify-content:center;
+
+        gap:15px;
+    }
+
+    /* HERO */
+    .hero{
+        flex-direction:column;
+
+        text-align:center;
+
+        padding:40px 20px;
+    }
+
+    .hero-text{
+        width:100%;
+    }
+
+    .hero-text h1{
+        font-size:2rem;
+        line-height:1.2;
+    }
+
+    .hero-image img{
+        width:100%;
+        max-width:350px;
+
+        margin-top:30px;
+    }
+
+    /* DASHBOARD */
+    .dashboard-grid{
+        grid-template-columns:1fr;
+    }
+
+    /* CONTAINERS */
+    .container{
+        grid-template-columns:1fr;
+
+        padding:25px 20px;
+    }
+
+    /* WORKOUT BOXES */
+    .box{
+        padding: 18px;
+    }
+
+    /* IMAGES */
+    .img-row{
+        justify-content:center;
+        flex-wrap:wrap;
+    }
+
+    .img-row img{
+        width:75px;
+        height:75px;
+    }
+
+    /* BUTTONS */
+    button{
+        width:100%;
+    }
+
+    /* TIMER BUTTONS */
+    .timer-box button{
+        margin-top:10px;
+    }
+
+    /* MODAL IMAGE */
+    #modalImage{
+        max-width:95%;
+        max-height:75%;
+    }
+
+    /* TEAM SECTION */
+    .team-container{
+        flex-direction:column;
+        align-items:center;
+    }
+
+    /* REVIEWS */
+    .review-card img{
+        width:100%;
+    }
+
+    /* PROFILE */
+    .profile-dropdown{
+        right:-20px;
+        width:220px;
+    }
+
+}
+@media (max-width: 768px){
+
+    .exercise-list li{
+
+        display:flex;
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:8px;
+    }
+
+    .favorite-btn{
+
+        align-self:flex-end;
+    }
+
+    .exercise-list span{
+
+        font-size:14px;
+        opacity:0.8;
+    }
+}
+@media (max-width:768px){
+
+    .exercise-card{
+
+        flex-direction:column;
+
+        align-items:flex-start;
+
+        gap:20px;
+
+        width: 100%;
+
+        overflow:hidden;
+    }
+
+    .exercise-log{
+
+        width:100%;
+        min-width:0;
+    }
+
+    .exercise-log button{
+
+        width:100%;
+        min-width:0;
+    }
+
+    .workout-btn-img{
+
+        width:100%;
+        max-width:300px;
+        
+    }
+}
+@media (max-width:768px){
+
+    .exercise-card{
+
+        padding:24px;
+    }
+
+    .exercise-log{
+
+        gap:22px;
+    }
+
+    .input-group{
+
+        gap:10px;
+    }
+
+    .input-group label{
+
+        margin-bottom:4px;
+
+        font-size:1rem;
+    }
+
+    .exercise-log input{
+
+        padding:16px;
+
+        border-radius:18px;
+    }
+
+    .exercise-log button{
+
+        margin-top:8px;
+
+        width:100%;
+    }
+}
