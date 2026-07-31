@@ -32,3 +32,4 @@ Stuff that needs to get added:
 #looks at top earning apps regarding fitness and try to compare
 #might need to look into making a background for the website too
 #now that a new project has been added by a friend, you can allocate time to both
+#try to push for a new release before Sunday
