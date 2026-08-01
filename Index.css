@@ -385,6 +385,108 @@ body {
 
     cursor:pointer;
 }
+.timer-modal{
+
+    display:none;
+    position:fixed;
+
+    inset:0;
+
+    background:rgba(0,0,0,.65);
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:9999;
+
+}
+
+.timer-modal.active{
+
+    display:flex;
+
+}
+
+.timer-modal-content{
+
+    width:380px;
+
+    background:#1f1f1f;
+
+    color:white;
+
+    border-radius:18px;
+
+    padding:30px;
+
+    text-align:center;
+
+    position:relative;
+
+    box-shadow:0 20px 50px rgba(0,0,0,.45);
+
+}
+
+.timer-modal-content h2{
+
+    margin-bottom:20px;
+
+}
+
+#timerDisplay{
+
+    font-size:48px;
+
+    font-weight:bold;
+
+    margin:25px 0;
+
+    color:burlywood;
+
+}
+
+.timer-buttons{
+
+    display:grid;
+
+    grid-template-columns:1fr 1fr;
+
+    gap:12px;
+
+}
+
+.timer-buttons button{
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:10px;
+
+    cursor:pointer;
+
+}
+
+.close-timer{
+
+    position:absolute;
+
+    top:15px;
+    right:18px;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    color:#bbb;
+
+}
+
+.close-timer:hover{
+
+    color:white;
+
+}
 #auraProBtn{
     background:none;
 
