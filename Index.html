@@ -65,6 +65,10 @@
             </a>
             </li>
             <li>
+            <a href="#" onclick="openRestTimerModal()">
+            Rest Timer
+            </a>
+            </li>
             <a href="#" onclick ="openSplitModal()">
             Training Split Guides
             </a>
@@ -227,15 +231,6 @@
 </div>
 </div>   
 </section>
-<!--Rest Timer-->
-<div class="timer-box">
-    <h3>Rest Timer</h3>
-    <p id="timerDisplay">60s</p>
-    <button onclick="startTimer(60)">Start 60s</button>
-    <button onclick="startTimer(90)">Start 90s</button>
-    <button onclick="pauseTimer()">Pause</button>
-    <button onclick="resetTimer()">Reset</button>
-</div>
 <!--History Tab-->
 <div id="historyTab" class="tab-page" style="display:none;">
 
@@ -401,8 +396,8 @@
             <img src="cardio-img2.jpg">
             <img src="cardio-img3.jpg">
         </div>
-        </div>
         <div id="cardioExercises" class="exercise-list">
+    </div>
     </div>
     <div class="box workout-group cardio-workout">
         <h3>Fitness classes(Zumba, Pilates, Yoga, etc...)</h3>
@@ -479,10 +474,6 @@
 
     <button onclick="showTab('homeTab')">
         🏠<br>Home
-    </button>
-
-    <button onclick="showTab('workoutTab')">
-        💪<br>Workouts
     </button>
 
     <button onclick="showTab('historyTab')">
@@ -585,6 +576,46 @@
 
     </div>
 </div>
+<!-- REST TIMER MODAL -->
+
+<div class="timer-modal" id="timerModal">
+
+    <div class="timer-modal-content">
+
+        <span
+            class="close-timer"
+            onclick="closeRestTimerModal()">
+            &times;
+        </span>
+
+        <h2>Rest Timer</h2>
+
+        <p id="timerDisplay">60s</p>
+
+        <div class="timer-buttons">
+
+            <button onclick="startTimer(60)">
+                Start 60s
+            </button>
+
+            <button onclick="startTimer(90)">
+                Start 90s
+            </button>
+
+            <button onclick="pauseTimer()">
+                Pause
+            </button>
+
+            <button onclick="resetTimer()">
+                Reset
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
 <!-- SPLIT MODAL -->
 <div class="split-modal" id="splitModal">
 
@@ -1553,6 +1584,22 @@ let workoutStartTime = null;
 let workoutCompleting = false;
 const MIN_WORKOUT_SECONDS = 20 * 60;
 
+function openRestTimerModal() {
+
+    document
+        .getElementById("timerModal")
+        .classList.add("active");
+
+}
+
+function closeRestTimerModal() {
+
+    document
+        .getElementById("timerModal")
+        .classList.remove("active");
+
+}
+
 function showTab(tabId) {
 
     document
@@ -1623,14 +1670,15 @@ style="display:none;">
 
 }
 
-function addManualExercise(){
+function addManualExercise() {
 
-    const container =
-        document.getElementById("manualExercises");
+    const container = document.getElementById("manualExercises");
 
-    container.innerHTML += `
+    const exercise = document.createElement("div");
 
-    <div class="manualExercise">
+    exercise.className = "manualExercise";
+
+    exercise.innerHTML = `
 
         ${createExerciseDropdown()}
 
@@ -1644,9 +1692,9 @@ function addManualExercise(){
             type="number"
             placeholder="Reps">
 
-    </div>
-
     `;
+
+    container.appendChild(exercise);
 
 }
 document.addEventListener("change", function(e){
