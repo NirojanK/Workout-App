@@ -34,3 +34,4 @@ Stuff that needs to get added:
 #now that a new project has been added by a friend, you can allocate time to both
 #try to push for a new release before Sunday
 #failure to sync to android due to forgetting sync command
+#version 6 is still an issue when it's meant to be version 7 for the new release
