@@ -36,3 +36,4 @@ Stuff that needs to get added:
 #failure to sync to android due to forgetting sync command
 #version 6 is still an issue when it's meant to be version 7 for the new release
 #Before you used to get excited to work on Aura Farmer, you'd even get out of bed to work on it. That spark is gone sadly, you have to find a way to bring it back.
+#Version 7 was released, hopefully the changes are reflected
