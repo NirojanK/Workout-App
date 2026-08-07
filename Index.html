@@ -58,7 +58,6 @@
         <h2 class="logo">Aura Farmer</h2>
 
         <ul class="nav-links">
-            <li><a href="#home">Home</a></li>
             <li>
             <a href="#" onclick="openTeamModal()">
             Team
@@ -378,7 +377,7 @@
             <img src="arm-img4.jpg">
             <img src="arm-img5.jpg">
             <img src="arm-img6.jpg">
-            <img src="arm-img7.jpg">
+            <img src="arm-img7.jpg">np
         </div>
         <div id="armExercises" class="exercise-list">
         </div>
@@ -437,6 +436,7 @@
                 <li><strong>Squats</strong><span> (3 sets of 8-12 reps)</span></li>
                 <li><strong>Romanian Deadlifts</strong><span> (3 sets of 6-10 reps)</span></li>
                 <li><strong>Leg Press</strong><span> (3 sets of 7-10 reps)</span></li>
+                <li><strong>Bulgarian Split Squats</strong><span> (2 sets of 10-12 reps)</span></li> 
             </ul>
         </div>
         <div class="box">
@@ -1416,9 +1416,6 @@ function loadUserData(userId) {
         if (doc.exists) {
             const data = doc.data();
             currentUserData = data;
-            updateFavoriteUI(
-            data.favorites || []
-            );
             document.querySelector(
             ".profile-name"
             ).innerText =
@@ -2023,58 +2020,7 @@ function cancelWorkout(){
 
     updateWorkoutTimer();
 }
-function addFavoriteButtons(){
 
-    document
-        .querySelectorAll(".exercise-list li")
-        .forEach(item => {
-
-            const exerciseName =
-                item.querySelector("strong")?.innerText ||
-                item.querySelector("h5")?.innerText;
-
-            if(!exerciseName) return;
-
-            const star =
-                document.createElement("button");
-
-            star.innerText = "☆";
-
-            star.className =
-                "favorite-btn";
-
-            star.dataset.exercise =
-                exerciseName;
-
-            star.onclick = () =>
-                toggleFavorite(exerciseName);
-
-            item.appendChild(star);
-        });
-}
-function updateFavoriteUI(favorites = []){
-
-    document
-        .querySelectorAll(".favorite-btn")
-        .forEach(btn => {
-
-            const exercise =
-                btn.dataset.exercise;
-
-            if(favorites.includes(exercise)){
-
-                btn.innerText = "⭐";
-
-                btn.classList.add("favorited");
-
-            } else {
-
-                btn.innerText = "☆";
-
-                btn.classList.remove("favorited");
-            }
-        });
-}
 async function completeWorkout(day) {
     const user = auth.currentUser;
     if (isGuest) {
@@ -2171,7 +2117,38 @@ async function completeWorkout(day) {
     }
     
     const duration = stopWorkout();
-    const completedWorkout = {
+    const groupedExercises = [];
+
+currentWorkoutExercises.forEach(set => {
+
+    let exercise = groupedExercises.find(
+        e => e.exercise === set.exercise
+    );
+
+    if (!exercise) {
+
+        exercise = {
+
+            exercise: set.exercise,
+
+            sets: []
+
+        };
+
+        groupedExercises.push(exercise);
+    }
+
+    exercise.sets.push({
+
+        weight: set.weight,
+
+        reps: set.reps
+
+    });
+
+});
+
+const completedWorkout = {
 
     workout: day,
 
@@ -2179,9 +2156,9 @@ async function completeWorkout(day) {
 
     duration: duration,
 
-    exercises: [...currentWorkoutExercises]
+    exercises: groupedExercises
 
-    };
+};
 
         // Increase values
         xp += xpEarned;
@@ -2328,6 +2305,7 @@ async function saveExerciseLog(exerciseName, button){
     };
     
     currentWorkoutExercises.push(log);
+    renderCurrentWorkout();
 
     const ref =
         db.collection("users").doc(user.uid);
@@ -2444,39 +2422,6 @@ async function saveSteps() {
 
 }
 
-async function toggleFavorite(exerciseName){
-
-    const user = auth.currentUser;
-
-    if(!user) return;
-
-    const ref =
-        db.collection("users").doc(user.uid);
-
-    const doc = await ref.get();
-
-    const data = doc.data() || {};
-
-    let favorites = data.favorites || [];
-
-    if(favorites.includes(exerciseName)){
-
-        favorites =
-            favorites.filter(
-                item => item !== exerciseName
-            );
-
-    } else {
-
-        favorites.push(exerciseName);
-    }
-
-    await ref.set({
-        favorites
-    }, { merge:true });
-
-    updateFavoriteUI(favorites);
-}
 function openWorkoutModal(){
 
     document
@@ -2657,29 +2602,55 @@ function renderHistory(history = []) {
 
         div.className = "history-item";
 
-    const exercises = (item.exercises || []).map(exercise => `
+    const exercises = (item.exercises || []).map(exercise => {
 
-<div class="history-exercise-row">
+    const sets = (exercise.sets || [])
+        .map((set, index) => `
 
-    <div class="history-exercise-name">
+        <div class="history-set-row">
 
-        ${exercise.exercise}
+            <span class="history-set-label">
+
+                Set ${index + 1}
+
+            </span>
+
+            <span class="history-set-result">
+
+                ${
+                    set.weight
+                        ? `${set.weight} lbs × ${set.reps}`
+                        : `${set.reps} reps`
+                }
+
+            </span>
+
+        </div>
+
+        `)
+        .join("");
+
+    return `
+
+    <div class="history-exercise-card">
+
+        <div class="history-exercise-title">
+
+            ${exercise.exercise}
+
+        </div>
+
+        <div class="history-set-list">
+
+            ${sets}
+
+        </div>
 
     </div>
 
-    <div class="history-exercise-result">
+    `;
 
-        ${
-            exercise.weight
-                ? `${exercise.weight} lbs × ${exercise.reps}`
-                : `${exercise.reps} reps`
-        }
-
-    </div>
-
-</div>
-
-`).join("");
+}).join("");
 
     div.innerHTML = `
     <div class="history-header">
@@ -2920,6 +2891,58 @@ function getAuraRank(level){
     }
 
     return "🌱 Aura Novice";
+}
+function renderCurrentWorkout() {
+
+    document.querySelectorAll(".saved-sets")
+        .forEach(div => div.innerHTML = "");
+
+    currentWorkoutExercises.forEach(log => {
+
+        const exerciseCard =
+            [...document.querySelectorAll(".exercise-card")]
+            .find(card =>
+                card.dataset.exercise === log.exercise
+            );
+
+        if (!exerciseCard) return;
+
+        const savedSets =
+            exerciseCard.querySelector(".saved-sets");
+
+        savedSets.innerHTML += `
+            <div class="saved-set">
+                ${log.weight ? `${log.weight} lbs × ` : ""}
+                ${log.reps} reps
+            </div>
+        `;
+    });
+}
+function renderCurrentWorkout() {
+
+    document.querySelectorAll(".saved-sets")
+        .forEach(div => div.innerHTML = "");
+
+    currentWorkoutExercises.forEach(log => {
+
+        const exerciseCard =
+            [...document.querySelectorAll(".exercise-card")]
+            .find(card =>
+                card.dataset.exercise === log.exercise
+            );
+
+        if (!exerciseCard) return;
+
+        const savedSets =
+            exerciseCard.querySelector(".saved-sets");
+
+        savedSets.innerHTML += `
+            <div class="saved-set">
+                ${log.weight ? `${log.weight} lbs × ` : ""}
+                ${log.reps} reps
+            </div>
+        `;
+    });
 }
 function getCoachInsight(data){
 
@@ -3228,8 +3251,6 @@ function loadActiveUsers(){
     });
 }
 window.addEventListener("load", () => {
-
-    addFavoriteButtons();
     
     // Difficulty colors
     document.querySelectorAll(".legs-workout")
