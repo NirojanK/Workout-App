@@ -40,3 +40,4 @@ Stuff that needs to get added:
 #Today is a busy day for me, so I won't have much time to code because of a friend's wedding
 #Working on background for the app now
 #work on removing pr unless user clicks it as an option and focus on moving workout timer at the top
+#Not sure what to add next to Aura farmer, will need to work borrow inspiration from other projects
