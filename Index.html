@@ -121,6 +121,24 @@
     </div>
 </div>    
 </nav>
+<div id="workoutStatusBar" class="workout-status-bar"  style="display:none;">
+
+    <div class="workout-status-left">
+        <span class="status-dot"></span>
+
+        <span id="currentWorkoutName">
+            No Workout
+        </span>
+    </div>
+
+    <div id="workoutStatusTime">
+        00:00
+    </div>
+    <button onclick="cancelWorkout()">
+            Cancel
+    </button>
+
+</div>
 <div id="homeTab" class="tab-page">
 <!-- Hero Section -->
 <section class="hero" id = "home">
@@ -878,15 +896,6 @@
     </span>
     <img id="modalImage" />
 </div>
-<div class="workout-session" id="workoutSession">
-    <h4>⏱ Workout Active</h4>
-    <p id="workoutSessionTime">
-        00:00
-    </p>
-     <button onclick="cancelWorkout()">
-        Cancel Workout
-    </button>
-</div>
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
@@ -1624,9 +1633,7 @@ function startWorkout(){
         workoutStartTime
     );
 
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "block";
+    document.getElementById("workoutStatusBar").style.display = "flex";
 
     updateWorkoutTimer();
 
@@ -1899,21 +1906,17 @@ function closeSplitModal(){
         .getElementById("splitModal")
         .classList.remove("active");
 }
-function updateWorkoutTimer(){
+function updateWorkoutTimer() {
 
-    const minutes =
-        Math.floor(workoutSeconds / 60);
+    const minutes = Math.floor(workoutSeconds / 60);
+    const seconds = workoutSeconds % 60;
 
-    const seconds =
-        workoutSeconds % 60;
-
-    document.getElementById(
-        "workoutSessionTime"
-    ).innerText =
-
-        String(minutes).padStart(2, "0")
-        + ":" +
+    const time =
+        String(minutes).padStart(2, "0") +
+        ":" +
         String(seconds).padStart(2, "0");
+
+    document.getElementById("workoutStatusTime").innerText = time;
 }
 function openWorkoutSelector(){
 
@@ -1965,7 +1968,25 @@ function selectWorkout(type){
     document.getElementById(
         "workouts"
     ).style.display = "flex";
+    const workoutNames = {
 
+    push: "💪 Push Day",
+
+    pull: "🦍 Pull Day",
+
+    legs: "🦵 Leg Day",
+
+    cardio: "❤️ Cardio",
+
+    women: "🌸 Women's Training"
+
+};
+
+document.getElementById("currentWorkoutName").innerText =
+    workoutNames[type] || "Workout";
+
+document.getElementById("workoutStatusBar").style.display =
+    "flex";
     startWorkout();
 }
 function stopWorkout(){
@@ -1989,6 +2010,14 @@ function stopWorkout(){
     );
 
     return Math.floor(workoutSeconds / 60);
+
+    const duration = Math.floor(workoutSeconds / 60);
+
+document.getElementById("workoutStatusBar").style.display = "none";
+
+return duration;
+
+
 }
 function cancelWorkout(){
 
@@ -2017,6 +2046,9 @@ function cancelWorkout(){
     localStorage.removeItem(
     "selectedWorkout"
     );
+
+    document.getElementById("workoutStatusBar").style.display =
+    "none";
 
     updateWorkoutTimer();
 }
