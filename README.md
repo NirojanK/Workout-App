@@ -41,3 +41,4 @@ Stuff that needs to get added:
 #Working on background for the app now
 #work on removing pr unless user clicks it as an option and focus on moving workout timer at the top
 #Not sure what to add next to Aura farmer, will need to work borrow inspiration from other projects
+#add comments to distinguish code blocks
