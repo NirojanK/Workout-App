@@ -1987,7 +1987,8 @@ document.getElementById("currentWorkoutName").innerText =
 
 document.getElementById("workoutStatusBar").style.display =
     "flex";
-    startWorkout();
+
+startWorkout();
 }
 function stopWorkout(){
 
@@ -1995,29 +1996,18 @@ function stopWorkout(){
 
     workoutActive = false;
 
-    workoutStartTime = null;
-
-    localStorage.removeItem(
-        "workoutStartTime"
-    );
-
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "none";
-
-    localStorage.removeItem(
-    "selectedWorkout"
-    );
-
-    return Math.floor(workoutSeconds / 60);
-
     const duration = Math.floor(workoutSeconds / 60);
 
-document.getElementById("workoutStatusBar").style.display = "none";
+    workoutSeconds = 0;
 
-return duration;
+    workoutStartTime = null;
 
+    localStorage.removeItem("workoutStartTime");
+    localStorage.removeItem("selectedWorkout");
 
+    document.getElementById("workoutStatusBar").style.display = "none";
+
+    return duration;
 }
 function cancelWorkout(){
 
@@ -2039,9 +2029,7 @@ function cancelWorkout(){
         "workoutStartTime"
     );
 
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "none";
+    document.getElementById("workoutStatusBar").style.display = "none";
 
     localStorage.removeItem(
     "selectedWorkout"
