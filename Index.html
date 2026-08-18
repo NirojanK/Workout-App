@@ -1471,6 +1471,8 @@ function loadUserData(userId) {
             "dashEnvironment"
             ).innerText =
             data.environment || "Gym";
+            document.getElementById("workoutModeSelect").value =
+            data.workoutMode || "beginner";
             updateAuraUI(
                 data.lastWorkout || "None",
                 data.xp || 0,
@@ -1481,6 +1483,8 @@ function loadUserData(userId) {
         );
         renderHistory(data.workoutHistory || []);
         updateProfilePage(data);
+        currentUserData.workoutMode =
+        data.workoutMode || "beginner";
         loadLastWorkoutValues(data);
         renderPersonalRecords(data);
             renderAchievements(data.achievements || []);
@@ -1786,20 +1790,25 @@ async function saveManualWorkout(){
             }
 
             if(exercise){
+            const weight =
+            Number(card.querySelector(".exerciseWeight").value) || null;
 
-                exercises.push({
+            const reps =
+            Number(card.querySelector(".exerciseReps").value) || 0;
 
-                    exercise: exercise,
+            exercises.push({
 
-                    weight: Number(card.querySelector(".exerciseWeight").value) || null,
+            exercise: exercise,
 
-                    reps: Number(card.querySelector(".exerciseReps").value) || 0
-
-                });
-
+            sets: [
+            {
+            weight,
+            reps
             }
-
+        ]
         });
+    } 
+    });
 
     const workout = {
 
