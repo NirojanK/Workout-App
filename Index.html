@@ -3179,6 +3179,9 @@ function saveSettings(){
             "goalSelect"
         ).value;
 
+    const workoutMode =
+    document.getElementById("workoutModeSelect").value;
+    
     const ref =
         db.collection("users").doc(user.uid);
 
@@ -3186,6 +3189,7 @@ function saveSettings(){
 
         displayName,
         goal,
+        workoutMode
     }, { merge:true });
 
     /* UPDATE UI */
