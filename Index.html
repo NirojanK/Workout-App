@@ -1269,6 +1269,7 @@ let currentUserData = null;
 let isGuest = false;
 let showFullHistory = false;
 let currentWorkoutExercises = [];
+let currentWorkoutName = "";
 let fullWorkoutHistory = [];
 // ---------------- AUTH ----------------
 function signUp() {
@@ -1560,9 +1561,91 @@ function closeVeteranWorkoutModal(){
 }
 function startVeteranWorkout(){
 
-    alert("Custom workout started!");
+    currentWorkoutExercises = [];
+
+    currentWorkoutName =
+        document.getElementById("customWorkoutName").value.trim();
+
+    if(currentWorkoutName === ""){
+        alert("Enter a workout name.");
+        return;
+    }
+
+    document.querySelectorAll(
+        "#customWorkoutExercises .manualExercise"
+    ).forEach(card=>{
+
+        currentWorkoutExercises.push({
+
+            name: card.querySelector(".exerciseSelect").value,
+
+            usesWeight: true,
+
+            reps: ""
+
+        });
+
+    });
+
+    if(currentWorkoutExercises.length === 0){
+        alert("Add at least one exercise.");
+        return;
+    }
 
     closeVeteranWorkoutModal();
+
+    startWorkout();
+
+    showVeteranWorkout();
+
+}
+function showVeteranWorkout(){
+
+    showTab("workoutTab");
+
+    document.getElementById("currentWorkoutName").innerText =
+        currentWorkoutName;
+
+    const container =
+        document.getElementById("workouts");
+
+    container.innerHTML = "";
+
+    currentWorkoutExercises.forEach(exercise=>{
+
+        container.innerHTML += `
+
+        <div class="exercise-card">
+
+            <div class="exercise-info">
+                <h5>${exercise.name}</h5>
+            </div>
+
+            <div class="exercise-log">
+
+                <input
+                    class="weight-input"
+                    type="number"
+                    placeholder="Weight">
+
+                <input
+                    class="reps-input"
+                    type="number"
+                    placeholder="Reps">
+
+                <button onclick="saveExerciseLog('${exercise.name}', this)">
+                    Save Set
+                </button>
+
+                <div class="saved-sets"></div>
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
 
 }
 function addVeteranExercise(){
