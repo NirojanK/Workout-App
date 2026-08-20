@@ -765,6 +765,46 @@
     </div>
 
 </div>
+<!-- Veteran Workout Modal -->
+<div class="workout-modal" id="veteranWorkoutModal">
+
+    <div class="workout-modal-content">
+
+        <span
+            class="close-workout"
+            onclick="closeVeteranWorkoutModal()">
+            &times;
+        </span>
+
+        <h2>Custom Workout</h2>
+
+        <p>Create your own workout.</p>
+
+        <input
+            id="customWorkoutName"
+            placeholder="Workout Name">
+
+        <div id="customWorkoutExercises"></div>
+
+        <button
+            class="aura-btn"
+            onclick="addVeteranExercise()">
+
+            + Add Exercise
+
+        </button>
+
+        <button
+            class="aura-btn"
+            onclick="startVeteranWorkout()">
+
+            Start Workout
+
+        </button>
+
+    </div>
+
+</div>
 <!-- WORKOUT COMPLETE MODAL -->
 <div class="workout-modal" id="workoutModal">
 
@@ -1497,6 +1537,83 @@ function loadUserData(userId) {
         }
     });
 }
+function openVeteranWorkoutModal(){
+
+    const container =
+        document.getElementById("customWorkoutExercises");
+
+    container.innerHTML = "";
+
+    addVeteranExercise();
+
+    document
+        .getElementById("veteranWorkoutModal")
+        .classList.add("active");
+
+}
+function closeVeteranWorkoutModal(){
+
+    document
+        .getElementById("veteranWorkoutModal")
+        .classList.remove("active");
+
+}
+function startVeteranWorkout(){
+
+    alert("Custom workout started!");
+
+    closeVeteranWorkoutModal();
+
+}
+function addVeteranExercise(){
+
+    const container =
+        document.getElementById("customWorkoutExercises");
+
+    const div =
+        document.createElement("div");
+
+    div.className = "manualExercise";
+
+    div.innerHTML = `
+
+        <select class="exerciseSelect">
+
+            ${allExercises.map(exercise => `
+
+                <option value="${exercise}">
+
+                    ${exercise}
+
+                </option>
+
+            `).join("")}
+
+        </select>
+
+        <input
+            type="number"
+            class="exerciseWeight"
+            placeholder="Weight (lbs)">
+
+        <input
+            type="number"
+            class="exerciseReps"
+            placeholder="Reps">
+
+        <button
+            class="removeExerciseBtn"
+            onclick="this.parentElement.remove()">
+
+            ✖
+
+        </button>
+
+    `;
+
+    container.appendChild(div);
+
+}
 function renderPersonalRecords(data){
 
     const list =
@@ -1516,7 +1633,23 @@ function renderPersonalRecords(data){
         return;
     }
 
-    Object.entries(prs).forEach(([exercise, record]) => {
+    Object.entries(prs)
+
+.sort(([, a], [, b]) => {
+
+    const aScore =
+        (a.weight || 0) * 1000 + (a.reps || 0);
+
+    const bScore =
+        (b.weight || 0) * 1000 + (b.reps || 0);
+
+    return bScore - aScore;
+
+})
+
+.slice(0, 5)
+
+.forEach(([exercise, record]) => {
 
         const div =
             document.createElement("div");
@@ -1956,11 +2089,30 @@ function updateWorkoutTimer() {
 }
 function openWorkoutSelector(){
 
-    document
-        .getElementById("workoutSelectorModal")
-        .classList.add("active");
-}
+    console.log("currentUserData:", currentUserData);
 
+    const mode =
+        currentUserData?.workoutMode || "beginner";
+
+    console.log("Workout Mode:", mode);
+
+    if(mode === "veteran"){
+
+        alert("Opening Veteran");
+
+        openVeteranWorkoutModal();
+
+    }else{
+
+        alert("Opening Beginner");
+
+        document
+            .getElementById("workoutSelectorModal")
+            .classList.add("active");
+
+    }
+
+}
 function selectWorkout(type){
 
     localStorage.setItem(
@@ -3214,6 +3366,9 @@ function saveSettings(){
         "dashGoal"
     ).innerText = goal;
 
+    currentUserData.displayName = displayName;
+    currentUserData.goal = goal;
+    currentUserData.workoutMode = workoutMode;
     closeSettings();
 
     alert("✅ Settings updated");
