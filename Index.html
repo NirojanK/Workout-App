@@ -780,9 +780,20 @@
 
         <p>Create your own workout.</p>
 
-        <input
-            id="customWorkoutName"
-            placeholder="Workout Name">
+        <select
+        id="workoutCategory"
+        onchange="updateExerciseDropdowns()">
+
+        <option value="Push">Push</option>
+        <option value="Pull">Pull</option>
+        <option value="Legs">Legs</option>
+        <option value="Shoulders">Shoulders</option>
+        <option value="Arms">Arms</option>
+        <option value="Cardio">Cardio</option>
+        <option value="Full Body">Full Body</option>
+        <option value="Custom">Custom</option>
+
+        </select>
 
         <div id="customWorkoutExercises"></div>
 
@@ -1215,55 +1226,120 @@ const workoutData = {
     }
   ]
 }
-const allExercises = [
+const exerciseCategories = {
 
-"Bench Press",
-"Incline Bench Press",
-"Machine Chest Press",
-"Chest Fly",
-"Push-ups",
-"Dips",
+    Push: [
+        "Bench Press",
+        "Incline Bench Press",
+        "Machine Chest Press",
+        "Chest Fly",
+        "Push-ups",
+        "Dips",
+        "Tricep Pushdown",
+        "Overhead Tricep Extension",
+        "Skull Crusher"
+    ],
 
-"Pull-ups",
-"Lat Pulldowns",
-"Seated Cable Rows",
-"Barbell Rows",
-"Chest Supported Rows",
-"Straight Arm Pulldowns",
-"Face Pulls",
+    Pull: [
+        "Pull-ups",
+        "Lat Pulldowns",
+        "Seated Cable Rows",
+        "Barbell Rows",
+        "Chest Supported Rows",
+        "Straight Arm Pulldowns",
+        "Face Pulls"
+    ],
 
-"Squats",
-"Romanian Deadlift",
-"Leg Press",
-"Leg Extension",
-"Hamstring Curl",
-"Standing Calf Raise",
+    Legs: [
+        "Squats",
+        "Romanian Deadlift",
+        "Leg Press",
+        "Leg Extension",
+        "Hamstring Curl",
+        "Standing Calf Raise"
+    ],
 
-"Barbell Curl",
-"Hammer Curl",
-"Preacher Curl",
-"Cable Curl",
+    Shoulders: [
+        "Shoulder Press",
+        "Dumbbell Shoulder Press",
+        "Lateral Raise",
+        "Rear Delt Fly",
+        "Front Raise",
+        "Shrugs"
+    ],
 
-"Tricep Pushdown",
-"Overhead Tricep Extension",
-"Skull Crusher",
+    Arms: [
+        "Barbell Curl",
+        "Hammer Curl",
+        "Preacher Curl",
+        "Cable Curl",
+        "Tricep Pushdown",
+        "Overhead Tricep Extension",
+        "Skull Crusher"
+    ],
 
-"Shoulder Press",
-"Dumbbell Shoulder Press",
-"Lateral Raise",
-"Rear Delt Fly",
-"Front Raise",
-"Shrugs",
+    Cardio: [
+        "Running",
+        "Walking",
+        "Cycling",
+        "StairMaster",
+        "Jump Rope",
+        "Plank",
+        "Cable Crunch"
+    ],
 
-"Running",
-"Cycling",
-"Walking",
-"StairMaster",
-"Jump Rope",
-"Plank",
-"Cable Crunch"
+    "Full Body": [
+        "Bench Press",
+        "Pull-ups",
+        "Squats",
+        "Shoulder Press",
+        "Barbell Curl",
+        "Running"
+    ],
 
-];
+    Custom: [
+        "Bench Press",
+        "Incline Bench Press",
+        "Machine Chest Press",
+        "Chest Fly",
+        "Push-ups",
+        "Dips",
+        "Pull-ups",
+        "Lat Pulldowns",
+        "Seated Cable Rows",
+        "Barbell Rows",
+        "Chest Supported Rows",
+        "Straight Arm Pulldowns",
+        "Face Pulls",
+        "Squats",
+        "Romanian Deadlift",
+        "Leg Press",
+        "Leg Extension",
+        "Hamstring Curl",
+        "Standing Calf Raise",
+        "Barbell Curl",
+        "Hammer Curl",
+        "Preacher Curl",
+        "Cable Curl",
+        "Tricep Pushdown",
+        "Overhead Tricep Extension",
+        "Skull Crusher",
+        "Shoulder Press",
+        "Dumbbell Shoulder Press",
+        "Lateral Raise",
+        "Rear Delt Fly",
+        "Front Raise",
+        "Shrugs",
+        "Running",
+        "Walking",
+        "Cycling",
+        "StairMaster",
+        "Jump Rope",
+        "Plank",
+        "Cable Crunch"
+    ]
+
+};
 
 let currentUserData = null;
 let isGuest = false;
@@ -1538,7 +1614,12 @@ function loadUserData(userId) {
         }
     });
 }
-function openVeteranWorkoutModal(){
+function openVeteranWorkoutModal() {
+
+    const category =
+        document.getElementById("workoutCategory");
+
+    category.value = "Push";
 
     const container =
         document.getElementById("customWorkoutExercises");
@@ -1550,7 +1631,6 @@ function openVeteranWorkoutModal(){
     document
         .getElementById("veteranWorkoutModal")
         .classList.add("active");
-
 }
 function closeVeteranWorkoutModal(){
 
@@ -1564,12 +1644,7 @@ function startVeteranWorkout(){
     currentWorkoutExercises = [];
 
     currentWorkoutName =
-        document.getElementById("customWorkoutName").value.trim();
-
-    if(currentWorkoutName === ""){
-        alert("Enter a workout name.");
-        return;
-    }
+    document.getElementById("workoutCategory").value;
 
     document.querySelectorAll(
         "#customWorkoutExercises .manualExercise"
@@ -1653,36 +1728,27 @@ function addVeteranExercise(){
     const container =
         document.getElementById("customWorkoutExercises");
 
+    const category =
+        document.getElementById("workoutCategory").value;
+
+    const exercises =
+        exerciseCategories[category];
+
     const div =
         document.createElement("div");
 
     div.className = "manualExercise";
 
     div.innerHTML = `
-
         <select class="exerciseSelect">
 
-            ${allExercises.map(exercise => `
-
+            ${exercises.map(exercise => `
                 <option value="${exercise}">
-
                     ${exercise}
-
                 </option>
-
             `).join("")}
 
         </select>
-
-        <input
-            type="number"
-            class="exerciseWeight"
-            placeholder="Weight (lbs)">
-
-        <input
-            type="number"
-            class="exerciseReps"
-            placeholder="Reps">
 
         <button
             class="removeExerciseBtn"
@@ -1691,10 +1757,32 @@ function addVeteranExercise(){
             ✖
 
         </button>
-
     `;
 
     container.appendChild(div);
+
+}
+function updateExerciseDropdowns(){
+
+    const category =
+        document.getElementById("workoutCategory").value;
+
+    const exercises =
+        exerciseCategories[category];
+
+    document.querySelectorAll(".exerciseSelect")
+        .forEach(select => {
+
+            select.innerHTML =
+                exercises.map(exercise =>
+
+                    `<option value="${exercise}">
+                        ${exercise}
+                    </option>`
+
+                ).join("");
+
+        });
 
 }
 function renderPersonalRecords(data){
@@ -1948,29 +2036,6 @@ function addManualExercise() {
     container.appendChild(exercise);
 
 }
-document.addEventListener("change", function(e){
-
-    if(!e.target.classList.contains("exerciseSelect"))
-        return;
-
-    const custom =
-        e.target.parentElement.querySelector(".customExercise");
-
-    if(e.target.value === "Other"){
-
-        custom.style.display = "block";
-
-        custom.focus();
-
-    }else{
-
-        custom.style.display = "none";
-
-        custom.value = "";
-
-    }
-
-});
 async function saveManualWorkout(){
 
     const user = auth.currentUser;
