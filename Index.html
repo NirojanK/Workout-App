@@ -1670,12 +1670,19 @@ function showVeteranWorkout(){
         document.getElementById("workouts");
 
     container.innerHTML = "";
-
+    
+    
     currentWorkoutExercises.forEach(exercise=>{
+
+        const lastLog = getLastExerciseLog(exercise.name);
+
+        const lastWeight = lastLog ? lastLog.weight : "";
+        const lastReps = lastLog ? lastLog.reps : "";
+
 
         container.innerHTML += `
 
-        <div class="exercise-card">
+        <div class="exercise-card" data-exercise="${exercise.name}">
 
             <div class="exercise-info">
                 <h5>${exercise.name}</h5>
@@ -1686,12 +1693,14 @@ function showVeteranWorkout(){
                 <input
                     class="weight-input"
                     type="number"
-                    placeholder="Weight">
+                    placeholder="Weight"
+                    value="${lastWeight}">
 
                 <input
                     class="reps-input"
                     type="number"
-                    placeholder="Reps">
+                    placeholder="Reps"
+                    value="${lastReps}">
 
                 <button onclick="saveExerciseLog('${exercise.name}', this)">
                     Save Set
@@ -1746,6 +1755,20 @@ function addVeteranExercise(){
 
     container.appendChild(div);
 
+}
+function getLastExerciseLog(exerciseName){
+
+    const history = currentUserData.exerciseLogs || [];
+
+    const logs = history.filter(log =>
+        log.exercise === exerciseName
+    );
+
+    if(logs.length === 0){
+        return null;
+    }
+
+    return logs[logs.length - 1];
 }
 function updateExerciseDropdowns(){
 
@@ -1977,6 +2000,20 @@ function startWorkout(){
 
     }, 1000);
 }
+function getLastExerciseLog(exerciseName){
+
+    const history = currentUserData.exerciseLogs || [];
+
+    const logs = history.filter(log =>
+        log.exercise === exerciseName
+    );
+
+    if(logs.length === 0){
+        return null;
+    }
+
+    return logs[logs.length - 1];
+}
 function createExerciseDropdown(){
 
     return `
@@ -2126,7 +2163,7 @@ function renderExerciseCards(containerId, exercises){
     exercises.forEach(exercise=>{
 
         container.innerHTML += `
-        <div class="exercise-card">
+        <div class="exercise-card" data-exercise="${exercise.name}">
 
             <div class="exercise-info">
                 <h5>${exercise.name}</h5>
@@ -3244,32 +3281,6 @@ function getAuraRank(level){
     }
 
     return "🌱 Aura Novice";
-}
-function renderCurrentWorkout() {
-
-    document.querySelectorAll(".saved-sets")
-        .forEach(div => div.innerHTML = "");
-
-    currentWorkoutExercises.forEach(log => {
-
-        const exerciseCard =
-            [...document.querySelectorAll(".exercise-card")]
-            .find(card =>
-                card.dataset.exercise === log.exercise
-            );
-
-        if (!exerciseCard) return;
-
-        const savedSets =
-            exerciseCard.querySelector(".saved-sets");
-
-        savedSets.innerHTML += `
-            <div class="saved-set">
-                ${log.weight ? `${log.weight} lbs × ` : ""}
-                ${log.reps} reps
-            </div>
-        `;
-    });
 }
 function renderCurrentWorkout() {
 
