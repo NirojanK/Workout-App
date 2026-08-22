@@ -73,22 +73,9 @@
             👤 Profile
         </a>
     </li>
-
-    <li>
-        <a href="#" onclick="openSplitModal()">
-            Training Split
-        </a>
-    </li>
-
     <li>
         <a href="#" onclick="openRestTimerModal()">
             Rest Timer
-        </a>
-    </li>
-
-    <li>
-        <a href="#" onclick="openTeamModal()">
-            Team
         </a>
     </li>
         </ul>
@@ -508,19 +495,16 @@
 </div>
 </div>
 <nav class="bottom-nav">
-
-    <button onclick="showTab('homeTab')">
-        🏠<br>Home
-    </button>
-
-    <button onclick="showTab('historyTab')">
-        📈<br>History
-    </button>
-
-    <button onclick="showTab('profileTab')">
-        👤<br>Profile
-    </button>
-
+    <li>
+        <a href="#" onclick="openTeamModal()">
+            Team
+        </a>
+    </li>
+    <li>
+        <a href="#" onclick="openSplitModal()">
+            Training Split
+        </a>
+    </li>
 </nav>
 <!-- Footer -->
 <footer class="footer">
@@ -949,7 +933,6 @@
                 <option value="veteran">Veteran</option>
             </select>
         </div>
-</div>
         <!-- SAVE -->
         <button onclick="saveSettings()">
             Save Changes
@@ -1678,6 +1661,8 @@ function showVeteranWorkout(){
 
     showTab("workoutTab");
 
+    document.getElementById("workouts").style.display = "block";
+
     document.getElementById("currentWorkoutName").innerText =
         currentWorkoutName;
 
@@ -1960,6 +1945,16 @@ function startWorkout(){
     }
 
     workoutActive = true;
+
+    const bar = document.getElementById("workoutStatusBar");
+
+    console.log("Bar before:", bar.style.display);
+
+    bar.style.display = "flex";
+
+    console.log("Bar after:", bar.style.display);
+
+    updateWorkoutTimer();
 
     workoutStartTime = Date.now();
 
@@ -3703,9 +3698,12 @@ if(savedWorkout){
 
     workoutActive = true;
 
-    document.getElementById(
-        "workoutSession"
-    ).style.display = "block";
+    const session =
+    document.getElementById("workoutSession");
+
+    if (session) {
+    session.style.display = "block";
+    }
 
     workoutTimer = setInterval(() => {
 
