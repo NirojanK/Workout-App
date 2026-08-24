@@ -44,6 +44,7 @@ Stuff that needs to get added:
 #add comments to distinguish code blocks
 #make the pr feature not only accessed by inputting a workout for the first time
 #make home button and profile buttons appear at the top navbar and not the bottom ( suggestion from brother)
+#add remaining workouts like hip adductions and abductions, some arm exercises, go over each list for each muscle group to see if any workout needs to be added
 #make custom workouts an option with a drop down list instead of a guided workout for long-time/regular gym goers( suggestion from older brother)
 #work on background and skipcookin when you have time
 #add pr system option
