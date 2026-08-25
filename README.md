@@ -48,3 +48,4 @@ Stuff that needs to get added:
 #make custom workouts an option with a drop down list instead of a guided workout for long-time/regular gym goers( suggestion from older brother)
 #work on background and skipcookin when you have time
 #add pr system option
+#continue making revisions
