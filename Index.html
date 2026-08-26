@@ -38,33 +38,39 @@
             box-shadow: none !important;
         }
 
+        .exercise-card .exercise-info {
+            position: relative !important;
+            overflow: hidden !important;
+            padding-right: 78px !important;
+            padding-top: 30px !important;
+        }
+
         .difficulty-badge {
             position: absolute !important;
-            top: 12px !important;
-            right: 14px !important;
+            top: 8px !important;
+            right: 9px !important;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            gap: 6px !important;
+            gap: 5px !important;
             min-width: 0 !important;
-            height: 24px !important;
-            padding: 0 9px !important;
+            height: 22px !important;
+            padding: 0 7px !important;
             border-radius: 999px !important;
-            font-size: 0.70rem !important;
+            font-size: 0.66rem !important;
             line-height: 1 !important;
             font-weight: 700 !important;
             text-transform: lowercase !important;
-            z-index: 50 !important;
+            z-index: 5 !important;
             box-sizing: border-box !important;
             white-space: nowrap !important;
             pointer-events: none !important;
         }
 
-        .difficulty-badge::before {
-            content: "" !important;
-            width: 8px !important;
-            height: 8px !important;
-            min-width: 8px !important;
+        .difficulty-dot {
+            width: 7px !important;
+            height: 7px !important;
+            min-width: 7px !important;
             border-radius: 50% !important;
             display: inline-block !important;
         }
@@ -75,7 +81,7 @@
             color: #2ea043 !important;
         }
 
-        .difficulty-badge.easy::before {
+        .difficulty-badge.easy .difficulty-dot {
             background: #2ea043 !important;
         }
 
@@ -85,7 +91,7 @@
             color: #b77900 !important;
         }
 
-        .difficulty-badge.medium::before {
+        .difficulty-badge.medium .difficulty-dot {
             background: #e69f00 !important;
         }
 
@@ -95,12 +101,14 @@
             color: #dc3545 !important;
         }
 
-        .difficulty-badge.hard::before {
+        .difficulty-badge.hard .difficulty-dot {
             background: #dc3545 !important;
         }
 
-        .exercise-card .exercise-info {
-            padding-right: 90px !important;
+        /* Reserve a dedicated row for the difficulty badge so it
+           never sits on top of the input fields. */
+        .exercise-card .exercise-log {
+            padding-top: 36px !important;
         }
     </style>
 
@@ -1842,11 +1850,11 @@ function showVeteranWorkout(){
 
         <div class="exercise-card ${getExerciseDifficultyClass(exercise.name)}" data-exercise="${exercise.name}">
 
-            <div class="difficulty-badge ${getExerciseDifficultyClass(exercise.name)}">
-                ${getExerciseDifficultyLabel(exercise.name)}
-            </div>
-
             <div class="exercise-info">
+                <div class="difficulty-badge ${getExerciseDifficultyClass(exercise.name)}">
+                    <span class="difficulty-dot"></span>
+                    ${getExerciseDifficultyLabel(exercise.name)}
+                </div>
                 <h5>${exercise.name}</h5>
             </div>
 
@@ -2388,10 +2396,11 @@ function renderGroupedExerciseCards(containerId, exercises){
         groupExercises.forEach(exercise => {
             exerciseContainer.innerHTML += `
             <div class="exercise-card ${getExerciseDifficultyClass(exercise.name)}" data-exercise="${exercise.name}">
+                <div class="exercise-info">
                 <div class="difficulty-badge ${getExerciseDifficultyClass(exercise.name)}">
+                    <span class="difficulty-dot"></span>
                     ${getExerciseDifficultyLabel(exercise.name)}
                 </div>
-                <div class="exercise-info">
                     <h5>${exercise.name}</h5>
                     <p>${exercise.reps}</p>
                 </div>
