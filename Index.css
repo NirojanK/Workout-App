@@ -391,37 +391,32 @@ body {
     display:none;
 
     position:sticky;
-
     top:70px;
-
     z-index:998;
 
     background:#202020;
-
     color:white;
 
-    padding:12px 20px;
+    padding:16px 20px;
 
     display:flex;
-
-    justify-content:space-between;
-
+    flex-direction:column;
     align-items:center;
+    gap:12px;
 
     border-bottom:2px solid #5f3dc4;
-
 }
 
 .workout-status-left{
 
-    display:flex;
+    width:100%;
 
+    display:flex;
     align-items:center;
 
     gap:10px;
 
     font-weight:700;
-
 }
 
 .status-dot{
@@ -440,14 +435,14 @@ body {
 
 #workoutStatusTime{
 
-    font-size:22px;
+    font-size:34px;
 
-    font-weight:bold;
+    font-weight:800;
 
-    letter-spacing:1px;
+    letter-spacing:2px;
 
+    text-align:center;
 }
-
 @keyframes pulse{
 
     0%{
@@ -3731,5 +3726,111 @@ button:active {
         margin-top:8px;
 
         width:100%;
+    }
+}
+
+/* =========================
+   EXERCISE DIFFICULTY DOTS
+   ========================= */
+
+/* The HTML uses:
+   difficulty-badge difficulty-easy
+   difficulty-badge difficulty-medium
+   difficulty-badge difficulty-hard
+*/
+.exercise-card{
+    position:relative;
+}
+
+.exercise-card .difficulty-badge{
+    position:absolute;
+    top:18px;
+    right:18px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+
+    min-width:auto;
+    width:auto;
+    height:auto;
+    padding:0;
+
+    border:none;
+    background:none;
+    border-radius:0;
+
+    font-size:0.72rem;
+    font-weight:700;
+    line-height:1;
+    text-transform:lowercase;
+    z-index:5;
+    box-sizing:border-box;
+}
+
+/* Colored circle */
+.exercise-card .difficulty-badge::before{
+    content:"";
+    width:9px;
+    height:9px;
+    min-width:9px;
+    border-radius:50%;
+    display:block;
+}
+
+/* EASY */
+.exercise-card .difficulty-badge.difficulty-easy::before,
+.exercise-card .difficulty-badge.easy::before{
+    background:#4CAF50;
+    box-shadow:0 0 7px rgba(76,175,80,.65);
+}
+
+.exercise-card .difficulty-badge.difficulty-easy,
+.exercise-card .difficulty-badge.easy{
+    color:#3d8f40;
+}
+
+/* MEDIUM */
+.exercise-card .difficulty-badge.difficulty-medium::before,
+.exercise-card .difficulty-badge.medium::before{
+    background:#FFC107;
+    box-shadow:0 0 7px rgba(255,193,7,.65);
+}
+
+.exercise-card .difficulty-badge.difficulty-medium,
+.exercise-card .difficulty-badge.medium{
+    color:#a87900;
+}
+
+/* HARD */
+.exercise-card .difficulty-badge.difficulty-hard::before,
+.exercise-card .difficulty-badge.hard::before{
+    background:#F44336;
+    box-shadow:0 0 7px rgba(244,67,54,.65);
+}
+
+.exercise-card .difficulty-badge.difficulty-hard,
+.exercise-card .difficulty-badge.hard{
+    color:#c62828;
+}
+
+/* ELITE */
+.exercise-card .difficulty-badge.difficulty-elite::before,
+.exercise-card .difficulty-badge.elite::before{
+    background:#9C27B0;
+    box-shadow:0 0 7px rgba(156,39,176,.65);
+}
+
+.exercise-card .difficulty-badge.difficulty-elite,
+.exercise-card .difficulty-badge.elite{
+    color:#7b1fa2;
+}
+
+/* Keep the indicator inside the card on phones */
+@media (max-width:768px){
+    .exercise-card .difficulty-badge{
+        top:18px;
+        right:18px;
     }
 }
