@@ -49,3 +49,4 @@ Stuff that needs to get added:
 #work on background and skipcookin when you have time
 #add pr system option
 #continue making revisions
+#work on new ideas that could be useful like a video highlight
