@@ -2696,49 +2696,85 @@ h2.section-title{
 .footer-tagline{
     opacity:0.8;
 
-    margin-bottom:30px;
+    margin-bottom:25px;
 
     line-height:1.7;
 }
 
-/* LINKS */
-.footer-links{
-    display:flex;
-
-    justify-content:center;
-
-    gap:25px;
-
-    margin-bottom:25px;
-
-    flex-wrap:wrap;
-}
-
-.footer-links a{
-    color:white;
-
-    text-decoration:none;
-
-    transition:0.25s;
-}
-
-.footer-links a:hover{
-    opacity:0.7;
-}
-
 /* CONTACT */
 .footer-contact{
-    margin-bottom:20px;
+    margin-bottom:0;
 
     opacity:0.85;
 }
 
+/* FOOTER NAVIGATION */
+.footer-nav{
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    gap:28px;
+
+    margin-top:28px;
+}
+
+.footer-nav a{
+    color:#e0b57a;
+
+    text-decoration:none;
+
+    font-size:1rem;
+
+    font-weight:600;
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+.footer-nav a:hover{
+    opacity:0.7;
+
+    transform:translateY(-2px);
+}
+
+.footer-divider{
+    width:1px;
+
+    height:28px;
+
+    background:rgba(224,181,122,0.45);
+}
+
 /* COPYRIGHT */
 .footer-copy{
+    margin-top:28px;
+
     opacity:0.55;
 
     font-size:0.9rem;
 }
+
+/* MOBILE FOOTER */
+@media (max-width:600px){
+
+    .footer{
+        padding:40px 15px 30px;
+    }
+
+    .footer-nav{
+        gap:18px;
+    }
+
+    .footer-nav a{
+        font-size:0.95rem;
+    }
+
+}
+
 /*Progress Bar*/
 .progress-bar {
     width: 100%;
@@ -2884,46 +2920,6 @@ button:active {
 
     font-weight:bold;
 }
-.bottom-nav {
-
-    left: 0;
-
-    width: 100%;
-
-    display: flex;
-
-    justify-content: space-around;
-
-    background: #111;
-
-    border-top: 1px solid #333;
-
-    padding: 10px 0;
-
-}
-
-.bottom-nav button {
-
-    background: none;
-
-    border: none;
-
-    color: white;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    flex: 1;
-
-}
-
-.bottom-nav button:hover {
-
-    color: gold;
-
-}
-
 .tab-page {
 
     min-height: 100vh;
