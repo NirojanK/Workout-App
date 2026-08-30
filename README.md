@@ -50,3 +50,4 @@ Stuff that needs to get added:
 #add pr system option
 #continue making revisions
 #work on new ideas that could be useful like a video highlight
+#add graphs and fix authentication issues
