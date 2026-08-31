@@ -51,3 +51,4 @@ Stuff that needs to get added:
 #continue making revisions
 #work on new ideas that could be useful like a video highlight
 #add graphs and fix authentication issues
+#draw inspiration for background from other areas and weapons
