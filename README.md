@@ -52,3 +52,4 @@ Stuff that needs to get added:
 #work on new ideas that could be useful like a video highlight
 #add graphs and fix authentication issues
 #draw inspiration for background from other areas and weapons
+#make the website look less AI like
