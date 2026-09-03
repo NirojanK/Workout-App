@@ -53,3 +53,4 @@ Stuff that needs to get added:
 #add graphs and fix authentication issues
 #draw inspiration for background from other areas and weapons
 #make the website look less AI like
+#choose between the three backgrounds you made
