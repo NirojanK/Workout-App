@@ -110,6 +110,110 @@
         .exercise-card .exercise-log {
             padding-top: 36px !important;
         }
+        .exercise-section-actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 10px 0 18px;
+        }
+
+        .add-exercise-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .added-exercises-section {
+            margin: 0 auto 20px;
+            max-width: 1100px;
+        }
+
+        .added-exercises-header h3 {
+            margin: 0 0 5px;
+        }
+
+        .added-exercises-header p {
+            margin: 0 0 15px;
+            opacity: 0.75;
+            font-size: 0.9rem;
+        }
+
+        .add-exercise-muscle-tabs {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin: 18px 0;
+        }
+
+        .add-exercise-muscle-tab {
+            border: 1px solid rgba(255,255,255,0.18);
+            background: rgba(255,255,255,0.06);
+            color: inherit;
+            border-radius: 999px;
+            padding: 9px 14px;
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .add-exercise-muscle-tab:hover {
+            background: rgba(255,255,255,0.12);
+        }
+
+        .add-exercise-muscle-tab.active {
+            border-color: currentColor;
+            background: rgba(255,255,255,0.14);
+            font-weight: 700;
+        }
+
+        .add-exercise-picker {
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            margin-bottom: 12px;
+        }
+
+        .add-exercise-picker label {
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .add-exercise-picker select {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .add-exercise-preview {
+            min-height: 22px;
+            margin: 8px 0 16px;
+            opacity: 0.75;
+            font-size: 0.9rem;
+        }
+
+        .added-exercise-card {
+            margin-bottom: 12px;
+        }
+
+        .remove-added-exercise-btn {
+            margin-top: 8px;
+        }
+
+        @media (max-width: 600px) {
+            .exercise-section-actions {
+                flex-direction: column;
+            }
+
+            .exercise-section-actions button {
+                width: 100%;
+            }
+
+            .add-exercise-muscle-tab {
+                flex: 1 1 calc(50% - 8px);
+                min-width: 120px;
+            }
+        }
+
     </style>
 
 </head>
@@ -453,14 +557,37 @@
  <div id="workoutTab" class="tab-page" style="display:none;">
  <section id="exerciseSection">
  <h2 class="section-title">Exercises</h2>
- <button
-    id="changeWorkoutBtn"
-    onclick="openWorkoutSelector()"
-    style="display:none;"
- >
-    Change Workout
-</button>
+
+ <div class="exercise-section-actions">
+    <button
+        id="changeWorkoutBtn"
+        onclick="openWorkoutSelector()"
+        style="display:none;"
+    >
+        Change Workout
+    </button>
+
+    <button
+        id="addExerciseBtn"
+        class="aura-btn add-exercise-btn"
+        onclick="openAddExerciseModal()"
+        style="display:none;"
+    >
+        ➕ Add Exercise
+    </button>
+ </div>
  </section>
+
+<div id="addedExercisesSection" class="box added-exercises-section" style="display:none;">
+    <div class="added-exercises-header">
+        <div>
+            <h3>➕ Added Exercises</h3>
+            <p>Add exercises from any muscle group without changing today's workout.</p>
+        </div>
+    </div>
+    <div id="addedExercisesList"></div>
+</div>
+
 <div class="container" id="workouts">
     <div class="box workout-group pull-workout">
         <h3>Back</h3>
@@ -857,6 +984,34 @@
     </div>
 
 </div>
+<!-- ADD EXERCISE MODAL -->
+<div class="workout-modal" id="addExerciseModal">
+    <div class="workout-modal-content add-exercise-modal-content">
+        <span
+            class="close-workout"
+            onclick="closeAddExerciseModal()"
+        >
+            &times;
+        </span>
+
+        <h2>➕ Add Exercise</h2>
+        <p>Choose a muscle group, then add an exercise to today's workout.</p>
+
+        <div id="addExerciseMuscleTabs" class="add-exercise-muscle-tabs"></div>
+
+        <div class="add-exercise-picker">
+            <label for="addExerciseSelect">Exercise</label>
+            <select id="addExerciseSelect"></select>
+        </div>
+
+        <div class="add-exercise-preview" id="addExercisePreview"></div>
+
+        <button class="aura-btn" onclick="addSelectedExercise()">
+            Add to Workout
+        </button>
+    </div>
+</div>
+
 <!-- Veteran Workout Modal -->
 <div class="workout-modal" id="veteranWorkoutModal">
 
@@ -2471,6 +2626,223 @@ renderGroupedExerciseCards(
     workoutData.cardio
 );
 
+/* ---------------- ADD EXERCISE TO CURRENT WORKOUT ---------------- */
+
+const addExerciseGroups = [
+    { key: "back", label: "🦍 Back", exercises: workoutData.back },
+    { key: "chest", label: "💪 Chest", exercises: workoutData.chest },
+    { key: "legs", label: "🦵 Legs", exercises: workoutData.legs },
+    { key: "shoulders", label: "🏋️ Shoulders", exercises: workoutData.shoulders },
+    { key: "arms", label: "💪 Arms", exercises: workoutData.arms },
+    { key: "cardio", label: "❤️ Cardio + Core", exercises: workoutData.cardio }
+];
+
+let selectedAddExerciseGroup = "legs";
+
+function openAddExerciseModal() {
+    const modal = document.getElementById("addExerciseModal");
+    if (!modal) return;
+
+    const selectedWorkout =
+        localStorage.getItem("selectedWorkout") || "legs";
+
+    selectedAddExerciseGroup =
+        addExerciseGroups.some(group => group.key === selectedWorkout)
+            ? selectedWorkout
+            : "legs";
+
+    renderAddExerciseMuscleTabs();
+    updateAddExerciseOptions();
+
+    modal.classList.add("active");
+}
+
+function closeAddExerciseModal() {
+    const modal = document.getElementById("addExerciseModal");
+    if (modal) modal.classList.remove("active");
+}
+
+function renderAddExerciseMuscleTabs() {
+    const tabs = document.getElementById("addExerciseMuscleTabs");
+    if (!tabs) return;
+
+    tabs.innerHTML = addExerciseGroups.map(group => `
+        <button
+            type="button"
+            class="add-exercise-muscle-tab ${group.key === selectedAddExerciseGroup ? "active" : ""}"
+            onclick="selectAddExerciseGroup('${group.key}')"
+        >
+            ${group.label}
+        </button>
+    `).join("");
+}
+
+function selectAddExerciseGroup(groupKey) {
+    if (!addExerciseGroups.some(group => group.key === groupKey)) return;
+
+    selectedAddExerciseGroup = groupKey;
+    renderAddExerciseMuscleTabs();
+    updateAddExerciseOptions();
+}
+
+function updateAddExerciseOptions() {
+    const select = document.getElementById("addExerciseSelect");
+    const preview = document.getElementById("addExercisePreview");
+    if (!select || !preview) return;
+
+    const group =
+        addExerciseGroups.find(item => item.key === selectedAddExerciseGroup);
+
+    if (!group || !group.exercises.length) {
+        select.innerHTML = '<option value="">No exercises available</option>';
+        preview.innerText = "";
+        return;
+    }
+
+    select.innerHTML = group.exercises.map(exercise => `
+        <option value="${exercise.name}">
+            ${exercise.name}
+        </option>
+    `).join("");
+
+    updateAddExercisePreview();
+    select.onchange = updateAddExercisePreview;
+}
+
+function updateAddExercisePreview() {
+    const select = document.getElementById("addExerciseSelect");
+    const preview = document.getElementById("addExercisePreview");
+    if (!select || !preview) return;
+
+    const group =
+        addExerciseGroups.find(item => item.key === selectedAddExerciseGroup);
+
+    const exercise =
+        group?.exercises.find(item => item.name === select.value);
+
+    preview.innerText = exercise
+        ? `${exercise.muscleGroup} • ${exercise.reps}`
+        : "";
+}
+
+function addSelectedExercise() {
+    const select = document.getElementById("addExerciseSelect");
+    if (!select || !select.value) {
+        alert("Please choose an exercise.");
+        return;
+    }
+
+    const group =
+        addExerciseGroups.find(item => item.key === selectedAddExerciseGroup);
+
+    const exercise =
+        group?.exercises.find(item => item.name === select.value);
+
+    if (!exercise) return;
+
+    const alreadyAdded = [
+        ...document.querySelectorAll("#addedExercisesList .exercise-card"),
+        ...document.querySelectorAll("#workouts .exercise-card")
+    ].some(card => card.dataset.exercise === exercise.name);
+
+    if (alreadyAdded) {
+        alert(`${exercise.name} is already visible in this workout.`);
+        return;
+    }
+
+    renderAddedExercise(exercise);
+    closeAddExerciseModal();
+}
+
+function renderAddedExercise(exercise) {
+    const section = document.getElementById("addedExercisesSection");
+    const list = document.getElementById("addedExercisesList");
+    if (!section || !list) return;
+
+    const lastLog = getLastExerciseLog(exercise.name);
+    const lastWeight = lastLog?.weight ?? "";
+    const lastReps = lastLog?.reps ?? "";
+
+    const card = document.createElement("div");
+    card.className =
+        `exercise-card added-exercise-card ${getExerciseDifficultyClass(exercise.name)}`;
+    card.dataset.exercise = exercise.name;
+
+    card.innerHTML = `
+        <div class="exercise-info">
+            <div class="difficulty-badge ${getExerciseDifficultyClass(exercise.name)}">
+                <span class="difficulty-dot"></span>
+                ${getExerciseDifficultyLabel(exercise.name)}
+            </div>
+            <h5>${exercise.name}</h5>
+            <p>${exercise.muscleGroup} • ${exercise.reps}</p>
+        </div>
+
+        <div class="exercise-log">
+            ${
+                exercise.usesWeight
+                ? `
+                    <input
+                        class="weight-input"
+                        type="number"
+                        placeholder="Weight (lbs)"
+                        value="${lastWeight}">
+                  `
+                : ""
+            }
+
+            <input
+                class="reps-input"
+                type="number"
+                placeholder="Reps"
+                value="${lastReps}">
+
+            <button onclick="saveExerciseLog('${exercise.name}', this)">
+                Save Set
+            </button>
+
+            <button
+                type="button"
+                class="remove-added-exercise-btn"
+                onclick="removeAddedExercise(this)"
+            >
+                Remove
+            </button>
+
+            <div class="saved-sets"></div>
+        </div>
+    `;
+
+    list.appendChild(card);
+    section.style.display = "block";
+}
+
+function removeAddedExercise(button) {
+    const card = button.closest(".exercise-card");
+    if (card) card.remove();
+
+    const section = document.getElementById("addedExercisesSection");
+    const list = document.getElementById("addedExercisesList");
+
+    if (section && list && !list.querySelector(".exercise-card")) {
+        section.style.display = "none";
+    }
+}
+
+function updateExerciseAddButtonVisibility() {
+    const button = document.getElementById("addExerciseBtn");
+    const section = document.getElementById("exerciseSection");
+    if (!button || !section) return;
+
+    const selectedWorkout = localStorage.getItem("selectedWorkout");
+
+    if (selectedWorkout && selectedWorkout !== "women") {
+        button.style.display = "inline-flex";
+    } else {
+        button.style.display = "none";
+    }
+}
+
 function openTeamModal(){
 
     document
@@ -2542,6 +2914,12 @@ function selectWorkout(type){
     type
     );
 
+    const addedList = document.getElementById("addedExercisesList");
+    const addedSection = document.getElementById("addedExercisesSection");
+
+    if (addedList) addedList.innerHTML = "";
+    if (addedSection) addedSection.style.display = "none";
+
     document
         .getElementById("workoutSelectorModal")
         .classList.remove("active");
@@ -2578,6 +2956,14 @@ function selectWorkout(type){
     document.getElementById(
         "workouts"
     ).style.display = "flex";
+
+    updateExerciseAddButtonVisibility();
+
+    const changeWorkoutBtn = document.getElementById("changeWorkoutBtn");
+    if (changeWorkoutBtn) {
+        changeWorkoutBtn.style.display = "inline-flex";
+    }
+
     const workoutNames = {
 
     push: "💪 Push Day",
@@ -2617,6 +3003,11 @@ function stopWorkout(){
 
     document.getElementById("workoutStatusBar").style.display = "none";
 
+    const addExerciseBtn = document.getElementById("addExerciseBtn");
+    const changeWorkoutBtn = document.getElementById("changeWorkoutBtn");
+    if (addExerciseBtn) addExerciseBtn.style.display = "none";
+    if (changeWorkoutBtn) changeWorkoutBtn.style.display = "none";
+
     return duration;
 }
 function cancelWorkout(){
@@ -2647,6 +3038,16 @@ function cancelWorkout(){
 
     document.getElementById("workoutStatusBar").style.display =
     "none";
+
+    const addedList = document.getElementById("addedExercisesList");
+    const addedSection = document.getElementById("addedExercisesSection");
+    if (addedList) addedList.innerHTML = "";
+    if (addedSection) addedSection.style.display = "none";
+
+    const addExerciseBtn = document.getElementById("addExerciseBtn");
+    const changeWorkoutBtn = document.getElementById("changeWorkoutBtn");
+    if (addExerciseBtn) addExerciseBtn.style.display = "none";
+    if (changeWorkoutBtn) changeWorkoutBtn.style.display = "none";
 
     updateWorkoutTimer();
 }
@@ -3923,6 +4324,13 @@ if(savedWorkout){
     document.getElementById(
         "workouts"
     ).style.display = "flex";
+
+    updateExerciseAddButtonVisibility();
+
+    const changeWorkoutBtn = document.getElementById("changeWorkoutBtn");
+    if (changeWorkoutBtn) {
+        changeWorkoutBtn.style.display = "inline-flex";
+    }
     }
 
     const savedStartTime =
