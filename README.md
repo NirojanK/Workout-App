@@ -54,3 +54,4 @@ Stuff that needs to get added:
 #draw inspiration for background from other areas and weapons
 #make the website look less AI like
 #choose between the three backgrounds you made
+#show little brother all 3 backgrounds and ask for his opinion
