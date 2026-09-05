@@ -55,3 +55,4 @@ Stuff that needs to get added:
 #make the website look less AI like
 #choose between the three backgrounds you made
 #show little brother all 3 backgrounds and ask for his opinion
+#Add a complete workout in the guides section for each muscle group
