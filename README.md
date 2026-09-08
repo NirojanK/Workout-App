@@ -57,3 +57,4 @@ Stuff that needs to get added:
 #show little brother all 3 backgrounds and ask for his opinion
 #Add a complete workout in the guides section for each muscle group
 #also add a function that shows you when you didn't go to the gym
+#add dumbbell rows to pull, and close-grip dumbbell curls as well
