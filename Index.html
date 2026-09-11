@@ -214,6 +214,128 @@
             }
         }
 
+
+        /* Workout Guide */
+        .guide-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.72);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .guide-modal.active {
+            display: flex;
+        }
+
+        .guide-modal-content {
+            position: relative;
+            width: min(900px, 100%);
+            max-height: 88vh;
+            overflow-y: auto;
+            padding: 28px;
+            border-radius: 18px;
+            box-sizing: border-box;
+        }
+
+        .guide-modal-content h2 {
+            margin-top: 0;
+            margin-bottom: 8px;
+        }
+
+        .guide-subtitle {
+            opacity: 0.75;
+            margin-top: 0;
+            margin-bottom: 22px;
+        }
+
+        .guide-close {
+            position: absolute;
+            top: 10px;
+            right: 16px;
+            border: none;
+            background: transparent;
+            color: inherit;
+            font-size: 2rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+
+        .guide-routine {
+            margin-bottom: 18px;
+            padding: 18px;
+            border-radius: 14px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+        }
+
+        .guide-routine h3 {
+            margin: 0 0 5px;
+        }
+
+        .guide-routine p {
+            margin: 0 0 12px;
+            opacity: 0.72;
+            font-size: 0.9rem;
+        }
+
+        .guide-exercise {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255,255,255,0.09);
+        }
+
+        .guide-exercise:first-of-type {
+            border-top: none;
+        }
+
+        .guide-exercise strong {
+            display: block;
+        }
+
+        .guide-exercise span {
+            opacity: 0.75;
+            text-align: right;
+            white-space: nowrap;
+        }
+
+        .guide-note {
+            margin-top: 20px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            background: rgba(255,255,255,0.05);
+            font-size: 0.88rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            .guide-modal {
+                padding: 10px;
+            }
+
+            .guide-modal-content {
+                padding: 22px 16px;
+                max-height: 92vh;
+            }
+
+            .guide-exercise {
+                align-items: flex-start;
+                flex-direction: column;
+                gap: 3px;
+            }
+
+            .guide-exercise span {
+                text-align: left;
+                white-space: normal;
+            }
+        }
     </style>
 
 </head>
@@ -750,6 +872,12 @@
         <a href="#" onclick="openSplitModal(); return false;">
             🏋️ Workout Split
         </a>
+
+        <span class="footer-divider"></span>
+
+        <a href="#" onclick="openGuideModal(); return false;">
+            📖 Guide
+        </a>
     </div>
 
     <p class="footer-copy">
@@ -951,6 +1079,15 @@
 
     </div>
 
+</div>
+<!-- WORKOUT GUIDE MODAL -->
+<div class="guide-modal" id="guideModal">
+    <div class="guide-modal-content box">
+        <button class="guide-close" onclick="closeGuideModal()" aria-label="Close guide">&times;</button>
+        <h2 id="guideTitle">📖 Workout Guide</h2>
+        <p id="guideSubtitle" class="guide-subtitle">Choose a workout to see a recommended routine.</p>
+        <div id="guideContent"></div>
+    </div>
 </div>
 <div class="workout-selector-modal"
      id="workoutSelectorModal">
@@ -2887,6 +3024,170 @@ function closeSplitModal(){
         .getElementById("splitModal")
         .classList.remove("active");
 }
+
+/* ---------------- WORKOUT GUIDE ---------------- */
+const workoutGuides = {
+    push: {
+        title: "💪 Push Day Guide",
+        subtitle: "A classic push routine covering chest, shoulders, and triceps.",
+        groups: [
+            { muscle: "Chest", focus: "Build pressing strength and chest size.", exercises: [
+                ["Bench Press", "3 sets × 6–10 reps"],
+                ["Incline Dumbbell Press", "3 sets × 8–12 reps"],
+                ["Chest Flys", "3 sets × 10–15 reps"]
+            ]},
+            { muscle: "Shoulders", focus: "Emphasize the front and lateral delts.", exercises: [
+                ["Overhead Press", "3 sets × 6–10 reps"],
+                ["Lateral Raises", "3 sets × 12–15 reps"]
+            ]},
+            { muscle: "Triceps", focus: "Finish with controlled isolation work.", exercises: [
+                ["Tricep Pushdowns", "3 sets × 10–15 reps"],
+                ["Overhead Tricep Extension", "2–3 sets × 10–15 reps"]
+            ]}
+        ]
+    },
+    pull: {
+        title: "🦍 Pull Day Guide",
+        subtitle: "A classic pull routine covering lats, upper back, rear delts, and biceps.",
+        groups: [
+            { muscle: "Lats", focus: "Build vertical pulling strength and back width.", exercises: [
+                ["Pull-ups", "3 sets × 4–8 reps"],
+                ["Lat Pulldowns", "3 sets × 8–12 reps"]
+            ]},
+            { muscle: "Upper Back", focus: "Build thickness with rowing movements.", exercises: [
+                ["Seated Cable Rows", "3 sets × 8–12 reps"],
+                ["Dumbbell Rows", "3 sets × 8–12 reps"]
+            ]},
+            { muscle: "Rear Delts", focus: "Keep rear-delt work controlled and consistent.", exercises: [
+                ["Face Pulls", "3 sets × 12–15 reps"]
+            ]},
+            { muscle: "Biceps", focus: "Finish the pull session with direct arm work.", exercises: [
+                ["Barbell Curl", "3 sets × 8–12 reps"],
+                ["Hammer Curl", "2–3 sets × 8–12 reps"]
+            ]}
+        ]
+    },
+    legs: {
+        title: "🦵 Leg Day Guide",
+        subtitle: "A classic leg routine that works quads, hamstrings, hips, glutes, and calves.",
+        groups: [
+            { muscle: "Quads", focus: "Start with your main compound movement, then isolate the quads.", exercises: [
+                ["Barbell Squats", "3 sets × 6–10 reps"],
+                ["Leg Press", "3 sets × 8–12 reps"],
+                ["Leg Extensions", "3 sets × 10–15 reps"]
+            ]},
+            { muscle: "Hamstrings", focus: "Use a hip-hinge and a curl to train the hamstrings through different functions.", exercises: [
+                ["Romanian Deadlifts", "3 sets × 8–10 reps"],
+                ["Hamstring Curls", "3 sets × 10–15 reps"]
+            ]},
+            { muscle: "Glutes", focus: "Keep the reps controlled and use a range of motion you can perform safely.", exercises: [
+                ["Walking Lunges", "3 sets × 10–12 reps per leg"]
+            ]},
+            { muscle: "Hips", focus: "Train the hip abductors and adductors for balanced lower-body development.", exercises: [
+                ["Hip Adductions", "3 sets × 10–15 reps"],
+                ["Hip Abductions", "3 sets × 10–15 reps"]
+            ]},
+            { muscle: "Calves", focus: "Use a controlled stretch and contraction on every rep.", exercises: [
+                ["Standing Calf Raises", "3 sets × 12–20 reps"]
+            ]}
+        ]
+    },
+    cardio: {
+        title: "❤️ Cardio + Core Guide",
+        subtitle: "A simple conditioning session with optional core work.",
+        groups: [
+            { muscle: "Cardio", focus: "Choose one primary cardio activity based on your goal and fitness level.", exercises: [
+                ["Running", "20–60 minutes"],
+                ["Walking", "20–60 minutes"],
+                ["Cycling", "20–60 minutes"],
+                ["StairMaster", "15–30 minutes"]
+            ]},
+            { muscle: "Core", focus: "Keep core work controlled rather than chasing speed.", exercises: [
+                ["Plank", "30–120 seconds"],
+                ["Hanging Leg Raises", "3 sets × 10–15 reps"],
+                ["Cable Crunches", "3 sets × 12–15 reps"]
+            ]}
+        ]
+    },
+    women: {
+        title: "🌸 Women's Training Guide",
+        subtitle: "A balanced routine based on the training options already available in Aura Farmer.",
+        groups: [
+            { muscle: "Glutes & Legs", focus: "Lower-body focused strength work.", exercises: [
+                ["Hip Thrusts", "3 sets × 8–12 reps"],
+                ["Squats", "3 sets × 8–12 reps"],
+                ["Romanian Deadlifts", "3 sets × 6–10 reps"],
+                ["Leg Press", "3 sets × 7–10 reps"],
+                ["Bulgarian Split Squats", "2 sets × 10–12 reps"]
+            ]},
+            { muscle: "Core & Conditioning", focus: "Core stability and conditioning work.", exercises: [
+                ["Planks", "30 seconds–2 minutes"],
+                ["Leg Raises", "3 sets × 10–15 reps"],
+                ["Russian Twists", "3 sets × 10–15 reps"]
+            ]},
+            { muscle: "Back & Triceps", focus: "Upper-body pulling and triceps work.", exercises: [
+                ["Lat Pulldowns", "3 sets × 8–12 reps"],
+                ["Dumbbell Rows or Machine Rows", "3 sets × 8–12 reps"],
+                ["Tricep Dips", "3 sets × 8–12 reps"],
+                ["Tricep Pulldowns", "3 sets × 8–12 reps"],
+                ["Seated Cable Rows", "3 sets × 8–12 reps"]
+            ]}
+        ]
+    }
+};
+
+function openGuideModal() {
+    const modal = document.getElementById("guideModal");
+    if (!modal) return;
+
+    renderWorkoutGuide();
+    modal.classList.add("active");
+}
+
+function closeGuideModal() {
+    const modal = document.getElementById("guideModal");
+    if (modal) modal.classList.remove("active");
+}
+
+function renderWorkoutGuide() {
+    const title = document.getElementById("guideTitle");
+    const subtitle = document.getElementById("guideSubtitle");
+    const content = document.getElementById("guideContent");
+    if (!title || !subtitle || !content) return;
+
+    const selectedWorkout = localStorage.getItem("selectedWorkout") || "";
+    const guide = workoutGuides[selectedWorkout];
+
+    if (!guide) {
+        title.innerText = "📖 Workout Guide";
+        subtitle.innerText = "Start a workout or choose one from the workout selector to see a muscle-group-specific guide.";
+        content.innerHTML = `
+            <div class="guide-routine">
+                <h3>Choose Your Workout</h3>
+                <p>When you select Push, Pull, Legs, Cardio, or Women's Training, this guide will automatically show the recommended routine for that workout.</p>
+            </div>
+        `;
+        return;
+    }
+
+    title.innerText = guide.title;
+    subtitle.innerText = guide.subtitle;
+
+    content.innerHTML = guide.groups.map(group => `
+        <section class="guide-routine">
+            <h3>${group.muscle}</h3>
+            <p>${group.focus}</p>
+            ${group.exercises.map(exercise => `
+                <div class="guide-exercise">
+                    <strong>${exercise[0]}</strong>
+                    <span>${exercise[1]}</span>
+                </div>
+            `).join("")}
+        </section>
+    `).join("") + `
+        <div class="guide-note">💡 Use the guide as a starting point. Choose a weight that lets you perform the prescribed reps with good form, and adjust volume or exercises to your experience level.</div>
+    `;
+}
 function updateWorkoutTimer() {
 
     const minutes = Math.floor(workoutSeconds / 60);
@@ -4393,6 +4694,14 @@ if(savedWorkout){
 
     }, 1000);
 });
+
+document.addEventListener("click", function(event) {
+    const guideModal = document.getElementById("guideModal");
+    if (guideModal && event.target === guideModal) {
+        closeGuideModal();
+    }
+});
+
 </script>
 </body>
 </html>
