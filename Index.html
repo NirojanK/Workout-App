@@ -372,9 +372,48 @@
             margin-top: 5px;
         }
 
-        #historyList .history-expand-btn {
-            width: 100%;
+        #historyList .history-actions {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
             margin-top: 12px;
+        }
+
+        #historyList .history-expand-btn,
+        #historyList .history-add-exercise-btn {
+            width: 100%;
+            margin-top: 0;
+            min-height: 40px;
+            border: 0;
+            border-radius: 10px;
+            padding: 9px 10px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        #historyList .history-add-exercise-btn {
+            background: rgba(109, 76, 38, 0.12);
+            color: #6d4c26;
+            border: 1px solid rgba(109, 76, 38, 0.18);
+        }
+
+        #historyList .history-add-exercise-btn:hover {
+            background: rgba(109, 76, 38, 0.18);
+        }
+
+        .removeManualExerciseBtn {
+            border: 0;
+            border-radius: 8px;
+            background: rgba(180, 55, 45, 0.10);
+            color: #a43d35;
+            font-weight: 800;
+            cursor: pointer;
+            min-width: 38px;
+            min-height: 38px;
+        }
+
+        .removeManualExerciseBtn:hover {
+            background: rgba(180, 55, 45, 0.18);
         }
 
         #historyList .history-exercises {
@@ -385,6 +424,10 @@
             #historyList {
                 grid-template-columns: 1fr;
                 gap: 12px;
+            }
+
+            #historyList .history-actions {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -1309,8 +1352,8 @@
             &times;
         </span>
 
-        <h2>Add Workout</h2>
-        <p>Track a completed workout manually.</p>
+        <h2 id="manualWorkoutModalTitle">Add Workout</h2>
+        <p id="manualWorkoutModalSubtitle">Track a completed workout manually.</p>
 
         <input
             id="manualWorkoutName"
@@ -1324,11 +1367,11 @@
         <div id="manualExercises"></div>
 
         <div class="workout-buttons">
-        <button onclick="addManualExercise()">
+        <button id="manualAddExerciseBtn" onclick="addManualExercise()">
             + Add Exercise
         </button>
 
-        <button onclick="saveManualWorkout()">
+        <button id="manualSaveWorkoutBtn" onclick="saveManualWorkout()">
             Save Workout
         </button>
         </div>
@@ -1862,6 +1905,7 @@ let showFullHistory = false;
 let currentWorkoutExercises = [];
 let currentWorkoutName = "";
 let fullWorkoutHistory = [];
+let editingHistoryIndex = null;
 // ---------------- AUTH ----------------
 function signUp() {
     const displayName = document.getElementById("signupName").value;
@@ -2554,7 +2598,7 @@ function createExerciseDropdown(){
 
     return `
 
-<select class="exerciseSelect">
+<select class="exerciseSelect" onchange="toggleCustomExercise(this)">
 
 ${allExercises.map(exercise => `
 <option value="${exercise}">
@@ -2576,10 +2620,24 @@ style="display:none;">
 `;
 
 }
+function toggleCustomExercise(select){
 
-function addManualExercise() {
+    const customInput =
+        select.parentElement.querySelector(".customExercise");
 
-    const container = document.getElementById("manualExercises");
+    if(!customInput) return;
+
+    customInput.style.display =
+        select.value === "Other" ? "block" : "none";
+
+    if(select.value !== "Other"){
+        customInput.value = "";
+    }
+}
+function addManualExercise(){
+
+    const container =
+        document.getElementById("manualExercises");
 
     const exercise = document.createElement("div");
 
@@ -2592,17 +2650,160 @@ function addManualExercise() {
         <input
             class="exerciseWeight"
             type="number"
-            placeholder="Weight">
+            placeholder="Weight (lbs)">
 
         <input
             class="exerciseReps"
             type="number"
             placeholder="Reps">
 
+        <button
+            type="button"
+            class="removeManualExerciseBtn"
+            onclick="this.parentElement.remove()"
+            aria-label="Remove exercise">
+            ✕
+        </button>
+
     `;
 
     container.appendChild(exercise);
 
+}
+function resetManualWorkoutModal(){
+
+    editingHistoryIndex = null;
+
+    document.getElementById("manualWorkoutModalTitle").innerText =
+        "Add Workout";
+
+    document.getElementById("manualWorkoutModalSubtitle").innerText =
+        "Track a completed workout manually.";
+
+    const nameInput = document.getElementById("manualWorkoutName");
+    nameInput.value = "";
+    nameInput.readOnly = false;
+    nameInput.style.opacity = "1";
+
+    const durationInput = document.getElementById("manualWorkoutDuration");
+    durationInput.value = "";
+    durationInput.readOnly = false;
+    durationInput.style.opacity = "1";
+
+    document.getElementById("manualExercises").innerHTML = "";
+
+    document.getElementById("manualAddExerciseBtn").style.display = "";
+    document.getElementById("manualSaveWorkoutBtn").innerText =
+        "Save Workout";
+}
+function openManualWorkoutModal(){
+
+    resetManualWorkoutModal();
+
+    document
+        .getElementById("manualWorkoutModal")
+        .classList.add("active");
+
+    /* Start with one exercise so the form is immediately useful. */
+    addManualExercise();
+
+}
+function openAddExerciseToHistory(index){
+
+    const history = currentUserData?.workoutHistory || [];
+    const workout = history[index];
+
+    if(!workout){
+        alert("That workout could not be found.");
+        return;
+    }
+
+    editingHistoryIndex = index;
+
+    document.getElementById("manualWorkoutModalTitle").innerText =
+        "Add Exercise";
+
+    document.getElementById("manualWorkoutModalSubtitle").innerText =
+        `Add an exercise to ${workout.workout || "this workout"}.`;
+
+    const nameInput = document.getElementById("manualWorkoutName");
+    nameInput.value = workout.workout || "Workout";
+    nameInput.readOnly = true;
+    nameInput.style.opacity = "0.7";
+
+    const durationInput = document.getElementById("manualWorkoutDuration");
+    durationInput.value = workout.duration || 0;
+    durationInput.readOnly = true;
+    durationInput.style.opacity = "0.7";
+
+    document.getElementById("manualExercises").innerHTML = "";
+    addManualExercise();
+
+    document.getElementById("manualAddExerciseBtn").style.display = "";
+    document.getElementById("manualSaveWorkoutBtn").innerText =
+        "Add to Workout";
+
+    document
+        .getElementById("manualWorkoutModal")
+        .classList.add("active");
+}
+function closeManualWorkoutModal(){
+
+    document
+        .getElementById("manualWorkoutModal")
+        .classList.remove("active");
+
+    document.getElementById("manualExercises").innerHTML = "";
+    editingHistoryIndex = null;
+
+}
+function collectManualExercises(){
+
+    const exercises = [];
+
+    document
+        .querySelectorAll("#manualExercises .manualExercise")
+        .forEach(card => {
+
+            const select = card.querySelector(".exerciseSelect");
+
+            let exercise = select ? select.value : "";
+
+            if(exercise === "Other"){
+                exercise =
+                    card.querySelector(".customExercise")?.value.trim() || "";
+            }
+
+            if(!exercise) return;
+
+            const weightValue =
+                card.querySelector(".exerciseWeight")?.value;
+
+            const repsValue =
+                card.querySelector(".exerciseReps")?.value;
+
+            const weight =
+                weightValue !== "" && weightValue != null
+                    ? Number(weightValue)
+                    : null;
+
+            const reps =
+                repsValue !== "" && repsValue != null
+                    ? Number(repsValue)
+                    : 0;
+
+            exercises.push({
+                exercise: exercise,
+                sets: [
+                    {
+                        weight: Number.isFinite(weight) ? weight : null,
+                        reps: Number.isFinite(reps) ? reps : 0
+                    }
+                ]
+            });
+        });
+
+    return exercises;
 }
 async function saveManualWorkout(){
 
@@ -2613,81 +2814,105 @@ async function saveManualWorkout(){
         return;
     }
 
-    const workoutName =
-        document.getElementById("manualWorkoutName").value.trim();
+    const exercises = collectManualExercises();
 
-    const duration =
-        Number(document.getElementById("manualWorkoutDuration").value) || 0;
-
-    if(workoutName === ""){
-        alert("Please enter a workout name.");
+    if(exercises.length === 0){
+        alert("Please add at least one exercise.");
         return;
     }
 
-    const exercises = [];
-
-    document
-        .querySelectorAll("#manualExercises .manualExercise")
-        .forEach(card => {
-
-            const select = card.querySelector(".exerciseSelect");
-
-            let exercise = select.value;
-
-            if(exercise === "Other"){
-                exercise = card.querySelector(".customExercise").value.trim();
-            }
-
-            if(exercise){
-            const weight =
-            Number(card.querySelector(".exerciseWeight").value) || null;
-
-            const reps =
-            Number(card.querySelector(".exerciseReps").value) || 0;
-
-            exercises.push({
-
-            exercise: exercise,
-
-            sets: [
-            {
-            weight,
-            reps
-            }
-        ]
-        });
-    } 
-    });
-
-    const workout = {
-
-        workout: workoutName,
-
-        date: new Date().toDateString(),
-
-        duration: duration,
-
-        exercises: exercises
-
-    };
-
     const ref = db.collection("users").doc(user.uid);
 
-    await ref.set({
+    try{
 
-        workoutHistory:
-            firebase.firestore.FieldValue.arrayUnion(workout)
+        /* ADD EXERCISE TO AN EXISTING SAVED WORKOUT */
+        if(editingHistoryIndex !== null){
 
-    }, { merge: true });
+            const history =
+                [...(currentUserData.workoutHistory || [])];
 
-    currentUserData.workoutHistory =
-        currentUserData.workoutHistory || [];
+            const workout = history[editingHistoryIndex];
 
-    currentUserData.workoutHistory.unshift(workout);
+            if(!workout){
+                alert("That workout could not be found.");
+                return;
+            }
 
-    renderHistory(currentUserData.workoutHistory);
+            workout.exercises =
+                Array.isArray(workout.exercises)
+                    ? workout.exercises
+                    : [];
 
-    closeManualWorkoutModal();
+            exercises.forEach(newExercise => {
+
+                const existingExercise =
+                    workout.exercises.find(item =>
+                        item.exercise === newExercise.exercise
+                    );
+
+                if(existingExercise){
+                    existingExercise.sets =
+                        Array.isArray(existingExercise.sets)
+                            ? existingExercise.sets
+                            : [];
+
+                    existingExercise.sets.push(
+                        ...newExercise.sets
+                    );
+                } else {
+                    workout.exercises.push(newExercise);
+                }
+            });
+
+            await ref.set({
+                workoutHistory: history
+            }, { merge: true });
+
+            currentUserData.workoutHistory = history;
+            renderHistory(history);
+            closeManualWorkoutModal();
+
+            showAchievementToast("💪 Exercise added to workout!");
+            return;
+        }
+
+        /* CREATE A NEW MANUAL WORKOUT */
+        const workoutName =
+            document.getElementById("manualWorkoutName").value.trim();
+
+        const duration =
+            Number(document.getElementById("manualWorkoutDuration").value) || 0;
+
+        if(workoutName === ""){
+            alert("Please enter a workout name.");
+            return;
+        }
+
+        const workout = {
+            workout: workoutName,
+            date: new Date().toDateString(),
+            duration: duration,
+            exercises: exercises
+        };
+
+        await ref.set({
+            workoutHistory:
+                firebase.firestore.FieldValue.arrayUnion(workout)
+        }, { merge: true });
+
+        currentUserData.workoutHistory =
+            currentUserData.workoutHistory || [];
+
+        currentUserData.workoutHistory.unshift(workout);
+
+        renderHistory(currentUserData.workoutHistory);
+        closeManualWorkoutModal();
+
+    } catch(error){
+
+        console.error("Manual workout save failed:", error);
+        alert("The workout could not be saved. Please check your connection and try again.");
+    }
 
 }
 function getExerciseDifficulty(exerciseName){
@@ -4007,7 +4232,7 @@ function renderHistory(history = []) {
             ? history
             : history.slice(0, 3);
 
-    workoutsToShow.forEach(item => {
+    workoutsToShow.forEach((item, index) => {
         console.log("Workout:", item);
         console.log("Exercises:", item.exercises);
 
@@ -4096,9 +4321,16 @@ function renderHistory(history = []) {
 
 </div>
 
-    <button class="history-expand-btn">
-        ▼ View Exercises
-    </button>
+    <div class="history-actions">
+        <button class="history-expand-btn">
+            ▼ View Exercises
+        </button>
+        <button
+            class="history-add-exercise-btn"
+            onclick="openAddExerciseToHistory(${index})">
+            ＋ Add Exercise
+        </button>
+    </div>
 
     <div class="history-exercises" style="display:none;">
         ${exercises}
