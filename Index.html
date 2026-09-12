@@ -336,7 +336,59 @@
                 white-space: normal;
             }
         }
-    </style>
+    
+
+        /* ==============================
+           Workout History Grid Polish
+           ============================== */
+        #historyList {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+            width: 100%;
+            align-items: start;
+        }
+
+        #historyList .history-item {
+            width: 100%;
+            min-width: 0;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 16px;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.72);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+        }
+
+        #historyList .history-header {
+            width: 100%;
+        }
+
+        #historyList .history-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 12px;
+            margin-top: 5px;
+        }
+
+        #historyList .history-expand-btn {
+            width: 100%;
+            margin-top: 12px;
+        }
+
+        #historyList .history-exercises {
+            margin-top: 12px;
+        }
+
+        @media (max-width: 700px) {
+            #historyList {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+        }
+
+</style>
 
 </head>
 <body>
