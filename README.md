@@ -4,9 +4,7 @@ Gamified progression work out system for people who enjoy working out or are try
 Stuff that needs to get added:
 
 #implement a feedback section from users
-#fix timer issues(when screen goes black on phone or mobile, or alt tabbed time stops or slows down)
 #make instagram and youtube account for aura farmer
-#add one rep max function
 #fix it so that when the user clicks complete workout it doesn't get clicked twice
 #make it so the user has the ability to log each individual workout 
 #find new testers
@@ -16,16 +14,8 @@ Stuff that needs to get added:
 #make this your main project, above all else start working on it
 #need to make users more active somehow along side getting new users
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
-#make users log their entire workout so that they can see what they did during that day instead of it just being blanket covered into a group like chest or legs
-#Need to allow user to input workouts rather than select and store it somewhere
-#now that a new project has been added by a friend, you can allocate time to both
-#Today is a busy day for me, so I won't have much time to code because of a friend's wedding
-#work on removing pr unless user clicks it as an option and focus on moving workout timer at the top
-#Not sure what to add next to Aura farmer, will need to work borrow inspiration from other projects
 #add comments to distinguish code blocks
 #work on background and skipcookin when you have time
-#add pr system option
-#continue making revisions
 #work on new ideas that could be useful like a video highlight
 #add graphs and fix authentication issues
 #draw inspiration for background from other areas and weapons
