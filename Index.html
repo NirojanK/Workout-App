@@ -1805,7 +1805,8 @@ const exerciseCategories = {
         "Barbell Rows",
         "Chest Supported Rows",
         "Straight Arm Pulldowns",
-        "Face Pulls"
+        "Face Pulls",
+        "Dumbbell Rows"
     ],
 
     Legs: [
@@ -1898,6 +1899,13 @@ const exerciseCategories = {
     ]
 
 };
+
+/* Master exercise list used by the manual workout/history picker. */
+const allExercises = [
+    ...new Set(
+        Object.values(exerciseCategories).flat()
+    )
+];
 
 let currentUserData = null;
 let isGuest = false;
@@ -2708,24 +2716,27 @@ function openManualWorkoutModal(){
     addManualExercise();
 
 }
-function openAddExerciseToHistory(historyId){
+function openAddExerciseToHistory(index){
+
     const history = currentUserData?.workoutHistory || [];
 
-    const workoutIndex = history.findIndex((item, index) => {
-        const id = item?._historyId ||
-            `${item?.date || "workout"}_${item?.workout || "custom"}_${index}`
-                .replace(/[^a-zA-Z0-9_-]/g, "_");
-        return id === historyId;
-    });
-
-    const workout = history[workoutIndex];
+    // "index" comes from the actual item rendered by renderHistory().
+    // When the history list is showing only the first 3 workouts this is
+    // still the correct source index because renderHistory() uses
+    // history.slice(0, 3). Keep the lookup defensive for stale UI clicks.
+    const workout = history[index];
 
     if(!workout){
-        alert("That workout could not be found.");
+        console.error("Add Exercise: workout not found.", {
+            index,
+            historyLength: history.length,
+            history
+        });
+        alert("That workout could not be found. Please refresh your workout history and try again.");
         return;
     }
 
-    editingHistoryIndex = workoutIndex;
+    editingHistoryIndex = Number(index);
 
     document.getElementById("manualWorkoutModalTitle").innerText =
         "Add Exercise";
@@ -2744,16 +2755,23 @@ function openAddExerciseToHistory(historyId){
     durationInput.style.opacity = "0.7";
 
     document.getElementById("manualExercises").innerHTML = "";
+
+    const modal =
+        document.getElementById("manualWorkoutModal");
+
+    modal.classList.add("active");
+
+    // Build the first exercise row after the modal is activated.
     addManualExercise();
 
     document.getElementById("manualAddExerciseBtn").style.display = "";
     document.getElementById("manualSaveWorkoutBtn").innerText =
         "Add to Workout";
 
-    document
-        .getElementById("manualWorkoutModal")
-        .classList.add("active");
 }
+// Expose this handler globally for WebView/legacy inline callers.
+window.openAddExerciseToHistory = openAddExerciseToHistory;
+
 function closeManualWorkoutModal(){
 
     document
@@ -2876,6 +2894,7 @@ async function saveManualWorkout(){
             }, { merge: true });
 
             currentUserData.workoutHistory = [...history];
+            fullWorkoutHistory = [...history];
             renderHistory(currentUserData.workoutHistory);
             closeManualWorkoutModal();
 
@@ -2937,6 +2956,7 @@ function getExerciseDifficulty(exerciseName){
         "Dips",
         "Chest Supported Rows",
         "Barbell Rows",
+        "Dumbell Rows",
         "Seated Cable Rows",
         "Walking Lunges",
         "Overhead Press",
@@ -4243,13 +4263,6 @@ function renderHistory(history = []) {
         console.log("Workout:", item);
         console.log("Exercises:", item.exercises);
 
-        // Stable id used by the History editor.
-        if (!item._historyId) {
-            item._historyId =
-                `${item.date || "workout"}_${item.workout || "custom"}_${index}`
-                    .replace(/[^a-zA-Z0-9_-]/g, "_");
-        }
-
         const div =
             document.createElement("div");
 
@@ -4340,8 +4353,8 @@ function renderHistory(history = []) {
             ▼ View Exercises
         </button>
         <button
-            class="history-add-exercise-btn"
-            onclick="openAddExerciseToHistory('${item._historyId}')">
+            type="button"
+            class="history-add-exercise-btn">
             ＋ Add Exercise
         </button>
     </div>
@@ -4352,6 +4365,20 @@ function renderHistory(history = []) {
     `;
 
     list.appendChild(div);
+
+    // Use a real DOM event listener instead of an inline onclick.
+    // This is more reliable in Android WebView/Capacitor builds.
+    const addExerciseButton =
+        div.querySelector(".history-add-exercise-btn");
+
+    if (addExerciseButton) {
+        addExerciseButton.addEventListener("click", (event) => {
+            event.preventDefault();
+            event.stopPropagation();
+            openAddExerciseToHistory(index);
+        });
+    }
+
     const button = div.querySelector(".history-expand-btn");
     const exerciseList = div.querySelector(".history-exercises");
 
