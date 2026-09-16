@@ -2708,17 +2708,24 @@ function openManualWorkoutModal(){
     addManualExercise();
 
 }
-function openAddExerciseToHistory(index){
-
+function openAddExerciseToHistory(historyId){
     const history = currentUserData?.workoutHistory || [];
-    const workout = history[index];
+
+    const workoutIndex = history.findIndex((item, index) => {
+        const id = item?._historyId ||
+            `${item?.date || "workout"}_${item?.workout || "custom"}_${index}`
+                .replace(/[^a-zA-Z0-9_-]/g, "_");
+        return id === historyId;
+    });
+
+    const workout = history[workoutIndex];
 
     if(!workout){
         alert("That workout could not be found.");
         return;
     }
 
-    editingHistoryIndex = index;
+    editingHistoryIndex = workoutIndex;
 
     document.getElementById("manualWorkoutModalTitle").innerText =
         "Add Exercise";
@@ -2868,8 +2875,8 @@ async function saveManualWorkout(){
                 workoutHistory: history
             }, { merge: true });
 
-            currentUserData.workoutHistory = history;
-            renderHistory(history);
+            currentUserData.workoutHistory = [...history];
+            renderHistory(currentUserData.workoutHistory);
             closeManualWorkoutModal();
 
             showAchievementToast("💪 Exercise added to workout!");
@@ -4236,6 +4243,13 @@ function renderHistory(history = []) {
         console.log("Workout:", item);
         console.log("Exercises:", item.exercises);
 
+        // Stable id used by the History editor.
+        if (!item._historyId) {
+            item._historyId =
+                `${item.date || "workout"}_${item.workout || "custom"}_${index}`
+                    .replace(/[^a-zA-Z0-9_-]/g, "_");
+        }
+
         const div =
             document.createElement("div");
 
@@ -4327,7 +4341,7 @@ function renderHistory(history = []) {
         </button>
         <button
             class="history-add-exercise-btn"
-            onclick="openAddExerciseToHistory(${index})">
+            onclick="openAddExerciseToHistory('${item._historyId}')">
             ＋ Add Exercise
         </button>
     </div>
