@@ -23,3 +23,4 @@ Stuff that needs to get added:
 #choose between the three backgrounds you made
 #show little brother all 3 backgrounds and ask for his opinion
 #add a video section potentially
+#try to get friend to review app
