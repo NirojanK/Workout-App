@@ -24,3 +24,4 @@ Stuff that needs to get added:
 #show little brother all 3 backgrounds and ask for his opinion
 #add a video section potentially
 #try to get friend to review app
+#try to implement hide views
