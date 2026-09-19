@@ -25,3 +25,4 @@ Stuff that needs to get added:
 #add a video section potentially
 #try to get friend to review app
 #try to implement hide views
+#despite many changes their is still a lot of scrolling, for instance on leg day
