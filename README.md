@@ -26,3 +26,4 @@ Stuff that needs to get added:
 #try to get friend to review app
 #try to implement hide views
 #despite many changes their is still a lot of scrolling, for instance on leg day
+#find a way to customize themes potentially
