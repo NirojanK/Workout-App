@@ -3199,9 +3199,70 @@ function addSelectedExercise() {
 
     if (!exercise) return;
 
+    /*
+     * IMPORTANT:
+     * Only check exercises that are actually part of the currently
+     * selected workout. The old code searched every .exercise-card
+     * inside #workouts, including hidden workout groups.
+     *
+     * Example:
+     * Push Day shows the Chest + Shoulder groups, while the Arms
+     * group is hidden. A triceps exercise in the hidden Arms group
+     * was therefore incorrectly treated as a duplicate.
+     */
+    const selectedWorkout =
+        localStorage.getItem("selectedWorkout");
+
+    const selectedWorkoutCards = [
+        ...document.querySelectorAll(
+            `#workouts .workout-group[data-workout-group="${selectedWorkout}"] .exercise-card`
+        )
+    ];
+
+    /*
+     * Backward-compatible fallback:
+     * The existing markup does not currently have data-workout-group
+     * attributes, so determine membership from the same CSS classes
+     * used by selectWorkout().
+     */
+    const visibleWorkoutCards = [
+        ...document.querySelectorAll("#workouts .workout-group")
+    ]
+        .filter(group => {
+            if (!selectedWorkout) return false;
+
+            if (selectedWorkout === "push") {
+                return group.classList.contains("push-workout");
+            }
+
+            if (selectedWorkout === "pull") {
+                return group.classList.contains("pull-workout");
+            }
+
+            if (selectedWorkout === "legs") {
+                return group.classList.contains("legs-workout");
+            }
+
+            if (selectedWorkout === "cardio") {
+                return group.classList.contains("cardio-workout");
+            }
+
+            return false;
+        })
+        .flatMap(group =>
+            [...group.querySelectorAll(".exercise-card")]
+        );
+
+    const manuallyAddedCards = [
+        ...document.querySelectorAll(
+            "#addedExercisesList .exercise-card"
+        )
+    ];
+
     const alreadyAdded = [
-        ...document.querySelectorAll("#addedExercisesList .exercise-card"),
-        ...document.querySelectorAll("#workouts .exercise-card")
+        ...selectedWorkoutCards,
+        ...visibleWorkoutCards,
+        ...manuallyAddedCards
     ].some(card => card.dataset.exercise === exercise.name);
 
     if (alreadyAdded) {
