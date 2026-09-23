@@ -416,6 +416,38 @@
             background: rgba(180, 55, 45, 0.18);
         }
 
+        /* Small X button for removing an individual logged set. */
+        .saved-set {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-top: 6px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.06);
+        }
+
+        .remove-set-btn {
+            width: 22px;
+            height: 22px;
+            min-width: 22px;
+            padding: 0;
+            border: 0;
+            border-radius: 50%;
+            background: rgba(180, 55, 45, 0.12);
+            color: #a43d35;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 22px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .remove-set-btn:hover {
+            background: rgba(180, 55, 45, 0.24);
+        }
+
         #historyList .history-exercises {
             margin-top: 12px;
         }
@@ -3963,7 +3995,14 @@ async function saveExerciseLog(exerciseName, button){
 
     if(isGuest){
 
+    if(!reps){
+        alert("Please enter the number of reps.");
+        return;
+    }
+
     const log = {
+
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
 
         exercise: exerciseName,
 
@@ -3971,7 +4010,9 @@ async function saveExerciseLog(exerciseName, button){
 
         reps: Number(reps),
 
-        date: new Date().toDateString()
+        date: new Date().toDateString(),
+
+        timestamp: Date.now()
 
     };
 
@@ -3984,6 +4025,9 @@ async function saveExerciseLog(exerciseName, button){
         "guestLogs",
         JSON.stringify(guestLogs)
     );
+
+    currentWorkoutExercises.push(log);
+    renderCurrentWorkout();
 
     button.innerText = "Saved ✓";
 
@@ -4014,6 +4058,8 @@ async function saveExerciseLog(exerciseName, button){
     localStorage.getItem("selectedWorkout") || "Custom";
 
     const log = {
+
+    id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
 
     exercise: exerciseName,
 
@@ -4640,6 +4686,104 @@ function getAuraRank(level){
 
     return "🌱 Aura Novice";
 }
+async function removeExerciseSet(setId) {
+
+    const index = currentWorkoutExercises.findIndex(
+        log => log.id === setId
+    );
+
+    if(index === -1){
+        return;
+    }
+
+    const logToRemove = currentWorkoutExercises[index];
+
+    /* Remove from the guest's local workout history. */
+    if(isGuest){
+
+        let guestLogs =
+            JSON.parse(localStorage.getItem("guestLogs") || "[]");
+
+        guestLogs = guestLogs.filter(log => log.id !== setId);
+
+        localStorage.setItem(
+            "guestLogs",
+            JSON.stringify(guestLogs)
+        );
+
+        currentWorkoutExercises.splice(index, 1);
+        renderCurrentWorkout();
+        return;
+    }
+
+    const user = auth.currentUser;
+
+    if(!user){
+        return;
+    }
+
+    try{
+
+        const ref = db.collection("users").doc(user.uid);
+        const doc = await ref.get();
+        const data = doc.exists ? doc.data() : {};
+
+        const exerciseLogs = Array.isArray(data.exerciseLogs)
+            ? data.exerciseLogs
+            : [];
+
+        /* Remove the exact Firestore log that was just entered. */
+        const remainingLogs = exerciseLogs.filter(log => {
+            if(log.id !== setId) return true;
+            return false;
+        });
+
+        /* Recalculate this exercise's PR so deleting a mistaken PR
+           does not leave the incorrect number on the profile. */
+        const exerciseLogsForExercise = remainingLogs.filter(
+            log => log.exercise === logToRemove.exercise
+        );
+
+        let personalRecords = {
+            ...(data.personalRecords || {})
+        };
+
+        delete personalRecords[logToRemove.exercise];
+
+        exerciseLogsForExercise.forEach(log => {
+            const weight = Number(log.weight || 0);
+            const reps = Number(log.reps || 0);
+            const current = personalRecords[log.exercise];
+
+            if(
+                !current ||
+                weight > Number(current.weight || 0) ||
+                (weight === Number(current.weight || 0) &&
+                 reps > Number(current.reps || 0))
+            ){
+                personalRecords[log.exercise] = {
+                    weight: log.weight ?? null,
+                    reps: reps,
+                    date: log.date,
+                    timestamp: log.timestamp
+                };
+            }
+        });
+
+        await ref.set({
+            exerciseLogs: remainingLogs,
+            personalRecords: personalRecords
+        }, { merge: true });
+
+        currentWorkoutExercises.splice(index, 1);
+        renderCurrentWorkout();
+
+    }catch(error){
+        console.error("Could not remove set:", error);
+        alert("I couldn't remove that set. Please check your connection and try again.");
+    }
+}
+
 function renderCurrentWorkout() {
 
     document.querySelectorAll(".saved-sets")
@@ -4659,9 +4803,20 @@ function renderCurrentWorkout() {
             exerciseCard.querySelector(".saved-sets");
 
         savedSets.innerHTML += `
-            <div class="saved-set">
-                ${log.weight ? `${log.weight} lbs × ` : ""}
-                ${log.reps} reps
+            <div class="saved-set" data-log-id="${log.id}">
+                <span>
+                    ${log.weight ? `${log.weight} lbs × ` : ""}
+                    ${log.reps} reps
+                </span>
+                <button
+                    type="button"
+                    class="remove-set-btn"
+                    aria-label="Remove this set"
+                    title="Remove this set"
+                    onclick="removeExerciseSet('${log.id}')"
+                >
+                    ×
+                </button>
             </div>
         `;
     });
