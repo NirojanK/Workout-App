@@ -4,12 +4,10 @@ Gamified progression work out system for people who enjoy working out or are try
 Stuff that needs to get added:
 
 #implement a feedback section from users
-#make instagram and youtube account for aura farmer
 #fix it so that when the user clicks complete workout it doesn't get clicked twice
 #make it so the user has the ability to log each individual workout 
 #find new testers
 #Ive noticed lately I haven't had much time to work on the app, this is mostly due to to waking up a little later than usual and watching streams
-#released the CBT today (July 2, 2026) !!
 # issues found by testers : Some don't want to make an account, some don't like how timer is not at the top and that they can only save a PR for certain workouts but it's not stored anywhere.
 #make this your main project, above all else start working on it
 #need to make users more active somehow along side getting new users
