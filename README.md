@@ -12,7 +12,7 @@ Stuff that needs to get added:
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
 #add comments to distinguish code blocks
 #work on background and skipcookin when you have time
-#work on new ideas that could be useful like a video highlight
+#work on new ideas that could be useful like a video highlight ( needs a paid database config)
 #add graphs and fix authentication issues
 #draw inspiration for background from other areas and weapons
 #make the website look less AI like
