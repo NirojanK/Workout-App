@@ -20,5 +20,4 @@ Stuff that needs to get added:
 #show little brother all 3 backgrounds and ask for his opinion
 #try to implement hide views
 #despite many changes their is still a lot of scrolling, for instance on leg day
-#find a way to customize themes potentially
 #add total reps beside each workout when inputting sets
