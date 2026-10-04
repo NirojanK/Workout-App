@@ -12,10 +12,57 @@
         }
 
         .muscle-group-title {
-            margin: 0 0 12px;
-            padding-bottom: 8px;
+            margin: 0;
+            padding: 12px 14px;
             font-size: 1.05rem;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
+            border: 0;
+            width: 100%;
+            box-sizing: border-box;
+            background: transparent;
+            color: inherit;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 700;
+        }
+
+        .muscle-group-title:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .muscle-group-title:focus-visible {
+            outline: 2px solid currentColor;
+            outline-offset: 2px;
+            border-radius: 8px;
+        }
+
+        .muscle-group-title .muscle-group-arrow {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            flex: 0 0 28px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .muscle-group-title[aria-expanded="true"] .muscle-group-arrow {
+            transform: rotate(180deg);
+            background: rgba(255,255,255,0.14);
+        }
+
+        .muscle-group-exercises {
+            padding: 0 4px 4px;
+        }
+
+        .muscle-group-section.is-collapsed .muscle-group-exercises {
+            display: none;
         }
 
         .muscle-group-exercises {
@@ -3022,6 +3069,8 @@ function getExerciseDifficultyLabel(exerciseName){
 
 function renderGroupedExerciseCards(containerId, exercises){
     const container = document.getElementById(containerId);
+    if(!container) return;
+
     container.innerHTML = "";
 
     const groups = {};
@@ -3037,22 +3086,49 @@ function renderGroupedExerciseCards(containerId, exercises){
     });
 
     Object.entries(groups).forEach(([groupName, groupExercises]) => {
-        const groupSection = document.createElement("div");
-        groupSection.className = "muscle-group-section";
+        const groupSection = document.createElement("section");
+        groupSection.className = "muscle-group-section is-collapsed";
 
-        const heading = document.createElement("h4");
+        const heading = document.createElement("button");
+        heading.type = "button";
         heading.className = "muscle-group-title";
-        heading.innerText = groupName;
+        heading.setAttribute("aria-expanded", "false");
+        heading.setAttribute(
+            "aria-controls",
+            `${containerId}-${groupName.replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase()}`
+        );
+
+        const label = document.createElement("span");
+        label.innerText = groupName;
+
+        const arrow = document.createElement("span");
+        arrow.className = "muscle-group-arrow";
+        arrow.setAttribute("aria-hidden", "true");
+        arrow.innerText = "⌄";
+
+        heading.appendChild(label);
+        heading.appendChild(arrow);
 
         const exerciseContainer = document.createElement("div");
         exerciseContainer.className = "muscle-group-exercises";
+        exerciseContainer.id = heading.getAttribute("aria-controls");
+        exerciseContainer.hidden = true;
+
+        heading.addEventListener("click", () => {
+            const isExpanded = heading.getAttribute("aria-expanded") === "true";
+            const nextState = !isExpanded;
+
+            heading.setAttribute("aria-expanded", String(nextState));
+            exerciseContainer.hidden = !nextState;
+            groupSection.classList.toggle("is-collapsed", !nextState);
+        });
 
         groupSection.appendChild(heading);
         groupSection.appendChild(exerciseContainer);
         container.appendChild(groupSection);
 
         groupExercises.forEach(exercise => {
-            exerciseContainer.innerHTML += `
+            exerciseContainer.insertAdjacentHTML("beforeend", `
             <div class="exercise-card ${getExerciseDifficultyClass(exercise.name)}" data-exercise="${exercise.name}">
                 <div class="exercise-info">
                 <div class="difficulty-badge ${getExerciseDifficultyClass(exercise.name)}">
@@ -3090,7 +3166,7 @@ function renderGroupedExerciseCards(containerId, exercises){
                     <div class="saved-sets"></div>
                 </div>
             </div>
-            `;
+            `);
         });
     });
 }
