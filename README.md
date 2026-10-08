@@ -15,6 +15,5 @@ Stuff that needs to get added:
 #draw inspiration for background from other areas and weapons
 #make the website look less AI like
 #choose between the three backgrounds you made
-#try to implement hide views
 #despite many changes their is still a lot of scrolling, for instance on leg day
 #add total reps beside each workout when inputting sets
