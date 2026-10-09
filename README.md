@@ -6,7 +6,6 @@ Stuff that needs to get added:
 #implement a feedback section from users
 #find new testers
 #Ive noticed lately I haven't had much time to work on the app, this is mostly due to to waking up a little later than usual and watching streams
-#need to make users more active somehow along side getting new users
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
 #add comments to distinguish code blocks
 #work on background and skipcookin when you have time
