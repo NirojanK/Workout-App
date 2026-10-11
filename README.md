@@ -11,7 +11,6 @@ Stuff that needs to get added:
 #work on background and skipcookin when you have time
 #work on new ideas that could be useful like a video highlight ( needs a paid database config)
 #add graphs and fix authentication issues
-#draw inspiration for background from other areas and weapons
 #make the website look less AI like
 #choose between the three backgrounds you made
 #despite many changes their is still a lot of scrolling, for instance on leg day
