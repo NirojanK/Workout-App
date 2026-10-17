@@ -3830,3 +3830,207 @@ button:active {
         right:18px;
     }
 }
+
+/* ==========================================================
+   AURA FARMER — EXERCISE VARIATION OVERHAUL
+   ========================================================== */
+.variation-exercise-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.variation-exercise-card {
+    margin: 0 !important;
+    min-width: 0;
+}
+
+.variation-exercise-info {
+    padding-right: 78px !important;
+}
+
+.variation-exercise-name {
+    margin-bottom: 4px;
+}
+
+.variation-picker {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+    padding-right: 0;
+}
+
+.variation-option {
+    appearance: none;
+    border: 1px solid rgba(0,0,0,0.16);
+    background: rgba(255,255,255,0.55);
+    color: #3b2a1c;
+    border-radius: 999px;
+    min-height: 36px;
+    padding: 7px 11px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.15s ease, background 0.15s ease, border-color 0.15s ease;
+}
+
+.variation-option:hover {
+    transform: translateY(-1px);
+}
+
+.variation-option.active {
+    background: #1f1f1f;
+    color: burlywood;
+    border-color: #1f1f1f;
+}
+
+.variation-selected-label {
+    margin-top: 7px;
+    font-size: 0.76rem;
+    font-weight: 700;
+    opacity: 0.65;
+}
+
+.variation-save-btn {
+    min-height: 42px;
+}
+
+.add-exercise-variants {
+    opacity: 0.7;
+    font-size: 0.82rem;
+}
+
+@media (max-width: 800px) {
+    .variation-exercise-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 600px) {
+    .variation-picker {
+        gap: 5px;
+    }
+
+    .variation-option {
+        flex: 1 1 auto;
+        min-width: 84px;
+    }
+}
+
+/* ==========================================================
+   VARIATION CARD DESKTOP / RESPONSIVE FIX
+   Keep each movement self-contained so the log controls never
+   spill into the neighboring card.
+   ========================================================== */
+.variation-exercise-grid {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    align-items: stretch;
+}
+
+.variation-exercise-card {
+    width: 100%;
+    min-width: 0;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto !important;
+    gap: 14px !important;
+    align-content: start;
+    margin: 0 !important;
+    padding: 18px !important;
+    overflow: hidden !important;
+}
+
+.variation-exercise-card .variation-exercise-info {
+    width: 100%;
+    min-width: 0;
+    margin: 0 !important;
+    padding: 30px 72px 14px 10px !important;
+    overflow: hidden !important;
+}
+
+.variation-exercise-card .variation-exercise-name {
+    font-size: clamp(1.15rem, 1.8vw, 1.55rem);
+    line-height: 1.15;
+    overflow-wrap: anywhere;
+}
+
+.variation-exercise-card .exercise-log {
+    width: 100%;
+    min-width: 0;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
+    gap: 10px !important;
+    padding: 0 !important;
+    align-items: stretch;
+}
+
+.variation-exercise-card .exercise-log .weight-input,
+.variation-exercise-card .exercise-log .reps-input {
+    width: 100% !important;
+    min-width: 0;
+    margin: 0 !important;
+}
+
+.variation-exercise-card .variation-save-btn {
+    grid-column: 1 / -1;
+    width: 100% !important;
+    margin: 0 !important;
+}
+
+.variation-exercise-card .saved-sets {
+    grid-column: 1 / -1;
+    width: 100%;
+    min-width: 0;
+}
+
+.variation-picker {
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.variation-option {
+    flex: 0 1 auto;
+    max-width: 100%;
+    white-space: nowrap;
+}
+
+@media (min-width: 1100px) {
+    .variation-exercise-grid {
+        gap: 18px;
+    }
+
+    .variation-exercise-card {
+        padding: 20px !important;
+    }
+}
+
+@media (max-width: 800px) {
+    .variation-exercise-grid {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+}
+
+@media (max-width: 520px) {
+    .variation-exercise-card {
+        padding: 15px !important;
+    }
+
+    .variation-exercise-card .variation-exercise-info {
+        padding-right: 62px !important;
+    }
+
+    .variation-exercise-card .exercise-log {
+        grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .variation-exercise-card .variation-save-btn {
+        grid-column: auto;
+    }
+}
