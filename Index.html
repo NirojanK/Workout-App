@@ -5254,5 +5254,631 @@ document.addEventListener("click", function(event) {
 
 
 </script>
+<script>
+/* ==========================================================
+   AURA FARMER — EXERCISE VARIATION OVERHAUL
+   One movement card -> user selects the equipment/variation.
+   Existing workout/history data remains compatible.
+   ========================================================== */
+
+const auraVariationLibrary = {
+    chest: [
+        { key:"chest_press", name:"Chest Press", muscleGroup:"Mid Chest", reps:"3 sets of 8–10 reps", difficulty:"hard", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Chest Press — Barbell",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Chest Press — Dumbbell",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Chest Press — Machine",usesWeight:true}
+        ]},
+        { key:"incline_press", name:"Incline Press", muscleGroup:"Upper Chest", reps:"3 sets of 8–10 reps", difficulty:"medium", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Incline Press — Dumbbell",usesWeight:true},
+            {key:"barbell",label:"Barbell",exercise:"Incline Press — Barbell",usesWeight:true},
+            {key:"smith",label:"Smith Machine",exercise:"Incline Press — Smith Machine",usesWeight:true}
+        ]},
+        { key:"chest_fly", name:"Chest Fly", muscleGroup:"Chest Isolation", reps:"3 sets of 10–15 reps", variants:[
+            {key:"machine",label:"Machine",exercise:"Chest Fly — Machine",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Chest Fly — Cable",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Chest Fly — Dumbbell",usesWeight:true}
+        ]},
+        { key:"push_up", name:"Push-ups", muscleGroup:"Mid Chest", reps:"1–2 sets until failure", variants:[
+            {key:"standard",label:"Standard",exercise:"Push-ups — Standard",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Push-ups — Weighted",usesWeight:true},
+            {key:"incline",label:"Incline",exercise:"Push-ups — Incline",usesWeight:false}
+        ]},
+        { key:"dips", name:"Dips", muscleGroup:"Lower Chest", reps:"3 sets of 4–9 reps", difficulty:"medium", variants:[
+            {key:"bodyweight",label:"Bodyweight",exercise:"Dips — Bodyweight",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Dips — Weighted",usesWeight:true},
+            {key:"assisted",label:"Assisted",exercise:"Dips — Assisted",usesWeight:false}
+        ]}
+    ],
+
+    back: [
+        { key:"pull_up", name:"Pull-ups", muscleGroup:"Lats", reps:"3 sets of 4–8 reps", difficulty:"hard", variants:[
+            {key:"bodyweight",label:"Bodyweight",exercise:"Pull-ups — Bodyweight",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Pull-ups — Weighted",usesWeight:true},
+            {key:"assisted",label:"Assisted",exercise:"Pull-ups — Assisted",usesWeight:false}
+        ]},
+        { key:"lat_pulldown", name:"Lat Pulldown", muscleGroup:"Lats", reps:"3 sets of 8–12 reps", variants:[
+            {key:"cable",label:"Cable",exercise:"Lat Pulldown — Cable",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Lat Pulldown — Machine",usesWeight:true}
+        ]},
+        { key:"row", name:"Row", muscleGroup:"Upper Back", reps:"3 sets of 8–12 reps", difficulty:"medium", variants:[
+            {key:"cable",label:"Seated Cable",exercise:"Row — Seated Cable",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Row — Dumbbell",usesWeight:true},
+            {key:"barbell",label:"Barbell",exercise:"Row — Barbell",usesWeight:true},
+            {key:"chest_supported",label:"Chest Supported",exercise:"Row — Chest Supported",usesWeight:true}
+        ]},
+        { key:"straight_arm_pulldown", name:"Straight-Arm Pulldown", muscleGroup:"Lats", reps:"3 sets of 10–15 reps", variants:[
+            {key:"cable",label:"Cable",exercise:"Straight-Arm Pulldown — Cable",usesWeight:true}
+        ]},
+        { key:"face_pull", name:"Face Pull", muscleGroup:"Rear Delts", reps:"3 sets of 12–15 reps", variants:[
+            {key:"rope",label:"Rope Cable",exercise:"Face Pull — Rope Cable",usesWeight:true},
+            {key:"band",label:"Band",exercise:"Face Pull — Band",usesWeight:false}
+        ]}
+    ],
+
+    legs: [
+        { key:"squat", name:"Squat", muscleGroup:"Quads", reps:"3 sets of 6–10 reps", difficulty:"hard", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Squat — Barbell",usesWeight:true},
+            {key:"smith",label:"Smith Machine",exercise:"Squat — Smith Machine",usesWeight:true},
+            {key:"hack",label:"Hack Squat",exercise:"Squat — Hack Machine",usesWeight:true}
+        ]},
+        { key:"leg_press", name:"Leg Press", muscleGroup:"Quads", reps:"3 sets of 8–12 reps", variants:[
+            {key:"45",label:"45°",exercise:"Leg Press — 45°",usesWeight:true},
+            {key:"horizontal",label:"Horizontal",exercise:"Leg Press — Horizontal",usesWeight:true}
+        ]},
+        { key:"leg_extension", name:"Leg Extension", muscleGroup:"Quads", reps:"3 sets of 10–15 reps", variants:[
+            {key:"machine",label:"Machine",exercise:"Leg Extension — Machine",usesWeight:true}
+        ]},
+        { key:"lunge", name:"Lunge", muscleGroup:"Glutes", reps:"3 sets of 10–12 reps per leg", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Lunge — Dumbbell",usesWeight:true},
+            {key:"bodyweight",label:"Bodyweight",exercise:"Lunge — Bodyweight",usesWeight:false},
+            {key:"smith",label:"Smith Machine",exercise:"Lunge — Smith Machine",usesWeight:true}
+        ]},
+        { key:"rdl", name:"Romanian Deadlift", muscleGroup:"Hamstrings", reps:"3 sets of 8–10 reps", difficulty:"hard", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Romanian Deadlift — Barbell",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Romanian Deadlift — Dumbbell",usesWeight:true}
+        ]},
+        { key:"hamstring_curl", name:"Hamstring Curl", muscleGroup:"Hamstrings", reps:"3 sets of 10–15 reps", variants:[
+            {key:"seated",label:"Seated",exercise:"Hamstring Curl — Seated",usesWeight:true},
+            {key:"lying",label:"Lying",exercise:"Hamstring Curl — Lying",usesWeight:true}
+        ]},
+        { key:"hip_adduction", name:"Hip Adduction", muscleGroup:"Hips", reps:"3 sets of 10–15 reps", variants:[
+            {key:"machine",label:"Machine",exercise:"Hip Adduction — Machine",usesWeight:true}
+        ]},
+        { key:"hip_abduction", name:"Hip Abduction", muscleGroup:"Hips", reps:"3 sets of 10–15 reps", variants:[
+            {key:"machine",label:"Machine",exercise:"Hip Abduction — Machine",usesWeight:true}
+        ]},
+        { key:"calf_raise", name:"Calf Raise", muscleGroup:"Calves", reps:"3 sets of 12–20 reps", variants:[
+            {key:"standing",label:"Standing",exercise:"Calf Raise — Standing",usesWeight:true},
+            {key:"seated",label:"Seated",exercise:"Calf Raise — Seated",usesWeight:true},
+            {key:"leg_press",label:"Leg Press",exercise:"Calf Raise — Leg Press",usesWeight:true}
+        ]},
+        { key:"back_extension", name:"Lower Back Extension", muscleGroup:"Lower Back", reps:"3 sets of 10–15 reps", variants:[
+            {key:"bodyweight",label:"Bodyweight",exercise:"Lower Back Extension — Bodyweight",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Lower Back Extension — Weighted",usesWeight:true}
+        ]}
+    ],
+
+    arms: [
+        { key:"chin_up", name:"Chin-ups", muscleGroup:"Biceps", reps:"3 sets of 4–8 reps", difficulty:"hard", variants:[
+            {key:"bodyweight",label:"Bodyweight",exercise:"Chin-ups — Bodyweight",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Chin-ups — Weighted",usesWeight:true},
+            {key:"assisted",label:"Assisted",exercise:"Chin-ups — Assisted",usesWeight:false}
+        ]},
+        { key:"biceps_curl", name:"Biceps Curl", muscleGroup:"Biceps", reps:"3 sets of 8–12 reps", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Biceps Curl — Barbell",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Biceps Curl — Dumbbell",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Biceps Curl — Cable",usesWeight:true},
+            {key:"preacher",label:"Preacher",exercise:"Biceps Curl — Preacher",usesWeight:true}
+        ]},
+        { key:"hammer_curl", name:"Hammer Curl", muscleGroup:"Biceps", reps:"3 sets of 8–12 reps", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Hammer Curl — Dumbbell",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Hammer Curl — Cable",usesWeight:true}
+        ]},
+        { key:"tricep_pushdown", name:"Tricep Pushdown", muscleGroup:"Triceps", reps:"3 sets of 10–15 reps", variants:[
+            {key:"rope",label:"Rope",exercise:"Tricep Pushdown — Rope",usesWeight:true},
+            {key:"bar",label:"Straight Bar",exercise:"Tricep Pushdown — Straight Bar",usesWeight:true},
+            {key:"single_arm",label:"Single Arm",exercise:"Tricep Pushdown — Single Arm",usesWeight:true}
+        ]},
+        { key:"overhead_tricep", name:"Overhead Tricep Extension", muscleGroup:"Triceps", reps:"3 sets of 10–15 reps", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Overhead Tricep Extension — Dumbbell",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Overhead Tricep Extension — Cable",usesWeight:true},
+            {key:"ezbar",label:"EZ-Bar",exercise:"Overhead Tricep Extension — EZ-Bar",usesWeight:true}
+        ]},
+        { key:"skull_crusher", name:"Skull Crusher", muscleGroup:"Triceps", reps:"3 sets of 8–12 reps", difficulty:"medium", variants:[
+            {key:"ezbar",label:"EZ-Bar",exercise:"Skull Crusher — EZ-Bar",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Skull Crusher — Dumbbell",usesWeight:true}
+        ]}
+    ],
+
+    shoulders: [
+        { key:"shoulder_press", name:"Shoulder Press", muscleGroup:"Front Delts", reps:"3 sets of 6–10 reps", difficulty:"medium", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Shoulder Press — Barbell",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Shoulder Press — Dumbbell",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Shoulder Press — Machine",usesWeight:true}
+        ]},
+        { key:"lateral_raise", name:"Lateral Raise", muscleGroup:"Lateral Delts", reps:"3 sets of 12–15 reps", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Lateral Raise — Dumbbell",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Lateral Raise — Cable",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Lateral Raise — Machine",usesWeight:true}
+        ]},
+        { key:"front_raise", name:"Front Raise", muscleGroup:"Front Delts", reps:"3 sets of 10–15 reps", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Front Raise — Dumbbell",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Front Raise — Cable",usesWeight:true},
+            {key:"plate",label:"Plate",exercise:"Front Raise — Plate",usesWeight:true}
+        ]},
+        { key:"rear_delt_fly", name:"Rear Delt Fly", muscleGroup:"Rear Delts", reps:"3 sets of 12–15 reps", variants:[
+            {key:"dumbbell",label:"Dumbbell",exercise:"Rear Delt Fly — Dumbbell",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Rear Delt Fly — Machine",usesWeight:true},
+            {key:"cable",label:"Cable",exercise:"Rear Delt Fly — Cable",usesWeight:true}
+        ]},
+        { key:"shrug", name:"Shrug", muscleGroup:"Traps", reps:"3 sets of 10–15 reps", variants:[
+            {key:"barbell",label:"Barbell",exercise:"Shrug — Barbell",usesWeight:true},
+            {key:"dumbbell",label:"Dumbbell",exercise:"Shrug — Dumbbell",usesWeight:true},
+            {key:"machine",label:"Machine",exercise:"Shrug — Machine",usesWeight:true}
+        ]}
+    ],
+
+    cardio: [
+        { key:"running", name:"Running", muscleGroup:"Cardio", reps:"20–60 minutes", variants:[
+            {key:"treadmill",label:"Treadmill",exercise:"Running — Treadmill",usesWeight:false},
+            {key:"outdoor",label:"Outdoor",exercise:"Running — Outdoor",usesWeight:false}
+        ]},
+        { key:"walking", name:"Walking", muscleGroup:"Cardio", reps:"20–60 minutes", variants:[
+            {key:"treadmill",label:"Treadmill",exercise:"Walking — Treadmill",usesWeight:false},
+            {key:"outdoor",label:"Outdoor",exercise:"Walking — Outdoor",usesWeight:false}
+        ]},
+        { key:"cycling", name:"Cycling", muscleGroup:"Cardio", reps:"20–60 minutes", variants:[
+            {key:"stationary",label:"Stationary Bike",exercise:"Cycling — Stationary Bike",usesWeight:false},
+            {key:"outdoor",label:"Outdoor",exercise:"Cycling — Outdoor",usesWeight:false}
+        ]},
+        { key:"stairmaster", name:"Stair Climbing", muscleGroup:"Cardio", reps:"15–30 minutes", variants:[
+            {key:"stairmaster",label:"StairMaster",exercise:"Stair Climbing — StairMaster",usesWeight:false},
+            {key:"stairs",label:"Stairs",exercise:"Stair Climbing — Stairs",usesWeight:false}
+        ]},
+        { key:"jump_rope", name:"Jump Rope", muscleGroup:"Cardio", reps:"10–20 minutes", variants:[
+            {key:"standard",label:"Standard",exercise:"Jump Rope — Standard",usesWeight:false},
+            {key:"weighted",label:"Weighted Rope",exercise:"Jump Rope — Weighted",usesWeight:false}
+        ]},
+        { key:"plank", name:"Plank", muscleGroup:"Core", reps:"30–120 seconds", variants:[
+            {key:"standard",label:"Standard",exercise:"Plank — Standard",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Plank — Weighted",usesWeight:true},
+            {key:"side",label:"Side",exercise:"Plank — Side",usesWeight:false}
+        ]},
+        { key:"hanging_leg_raise", name:"Hanging Leg Raise", muscleGroup:"Core", reps:"3 sets of 10–15 reps", variants:[
+            {key:"straight",label:"Straight Leg",exercise:"Hanging Leg Raise — Straight Leg",usesWeight:false},
+            {key:"knee",label:"Knee Raise",exercise:"Hanging Leg Raise — Knee Raise",usesWeight:false}
+        ]},
+        { key:"cable_crunch", name:"Cable Crunch", muscleGroup:"Core", reps:"3 sets of 12–15 reps", variants:[
+            {key:"rope",label:"Rope",exercise:"Cable Crunch — Rope",usesWeight:true}
+        ]},
+        { key:"russian_twist", name:"Russian Twist", muscleGroup:"Core", reps:"3 sets of 20 reps", variants:[
+            {key:"bodyweight",label:"Bodyweight",exercise:"Russian Twist — Bodyweight",usesWeight:false},
+            {key:"weighted",label:"Weighted",exercise:"Russian Twist — Weighted",usesWeight:true}
+        ]}
+    ]
+};
+
+const auraVariationGroups = {
+    push: ["chest", "shoulders", "arms"],
+    pull: ["back", "arms"],
+    legs: ["legs"],
+    cardio: ["cardio"]
+};
+
+function auraGetMovement(groupKey, movementKey){
+    return (auraVariationLibrary[groupKey] || []).find(item => item.key === movementKey) || null;
+}
+
+function auraGetSavedVariant(movementKey, fallback){
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem("auraWorkoutVariations") || "{}"); } catch(e) {}
+    return saved[movementKey] || fallback;
+}
+
+function auraSaveVariant(movementKey, variantKey){
+    let saved = {};
+    try { saved = JSON.parse(localStorage.getItem("auraWorkoutVariations") || "{}"); } catch(e) {}
+    saved[movementKey] = variantKey;
+    localStorage.setItem("auraWorkoutVariations", JSON.stringify(saved));
+}
+
+function auraGetVariant(movement, variantKey){
+    return movement.variants.find(v => v.key === variantKey) || movement.variants[0];
+}
+
+function auraRenderVariantCard(movement, groupKey){
+    const card = document.createElement("div");
+    const defaultVariant = auraGetSavedVariant(movement.key, movement.variants[0].key);
+    const variant = auraGetVariant(movement, defaultVariant);
+
+    card.className = `exercise-card variation-exercise-card ${getExerciseDifficultyClass(movement.name)}`;
+    card.dataset.exerciseKey = movement.key;
+    card.dataset.groupKey = groupKey;
+    card.dataset.variant = variant.key;
+
+    card.innerHTML = `
+        <div class="exercise-info variation-exercise-info">
+            <div class="difficulty-badge ${getExerciseDifficultyClass(movement.name)}">
+                <span class="difficulty-dot"></span>
+                ${getExerciseDifficultyLabel(movement.name)}
+            </div>
+            <h5 class="variation-exercise-name">${movement.name}</h5>
+            <p>${movement.reps}</p>
+            <div class="variation-picker" role="group" aria-label="${movement.name} variation">
+                ${movement.variants.map(v => `
+                    <button type="button" class="variation-option ${v.key === variant.key ? "active" : ""}" data-variant="${v.key}">
+                        ${v.label}
+                    </button>
+                `).join("")}
+            </div>
+            <div class="variation-selected-label">${variant.label}</div>
+        </div>
+        <div class="exercise-log">
+            ${auraWeightInput(variant)}
+            <input class="reps-input" type="number" min="0" inputmode="numeric" placeholder="Reps">
+            <button type="button" class="variation-save-btn">💾 Save Set</button>
+            <div class="saved-sets"></div>
+        </div>
+    `;
+
+    auraApplyVariantToCard(card, movement, variant.key, false);
+
+    card.querySelectorAll(".variation-option").forEach(button => {
+        button.addEventListener("click", () => {
+            auraApplyVariantToCard(card, movement, button.dataset.variant, true);
+        });
+    });
+
+    card.querySelector(".variation-save-btn").addEventListener("click", function(){
+        saveExerciseLog(movement.key, this);
+    });
+
+    return card;
+}
+
+function auraWeightInput(variant){
+    return variant.usesWeight ? `
+        <input class="weight-input" type="number" min="0" step="0.5" inputmode="decimal" placeholder="Weight (lbs)">
+    ` : "";
+}
+
+function auraApplyVariantToCard(card, movement, variantKey, clearInputs){
+    const variant = auraGetVariant(movement, variantKey);
+    card.dataset.variant = variant.key;
+    card.dataset.exercise = variant.exercise;
+    auraSaveVariant(movement.key, variant.key);
+
+    const selectedLabel = card.querySelector(".variation-selected-label");
+    if (selectedLabel) selectedLabel.textContent = variant.label;
+
+    card.querySelectorAll(".variation-option").forEach(button => {
+        button.classList.toggle("active", button.dataset.variant === variant.key);
+    });
+
+    const log = card.querySelector(".exercise-log");
+    const oldWeight = log.querySelector(".weight-input")?.value || "";
+    const oldReps = log.querySelector(".reps-input")?.value || "";
+    log.querySelectorAll(".weight-input").forEach(input => input.remove());
+    if (variant.usesWeight) {
+        const temp = document.createElement("div");
+        temp.innerHTML = auraWeightInput(variant);
+        const repsInput = log.querySelector(".reps-input");
+        log.insertBefore(temp.firstElementChild, repsInput);
+    }
+
+    if (clearInputs) {
+        const lastLog = auraGetLastExerciseLog(variant.exercise);
+        const weight = log.querySelector(".weight-input");
+        if (weight) weight.value = lastLog?.weight ?? "";
+        log.querySelector(".reps-input").value = lastLog?.reps ?? "";
+        log.querySelector(".saved-sets").innerHTML = "";
+    } else {
+        const weight = log.querySelector(".weight-input");
+        if (weight && oldWeight) weight.value = oldWeight;
+        log.querySelector(".reps-input").value = oldReps;
+    }
+
+    auraRenderCardSets(card);
+}
+
+function auraGetLastExerciseLog(exerciseName){
+    const history = currentUserData?.exerciseLogs || [];
+    const logs = history.filter(log => log.exercise === exerciseName);
+    if (!logs.length) return null;
+    return logs[logs.length - 1];
+}
+
+function auraRenderCardSets(card){
+    const savedSets = card.querySelector(".saved-sets");
+    if (!savedSets) return;
+    const key = card.dataset.exerciseKey;
+    const variant = card.dataset.variant;
+    const logs = (currentWorkoutExercises || []).filter(log =>
+        log.exerciseKey === key && log.variation === variant
+    );
+    savedSets.innerHTML = logs.map(log => `
+        <div class="saved-set" data-log-id="${log.id}">
+            <span>${log.weight !== null && log.weight !== undefined && log.weight !== "" ? `${log.weight} lbs × ` : ""}${log.reps} reps</span>
+            <button type="button" class="remove-set-btn" aria-label="Remove this set" onclick="removeExerciseSet('${log.id}')">×</button>
+        </div>
+    `).join("");
+}
+
+function renderGroupedExerciseCards(containerId, exercises, groupKey){
+    const container = document.getElementById(containerId);
+    if (!container) return;
+    container.innerHTML = "";
+
+    const movements = auraVariationLibrary[groupKey] || [];
+    const groups = {};
+    movements.forEach(movement => {
+        const group = movement.muscleGroup || "Other";
+        if (!groups[group]) groups[group] = [];
+        groups[group].push(movement);
+    });
+
+    Object.entries(groups).forEach(([groupName, groupMovements]) => {
+        const groupSection = document.createElement("div");
+        groupSection.className = "muscle-group-section";
+        groupSection.innerHTML = `<h4 class="muscle-group-title">${groupName}</h4>`;
+        const exerciseContainer = document.createElement("div");
+        exerciseContainer.className = "muscle-group-exercises variation-exercise-grid";
+        groupMovements.forEach(movement => exerciseContainer.appendChild(auraRenderVariantCard(movement, groupKey)));
+        groupSection.appendChild(exerciseContainer);
+        container.appendChild(groupSection);
+    });
+}
+
+function auraRenderAllVariationCards(){
+    renderGroupedExerciseCards("chestExercises", workoutData.chest, "chest");
+    renderGroupedExerciseCards("backExercises", workoutData.back, "back");
+    renderGroupedExerciseCards("legExercises", workoutData.legs, "legs");
+    renderGroupedExerciseCards("armExercises", workoutData.arms, "arms");
+    renderGroupedExerciseCards("shoulderExercises", workoutData.shoulders, "shoulders");
+    renderGroupedExerciseCards("cardioExercises", workoutData.cardio, "cardio");
+    renderCurrentWorkout();
+}
+
+async function saveExerciseLog(exerciseKeyOrName, button){
+    const card = button.closest(".exercise-card");
+    const isVariationCard = !!card?.dataset.exerciseKey;
+    const movement = isVariationCard
+        ? auraGetMovement(card.dataset.groupKey, card.dataset.exerciseKey)
+        : null;
+
+    const variant = movement
+        ? auraGetVariant(movement, card.dataset.variant)
+        : null;
+
+    const exerciseName = variant?.exercise || exerciseKeyOrName;
+    const weightInput = button.parentElement.querySelector(".weight-input");
+    const repsInput = button.parentElement.querySelector(".reps-input");
+    const weight = weightInput ? weightInput.value : "";
+    const reps = repsInput ? repsInput.value : "";
+
+    if (!reps || Number(reps) < 0) {
+        alert("Please enter the number of reps.");
+        return;
+    }
+
+    const log = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        exercise: exerciseName,
+        exerciseKey: isVariationCard ? card.dataset.exerciseKey : null,
+        variation: isVariationCard ? card.dataset.variant : null,
+        workout: localStorage.getItem("selectedWorkout") || "Custom",
+        weight: weight !== "" ? Number(weight) : null,
+        reps: Number(reps),
+        date: new Date().toDateString(),
+        timestamp: Date.now()
+    };
+
+    if (isGuest) {
+        let guestLogs = JSON.parse(localStorage.getItem("guestLogs") || "[]");
+        guestLogs.push(log);
+        localStorage.setItem("guestLogs", JSON.stringify(guestLogs));
+        currentWorkoutExercises.push(log);
+        if (!currentUserData) currentUserData = {};
+        currentUserData.exerciseLogs = [...(currentUserData.exerciseLogs || []), log];
+        renderCurrentWorkout();
+        button.innerText = "Saved ✓";
+        button.classList.add("saved");
+        setTimeout(() => { button.innerText = "💾 Save Set"; button.classList.remove("saved"); }, 1500);
+        return;
+    }
+
+    const user = auth.currentUser;
+    if (!user) return;
+
+    currentWorkoutExercises.push(log);
+    if (!currentUserData) currentUserData = {};
+    currentUserData.exerciseLogs = [...(currentUserData.exerciseLogs || []), log];
+    renderCurrentWorkout();
+
+    const ref = db.collection("users").doc(user.uid);
+    const doc = await ref.get();
+    const data = doc.data() || {};
+    const personalRecords = data.personalRecords || {};
+    const currentPR = personalRecords[exerciseName];
+
+    let isNewPR = !currentPR;
+    const currentWeight = currentPR?.weight ?? 0;
+    const currentReps = currentPR?.reps ?? 0;
+
+    if (weight !== "") {
+        if (Number(weight) > currentWeight || (Number(weight) === currentWeight && Number(reps) > currentReps)) isNewPR = true;
+    } else if (Number(reps) > currentReps) {
+        isNewPR = true;
+    }
+
+    if (isNewPR) {
+        personalRecords[exerciseName] = {
+            weight: weight !== "" ? Number(weight) : null,
+            reps: Number(reps),
+            date: log.date,
+            timestamp: log.timestamp
+        };
+    }
+
+    await ref.set({
+        exerciseLogs: firebase.firestore.FieldValue.arrayUnion(log),
+        personalRecords
+    }, { merge: true });
+
+    data.personalRecords = personalRecords;
+    renderPersonalRecords(data);
+
+    if (isNewPR) showAchievementToast(`🏆 New ${exerciseName} PR!`);
+
+    button.innerText = "Saved ✓";
+    button.classList.add("saved");
+    setTimeout(() => { button.innerText = "💾 Save Set"; button.classList.remove("saved"); }, 1500);
+}
+
+function renderCurrentWorkout(){
+    document.querySelectorAll(".saved-sets").forEach(div => div.innerHTML = "");
+
+    (currentWorkoutExercises || []).forEach(log => {
+        let exerciseCard = null;
+
+        if (log.exerciseKey) {
+            exerciseCard = [...document.querySelectorAll(".variation-exercise-card")].find(card =>
+                card.dataset.exerciseKey === log.exerciseKey && card.dataset.variant === log.variation
+            );
+        } else {
+            exerciseCard = [...document.querySelectorAll(".exercise-card")].find(card =>
+                card.dataset.exercise === log.exercise
+            );
+        }
+
+        if (!exerciseCard) return;
+        auraRenderCardSets(exerciseCard);
+    });
+}
+
+/* Cleaner selector: no disruptive alerts; re-render the compact movement cards. */
+function openWorkoutSelector(){
+    const mode = currentUserData?.workoutMode || "beginner";
+    if (mode === "veteran") {
+        openVeteranWorkoutModal();
+        return;
+    }
+    document.getElementById("workoutSelectorModal")?.classList.add("active");
+}
+
+function selectWorkout(type){
+    localStorage.setItem("selectedWorkout", type);
+
+    const addedList = document.getElementById("addedExercisesList");
+    const addedSection = document.getElementById("addedExercisesSection");
+    if (addedList) addedList.innerHTML = "";
+    if (addedSection) addedSection.style.display = "none";
+
+    document.getElementById("workoutSelectorModal")?.classList.remove("active");
+
+    document.querySelectorAll(".workout-group").forEach(group => group.style.display = "none");
+    document.getElementById("womenSection")?.style && (document.getElementById("womenSection").style.display = "none");
+
+    if (type === "women") {
+        const women = document.getElementById("womenSection");
+        if (women) women.style.display = "block";
+    } else {
+        document.querySelectorAll("." + type + "-workout").forEach(group => group.style.display = "block");
+    }
+
+    document.getElementById("exerciseSection").style.display = "block";
+    document.getElementById("workouts").style.display = "flex";
+    updateExerciseAddButtonVisibility();
+
+    const changeWorkoutBtn = document.getElementById("changeWorkoutBtn");
+    if (changeWorkoutBtn) changeWorkoutBtn.style.display = "inline-flex";
+
+    const workoutNames = {
+        push: "💪 Push Day",
+        pull: "🦍 Pull Day",
+        legs: "🦵 Leg Day",
+        cardio: "❤️ Cardio",
+        women: "🌸 Women's Training"
+    };
+
+    document.getElementById("currentWorkoutName").innerText = workoutNames[type] || "Workout";
+    document.getElementById("workoutStatusBar").style.display = "flex";
+
+    auraRenderAllVariationCards();
+    startWorkout();
+}
+
+/* Make the Add Exercise picker use the same movement-level model. */
+const auraAddExerciseGroups = [
+    {key:"back",label:"🦍 Back"},
+    {key:"chest",label:"💪 Chest"},
+    {key:"legs",label:"🦵 Legs"},
+    {key:"shoulders",label:"🏋️ Shoulders"},
+    {key:"arms",label:"💪 Arms"},
+    {key:"cardio",label:"❤️ Cardio + Core"}
+];
+
+function auraGetAddGroup(key){
+    return auraAddExerciseGroups.find(g => g.key === key);
+}
+
+function renderAddExerciseMuscleTabs(){
+    const tabs = document.getElementById("addExerciseMuscleTabs");
+    if (!tabs) return;
+    tabs.innerHTML = auraAddExerciseGroups.map(group => `
+        <button type="button" class="add-exercise-muscle-tab ${group.key === selectedAddExerciseGroup ? "active" : ""}" onclick="selectAddExerciseGroup('${group.key}')">
+            ${group.label}
+        </button>
+    `).join("");
+}
+
+function updateAddExerciseOptions(){
+    const select = document.getElementById("addExerciseSelect");
+    const preview = document.getElementById("addExercisePreview");
+    if (!select || !preview) return;
+
+    const movements = auraVariationLibrary[selectedAddExerciseGroup] || [];
+    select.innerHTML = movements.map(m => `<option value="${m.key}">${m.name}</option>`).join("");
+    select.onchange = updateAddExercisePreview;
+    updateAddExercisePreview();
+}
+
+function updateAddExercisePreview(){
+    const select = document.getElementById("addExerciseSelect");
+    const preview = document.getElementById("addExercisePreview");
+    if (!select || !preview) return;
+    const movement = auraGetMovement(selectedAddExerciseGroup, select.value);
+    if (!movement) { preview.textContent = ""; return; }
+    preview.innerHTML = `<strong>${movement.muscleGroup}</strong> • ${movement.reps}<br><span class="add-exercise-variants">Choose later: ${movement.variants.map(v => v.label).join(" • ")}</span>`;
+}
+
+function addSelectedExercise(){
+    const select = document.getElementById("addExerciseSelect");
+    const movement = auraGetMovement(selectedAddExerciseGroup, select?.value);
+    if (!movement) { alert("Please choose an exercise."); return; }
+
+    const duplicate = [...document.querySelectorAll(".variation-exercise-card")]
+        .some(card => card.dataset.exerciseKey === movement.key) ||
+        [...document.querySelectorAll("#addedExercisesList .exercise-card")]
+        .some(card => card.dataset.exercise === movement.name);
+
+    if (duplicate) {
+        alert(`${movement.name} is already visible in this workout.`);
+        return;
+    }
+
+    renderAddedExercise({
+        name: movement.name,
+        muscleGroup: movement.muscleGroup,
+        reps: movement.reps,
+        usesWeight: true
+    });
+    closeAddExerciseModal();
+}
+
+/* Initial replacement of the original long list. */
+auraRenderAllVariationCards();
+</script>
+
 </body>
 </html>
