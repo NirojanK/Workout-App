@@ -10,5 +10,4 @@ Stuff that needs to get added:
 #work on background and skipcookin when you have time
 #work on new ideas that could be useful like a video highlight ( needs a paid database config)
 #add graphs and fix authentication issues
-#make the website look less AI like
 #add total reps beside each workout when inputting sets
