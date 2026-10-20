@@ -6,6 +6,5 @@ Stuff that needs to get added:
 #implement a feedback section from users
 #create portals like an instagram for Aura Farmer, a YouTube, and Discord Server
 #work on background and skipcookin when you have time
-#work on new ideas that could be useful like a video highlight ( needs a paid database config)
 #add graphs and fix authentication issues
 #add total reps beside each workout when inputting sets
